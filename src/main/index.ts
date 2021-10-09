@@ -1,7 +1,10 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import { lendingPoolList } from "../constants/lend/pools";
 import { farmPools } from "../constants/farm";
-import { getLendingPoolInfo, getTokenPrice, FranciumFarm, getOrcaLPPrice, getRaydiumLPPrice } from "../model";
+import {
+  getLendingPoolInfo, getTokenPrice, FranciumFarm, getOrcaLPPrice,
+  getRaydiumLPPrice, getUserRewardPosition, getLendingPoolBalance
+} from "../model";
 import * as BN from 'bn.js';
 import { formatFarmUserPosition } from "../utils/formatters/farm";
 
@@ -51,6 +54,26 @@ export class FranciumSDK {
     const userFarmPositions = await this.farmHub.getUserPositions(this.farmPools, userPublicKey);
     return userFarmPositions.map((userInfo, index) => {
       return formatFarmUserPosition(farmInfo[index], userInfo);
+    });
+  }
+
+  public async getUserLendingPosition(userPublicKey: PublicKey) {
+    const lendingPoolInfos = await this.getLendingPoolInfo();
+    const rewardsList = await getUserRewardPosition(this.connection, userPublicKey);
+    const balanceList = await getLendingPoolBalance(this.connection, userPublicKey);
+    return lendingPoolInfos.map(info => {
+      const rewardPosition = rewardsList[info.pool]?.amount || 0;
+      const balancePosition = balanceList[info.pool]?.amount || 0;
+      const totalPosition = rewardPosition + balancePosition;
+      const sharePrice = info.totalAmount.toNumber() / info.totalShareMintSupply.toNumber();
+      return {
+        pool: info.pool,
+        scale: info.scale,
+        rewardPosition,
+        balancePosition,
+        totalPosition,
+        totalAmount: (sharePrice * totalPosition) / 10 ** info.scale
+      }
     });
   }
 
