@@ -46,6 +46,8 @@ export class FranciumFarm {
       return {
         id: `${poolItem.pair}[${poolItem.from}]`,
         priceKey: poolItem.alias || poolItem.pair,
+        token0: poolItem.token0,
+        token1: poolItem.token1,
         lpDecimals: poolItem.lyfType === 'orca' ? 6 : getTokenDecimals(poolItem.token1),
         ...strategyInfo
       };

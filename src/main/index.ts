@@ -35,7 +35,7 @@ export class FranciumSDK {
       await this.getTokenPriceInfo();
     }
     const orcaLPPriceInfo = await getOrcaLPPrice(this.tokenPrice);
-    const raydiumLPPriceInfo = await getRaydiumLPPrice();
+    const raydiumLPPriceInfo = await getRaydiumLPPrice(this.connection, this.tokenPrice);
     return {...orcaLPPriceInfo, ...raydiumLPPriceInfo};
   }
 
@@ -53,7 +53,10 @@ export class FranciumSDK {
     const farmInfo = await this.getFarmPoolInfo();
     const userFarmPositions = await this.farmHub.getUserPositions(this.farmPools, userPublicKey);
     return userFarmPositions.map((userInfo, index) => {
-      return formatFarmUserPosition(farmInfo[index], userInfo);
+      if (userInfo) {
+        return formatFarmUserPosition(farmInfo[index], userInfo);
+      }
+      return null;
     });
   }
 

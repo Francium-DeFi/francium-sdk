@@ -16,6 +16,7 @@ export function formatFarmUserPosition(poolInfo: any, userInfo: any) {
   return {
     id: poolInfo.id,
     lpAmount: userLP,
+    priceKey: poolInfo.priceKey,
     lpDecimals: poolInfo.lpDecimals,
     borrowed: [
       {

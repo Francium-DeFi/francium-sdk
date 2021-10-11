@@ -82,5 +82,9 @@ export default [
   {
     id: 'star-atlas-dao',
     token: 'POLIS'
+  },
+  {
+    id: 'grape-2',
+    token: 'GRAPE'
   }
 ]
