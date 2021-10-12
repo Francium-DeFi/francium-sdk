@@ -42,12 +42,20 @@ export async function getUserRewardPosition(connection: Connection, userPublicKe
   const result = {};
 
   accountInfos.forEach((i, index) => {
-    const buf = Buffer.from(i.data);
-    const decodeData = RewardUserLayout.decode(buf);
-    const targetPool = poolsWithReward[index];
-    result[targetPool.pool] = {
-      scale: targetPool.scale,
-      amount: decodeData?.staked_amount || 0
+    if (!i) {
+      const targetPool = poolsWithReward[index];
+      result[targetPool.pool] = {
+        scale: targetPool.scale,
+        amount: 0
+      }
+    } else {
+      const buf = Buffer.from(i.data);
+      const decodeData = RewardUserLayout.decode(buf);
+      const targetPool = poolsWithReward[index];
+      result[targetPool.pool] = {
+        scale: targetPool.scale,
+        amount: decodeData?.staked_amount || 0
+      }
     }
   });
   return result;

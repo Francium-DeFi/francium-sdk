@@ -3,7 +3,7 @@ import { Provider, Program, Idl, web3, BN } from '@project-serum/anchor';
 import raydiumIdl from '../../constants/farm/raydium/config';
 import orcaIdl from '../../constants/farm/orca/config';
 import { lyfRaydiumProgramId, lyfPubkeyConfig as lyfRaydiumConfig } from '../../constants/farm/raydium/info';
-import { lyfOrcaProgramId, lyfOrcaPubkeyConfig as lyfOrcaConfig } from '../../constants/farm/orca/info';
+import { lyfOrcaProgramId, ORCA_FARM_CONFIG } from '../../constants/farm/orca/info';
 import { PublicKey, SYSVAR_CLOCK_PUBKEY, Connection } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokenDecimals } from '../../utils/tools';
@@ -27,7 +27,7 @@ export class FranciumFarm {
       orca: {
         idl: orcaIdl,
         programId: lyfOrcaProgramId,
-        config: lyfOrcaConfig
+        config: ORCA_FARM_CONFIG
       }
     };
     this.connection = config.connection;

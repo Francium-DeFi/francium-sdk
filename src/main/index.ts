@@ -34,7 +34,7 @@ export class FranciumSDK {
     if (!this.tokenPrice) {
       await this.getTokenPriceInfo();
     }
-    const orcaLPPriceInfo = await getOrcaLPPrice(this.tokenPrice);
+    const orcaLPPriceInfo = await getOrcaLPPrice(this.connection,this.tokenPrice);
     const raydiumLPPriceInfo = await getRaydiumLPPrice(this.connection, this.tokenPrice);
     return {...orcaLPPriceInfo, ...raydiumLPPriceInfo};
   }

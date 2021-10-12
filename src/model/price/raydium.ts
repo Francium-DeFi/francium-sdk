@@ -5,22 +5,20 @@ import { OpenOrders } from "@project-serum/serum";
 import { ACCOUNT_LAYOUT, MINT_LAYOUT, AMM_INFO_LAYOUT_V4 } from "../../constants/price/layout";
 import { lyfPubkeyConfig, SERUM_PROGRAM_ID_V3 } from "../../constants/farm/raydium/info";
 import { getTokenDecimals } from "../../utils/tools";
+import { getAmountByDecimals } from "../../utils/math";
+import { BaseLPInfo, FormatLPInfo } from "./types";
+import { legacyInfoList } from '../../constants/farm/raydium/legacy';
+
+const list = {...lyfPubkeyConfig, ...legacyInfoList};
 
 export async function getRaydiumLPInfo(connection: Connection) {
   const publicKeys = [] as any;
 
   const poolInfo: {
-    [pool: string]: {
-      pcToken: string;
-      pcAmount: BN;
-      coinToken: string;
-      coinAmount: BN;
-      lpTotalSupply: BN;
-      lpDecimals: number;
-    };
+    [pool: string]: BaseLPInfo
   } = {};
 
-  map(lyfPubkeyConfig, (value, key) => {
+  map(list, (value, key) => {
     const raydiumInfo: any = value.raydiumInfo;
     const {
       ammOpenOrders,
@@ -137,20 +135,24 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
   [symbol: string]: number
 }) {
   const info: {
-    [pool: string]: {
-      price: number;
-    }
+    [pool: string]: FormatLPInfo
   } = {};
   const raydiumLPInfo = await getRaydiumLPInfo(connection);
-  forEach(lyfPubkeyConfig, (value, key) => {
+  forEach(list, (value, key) => {
     const targetPoolInfo = raydiumLPInfo[key];
     if (targetPoolInfo) {
       const pcPrice = priceList[targetPoolInfo.pcToken];
       const pcDecimals = getTokenDecimals(targetPoolInfo.pcToken);
-      const totalValue = targetPoolInfo.pcAmount.div(new BN(10).pow(new BN(pcDecimals))).toNumber() * 2 * pcPrice;
-      const lpAmount = targetPoolInfo.lpTotalSupply.div(new BN(10).pow(new BN(targetPoolInfo.lpDecimals))).toNumber();
+      const coinDecimals = getTokenDecimals(targetPoolInfo.coinToken);
+      const pcAmount = getAmountByDecimals(targetPoolInfo.pcAmount, pcDecimals);
+      const coinAmount = getAmountByDecimals(targetPoolInfo.coinAmount, coinDecimals);
+      const totalValue = pcAmount * 2 * pcPrice;
+      const lpAmount = getAmountByDecimals(targetPoolInfo.lpTotalSupply, targetPoolInfo.lpDecimals);
       info[key] = {
-        price: totalValue / lpAmount
+        price: totalValue / lpAmount,
+        pcPerLP: pcAmount / lpAmount,
+        coinPerLP: coinAmount / lpAmount,
+        ...targetPoolInfo
       }
     }
   });

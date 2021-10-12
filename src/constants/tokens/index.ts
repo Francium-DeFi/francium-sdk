@@ -252,5 +252,17 @@ export const TOKENS = {
     name: 'Orca',
     decimals: 6,
     mintAddress: new PublicKey("orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE")
+  },
+  mSOL: {
+    symbol: 'mSOL',
+    name: 'Marinade.finance',
+    decimals: 9,
+    mintAddress: new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So")
+  },
+  MNDE: {
+    symbol: 'MNDE',
+    name: 'Marinade.finance',
+    decimals: 9,
+    mintAddress: new PublicKey("MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey")
   }
 };
