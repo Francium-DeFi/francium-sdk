@@ -16,6 +16,9 @@ export const activePools = [
   
   'ATLAS-USDC[Orca Double-Dip]',
   'POLIS-USDC[Orca Double-Dip]',
+  'mSOL-USDC[Orca Double-Dip]',
+  'mSOL-USDT[Orca Double-Dip]',
+  'ORCA-mSOL[Orca Double-Dip]',
 
   'ORCA-USDC[Orca Aquafarm]',
   'ORCA-SOL[Orca Aquafarm]',

@@ -176,19 +176,25 @@ export const lendingPools: {
   }
 };
 
-export const lendingPoolList = [{
-  pool: 'USDC',
-  scale: 6
-},
-{
-  pool: 'SOL',
-  scale: 9
-},
-{
-  pool: 'ORCA',
-  scale: 6
-},
-{
-  pool: 'mSOL',
-  scale: 9
-}]
+export const lendingPoolList = [
+  {
+    pool: 'USDC',
+    scale: 6
+  },
+  {
+    pool: 'USDT',
+    scale: 6
+  },
+  {
+    pool: 'SOL',
+    scale: 9
+  },
+  {
+    pool: 'mSOL',
+    scale: 9
+  },
+  {
+    pool: 'ORCA',
+    scale: 6
+  }
+]

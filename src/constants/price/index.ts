@@ -88,7 +88,7 @@ export default [
     token: 'GRAPE'
   },
   {
-    id: 'marinade-staked-sol',
+    id: 'msol',
     token: 'mSOL'
   },
   {
