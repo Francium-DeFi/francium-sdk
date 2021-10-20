@@ -142,16 +142,19 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
     const targetPoolInfo = raydiumLPInfo[key];
     if (targetPoolInfo) {
       const pcPrice = priceList[targetPoolInfo.pcToken];
+      const coinPrice = priceList[targetPoolInfo.coinToken];
       const pcDecimals = getTokenDecimals(targetPoolInfo.pcToken);
       const coinDecimals = getTokenDecimals(targetPoolInfo.coinToken);
       const pcAmount = getAmountByDecimals(targetPoolInfo.pcAmount, pcDecimals);
       const coinAmount = getAmountByDecimals(targetPoolInfo.coinAmount, coinDecimals);
-      const totalValue = pcAmount * 2 * pcPrice;
       const lpAmount = getAmountByDecimals(targetPoolInfo.lpTotalSupply, targetPoolInfo.lpDecimals);
+      const pcPerLP = pcAmount / lpAmount;
+      const coinPerLP = coinAmount / lpAmount;
+      const price = pcPerLP * pcPrice + coinPerLP * coinPrice;
       info[key] = {
-        price: totalValue / lpAmount,
-        pcPerLP: pcAmount / lpAmount,
-        coinPerLP: coinAmount / lpAmount,
+        price,
+        pcPerLP,
+        coinPerLP,
         ...targetPoolInfo
       }
     }

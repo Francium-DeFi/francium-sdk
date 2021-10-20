@@ -140,7 +140,7 @@ export const lendRewardInfo: {
     farmingPoolRewardsTknAccountB: new PublicKey('CRmaS1yBemFcHAooAfRUM41ZCBpnM7FCRKi7x71YXnTj')
   },
   mSOL: {
-    programId: new PublicKey("3Katmm9dhvLQijAvomteYMo6rfVbY5NaCRNq9ZBqBgr6"),
+    programId: lendRewardProgramId,
     farmingPoolAccount: new PublicKey('Hu2QsZ57NHmgKEReXYPfS79amdqyyuxzbwSdxvd1UTwv'),
     farmingPoolAuthority: new PublicKey('7af5t7Ms526TYXEh5Y4nvot6xbWyGaiQnNJf3D9dygsb'),
     farmingPoolStakeTknMint: new PublicKey('4mntRxKJWib1YTWNV4aLfszF6FeziBHdwnNAwGSfKKMX'),
@@ -149,5 +149,16 @@ export const lendRewardInfo: {
     farmingPoolRewardsTknAccount: new PublicKey('2JEph4UfH6H49fmsYBZg7zSXKTUENszypmPC5qMmefkc'),
     farmingPoolRewardsTknMintB: new PublicKey('MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey'),
     farmingPoolRewardsTknAccountB: new PublicKey('BFBh633oDNn7hV89mA6TSUPGU6JeMdKzXVBHUi3Ab6Yd'),
+  },
+  BTC: {
+    programId: lendRewardProgramId,
+    farmingPoolAccount: new PublicKey('9LPNrtfkDgNTf7hex7PvufE1KypP54eU6AmStgn5Bo8g'),
+    farmingPoolAuthority: new PublicKey('DaB9HtEeWGfH25dFXMbYpxsUkZtqvbxQPjdsoxmpNCHK'),
+    farmingPoolStakeTknMint: new PublicKey('2G9iwy9zfLaXB2bFiqSA7YbKEvtAEXVmdvGTF28jQVgg'),
+    farmingPoolStakeTknAccount: new PublicKey('DNuEdaUXrYCRpELZssM9t2ZUQ6V4GJiijCEaXRr54Gpp'),
+    farmingPoolRewardsTknMint: new PublicKey('Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS'),
+    farmingPoolRewardsTknAccount: new PublicKey('GAeyyaFDBwX7LPSp5oQBRdZDCVUePeaJFDujCVkj5NDV'),
+    farmingPoolRewardsTknMintB: new PublicKey('Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS'),
+    farmingPoolRewardsTknAccountB: new PublicKey('4uL23rEj7fzNCFZ8Bv3SunLhtMamX3nAciYCSdSmAP1R'),
   }
 };

@@ -28,18 +28,20 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
       const lpKey = value?.alias || key;
       const pcCount = getAmountByDecimals(pcAmount, pcDecimals);
       const coinCount = getAmountByDecimals(coinAmount, coinDecimals);
-      const totalValue = pcCount * 2 * priceList[pcToken];
       const lpAmount = getAmountByDecimals(lpTotalSupply, lpDecimals);
+      const pcPerLP = pcCount / lpAmount;
+      const coinPerLP = coinCount / lpAmount;
+      const price = pcPerLP * priceList[pcToken] + coinPerLP * priceList[coinToken];
       orcaLpInfo[lpKey] = {
-        price: totalValue / lpAmount,
+        price,
         pcToken,
         coinToken,
         pcAmount,
         coinAmount,
         lpDecimals,
         lpTotalSupply,
-        pcPerLP: pcCount / lpAmount,
-        coinPerLP: coinCount / lpAmount 
+        pcPerLP,
+        coinPerLP 
       };
     }
   });

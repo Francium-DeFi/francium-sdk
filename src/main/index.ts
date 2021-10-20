@@ -12,18 +12,26 @@ export class FranciumSDK {
   public connection: Connection;
   public farmHub: FranciumFarm;
   private farmPools: any[];
+  private getTokenPrice: () => Promise<{
+    [token: string]: number
+  }>;
   public tokenPrice;
 
   constructor(config: {
     connection: Connection;
+    getTokenPrice?: () => Promise<{
+      [token: string]: number
+    }>;
   }) {
     this.connection = config.connection;
     this.farmHub = new FranciumFarm({ connection: this.connection});
     this.farmPools = farmPools.filter(i => i.version > 2);
+    this.getTokenPrice = config.getTokenPrice;
   }
 
   public async getTokenPriceInfo() {
-    const tokenPrice = await getTokenPrice();
+    const tokenPriceFunc = this.getTokenPrice || getTokenPrice;
+    const tokenPrice = await tokenPriceFunc();
     this.tokenPrice = tokenPrice;
     return {
       tokenPrice
@@ -31,9 +39,9 @@ export class FranciumSDK {
   }
 
   public async getFarmLPPriceInfo() {
-    if (!this.tokenPrice) {
-      await this.getTokenPriceInfo();
-    }
+    // if (!this.tokenPrice) {
+    await this.getTokenPriceInfo();
+    // }
     const orcaLPPriceInfo = await getOrcaLPPrice(this.connection,this.tokenPrice);
     const raydiumLPPriceInfo = await getRaydiumLPPrice(this.connection, this.tokenPrice);
     return {...orcaLPPriceInfo, ...raydiumLPPriceInfo};
