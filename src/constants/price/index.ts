@@ -94,5 +94,29 @@ export default [
   {
     id: 'marinade',
     token: 'MNDE'
+  },
+  {
+    id: 'ninja-protocol',
+    token: 'NINJA'
+  },
+  {
+    id: 'saber',
+    token: 'SBR'
+  },
+  {
+    id: 'liq-protocol',
+    token: 'LIQ'
+  },
+  {
+    id: 'port-finance',
+    token: 'PORT'
+  },
+  {
+    id: 'samoyedcoin',
+    token: 'SAMO'
+  },
+  {
+    id: 'allbridge',
+    token: 'ABR'
   }
 ]

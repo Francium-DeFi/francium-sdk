@@ -203,7 +203,7 @@ export const TOKENS = {
   COPE: {
     symbol: 'COPE',
     name: 'COPE',
-    mintAddress: new PublicKey('3K6rftdAaQYMPunrtNRHgnK2UAtjm2JwyT2oCiTDouYE'),
+    mintAddress: new PublicKey('8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh'),
     decimals: 6,
   },
   STEP: {
@@ -264,5 +264,47 @@ export const TOKENS = {
     name: 'Marinade.finance',
     decimals: 9,
     mintAddress: new PublicKey("MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey")
-  }
+  },
+  NINJA: {
+    symbol: 'NINJA',
+    name: 'Ninja.Protocol',
+    decimals: 6,
+    mintAddress: new PublicKey("FgX1WD9WzMU3yLwXaFSarPfkgzjLb2DZCqmkx9ExpuvJ")
+  },
+  whETH: {
+    symbol: 'whETH',
+    name: 'wormhole',
+    mintAddress: new PublicKey('7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs'),
+    decimals: 8
+  },
+  SBR: {
+    symbol: 'SBR',
+    name: 'saber',
+    mintAddress: new PublicKey('Saber2gLauYim4Mvftnrasomsv6NvAuncvMEZwcLpD1'),
+    decimals: 6
+  },
+  LIQ: {
+    symbol: 'LIQ',
+    name: 'liq-protocol',
+    mintAddress: new PublicKey('4wjPQJ6PrkC4dHhYghwJzGBVP78DkBzA2U3kHoFNBuhj'),
+    decimals: 6
+  },
+  PORT: {
+    symbol: 'PORT',
+    name: 'port-finance',
+    mintAddress: new PublicKey('PoRTjZMPXb9T7dyU7tpLEZRQj7e6ssfAE62j2oQuc6y'),
+    decimals: 6
+  },
+  SAMO: {
+    symbol: 'SAMO',
+    name: 'samoyedcoin',
+    mintAddress: new PublicKey('7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU'),
+    decimals: 9
+  },
+  ABR: {
+    symbol: 'ABR',
+    name: 'allbridge',
+    mintAddress: new PublicKey('a11bdAAuV8iB2fu7X6AxAvDTo1QZ8FXB3kk5eecdasp'),
+    decimals: 9
+  },
 };

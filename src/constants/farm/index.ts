@@ -19,10 +19,22 @@ export const activePools = [
   'mSOL-USDC[Orca Double-Dip]',
   'mSOL-USDT[Orca Double-Dip]',
   'ORCA-mSOL[Orca Double-Dip]',
+  'BTC-mSOL[Orca Double-Dip]',
+  'NINJA-SOL[Orca Double-Dip]',
+  'mSOL-whETH[Orca Doubledip]',
+  'SAMO-USDC[Orca Double-Dip]',
+  'LIQ-USDC[Orca Double-Dip]',
+  'PORT-USDC[Orca Double-Dip]',
+  'COPE-USDC[Orca Double-Dip]',
+  'ABR-USDC[Orca Double-Dip]',
 
   'ORCA-USDC[Orca Aquafarm]',
   'ORCA-SOL[Orca Aquafarm]',
-  'SOL-USDC[Orca Aquafarm]'
+  'SOL-USDC[Orca Aquafarm]',
+  'ETH-SOL[Orca Aquafarm]',
+  'whETH-USDC[Orca Aquafarm]',
+  'whETH-SOL[Orca Aquafarm]',
+  'SBR-USDC[Orca Aquafarm]'
 ]
 
 export const farmPools = filter(allPools, i => {

@@ -21,5 +21,7 @@ export async function getTokenPrice() {
     res[targetItem.token] = price;
   });
 
+  // 
+  res['whETH'] = res['ETH'];
   return res;
 }
