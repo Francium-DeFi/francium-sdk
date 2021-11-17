@@ -2234,4 +2234,450 @@ export const ORCA_FARM_CONFIG = {
       }
     },
   },
+
+
+  'SRM-SOL': {
+    protocolVersion: 2,
+    protocolSubVersion: 1,
+    alias: null,
+    orcaPoolId: 'SRM/SOL[aquafarm]',
+
+    programId: lyfOrcaProgramId,
+    tknMint0: NATIVE_MINT,
+    tknMint1: TOKENS.SRM.mintAddress,
+
+    strategyAccount: new PublicKey('AYj9UcTdc6SWbUDws4ZJyPq61bJCVzHW8tixZ3Jq9TXd'),
+    strategyAuthority: new PublicKey('GrfTw1Tv2tWDKzog1oHuLXf8Vf4q9Wd6h25BLc4ceBCs'),
+    strategyFarmInfo: new PublicKey('BCQMuKmqBhhdTLoQ47cVoFNgGvEgj6VJBRGKjgv1jEZi'),
+    strategyTknAccount0: new PublicKey('BnSMjhZ4xX3w3Zh3odPEXxcaUkXmN7MhHBC3ojDkogqE'),
+    strategyTknAccount1: new PublicKey('ADaMt6mJhmabLVnbeTczWvKKXUdcfZWQwGM4eDN5W7V9'),
+    strategyLpTknAccount: new PublicKey('2sWMaH1KM3qapARhBenUxWjxpJLbrBfPaLYcmes22HQT'),
+    strategyRewardTknAccount: new PublicKey('2fmcr2HXQVNAoLTEVhcb1v77FrgBaH82E2W6AP35t2Lh'),
+    strategyFarmTknAccount: new PublicKey('83QCrS43qjbGiPrMi1XUb9vMRKvTc5rWJjXbNep7juPS'),
+    strategyBorrowCreditAccount0: new PublicKey('C31qQxoP5LrK73zVUQ1rcgqxD9y3E366tbiVVBT2sPYh'),
+    strategyBorrowCreditAccount1: new PublicKey('HTNbwneXdawTPfohcxRK74jJJzszEUXLdPX2bxtcUnZQ'),
+
+    doubleDipStrategyFarmTknAccount: undefined,
+    doubleDipStrategyRewardTknAccount: undefined,
+    doubleDipStrategyFarmInfo: undefined,
+
+    strategyRewardsSwapTargetAccount: new PublicKey('BnSMjhZ4xX3w3Zh3odPEXxcaUkXmN7MhHBC3ojDkogqE'),
+    strategyDoubleDipRewardsSwapTargetAccount: undefined,
+
+    lendingPoolConfig: {
+      programId: new PublicKey("FC81tbGt6JWRXidaWYFXxGnTk4VgobhJHATvTRVMqgWj"),
+      marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
+      marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+      marketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
+
+      "0": {
+        tknMint: NATIVE_MINT, // wsol
+        lendingPoolInfoAccount: new PublicKey("EnZC8MB6QLTxwN1LNqCXYC7XMpvXqitnYQPf5y5AcQRn"),
+        lendingPoolTknAccount: new PublicKey("GiJwrxQW5NQWWAva4rnDMXwHxfrhyUzwMX5to1pmCCgF"),
+        lendingPoolFeeAccount: new PublicKey("2BDZqoVKAX3PJKeZJytjk7oEpbUu3jvdgdi6tA8VusnY"),
+        lendingPoolShareMint: new PublicKey("92Zst3rEoJsyZUW2yNc2811GtkBwFrm3tqgxMTtFWuSB"),
+        lendingPoolShareAccount: new PublicKey("Hyi1jMgc9MMEZyaG9ziL2PvT7zbeRNKhb5K1kj9bxz4x"),
+        lendingPoolCreditMint: new PublicKey("7x61NrCzeekHwgW5Nk4afMg2sxjMK6RyMkx8tCzzX4qG"),
+        lendingPoolCreditAccount: new PublicKey("WuPCgCuyLSXatdjyWqkGjCPSQFgKLwcfsNR9fDq3hVL"),
+      },
+      "1": {
+        tknMint: TOKENS.SRM.mintAddress,
+        lendingPoolInfoAccount: new PublicKey("B1zB1EuTjnFPLdwySeBYhzeAf3h9buWLbDoG7AHcUTMF"),
+        lendingPoolTknAccount: new PublicKey("FLQtBThLEVvhXdKqq2CREL8sFt8jAFS8szm4HaMYqmJk"),
+        lendingPoolFeeAccount: new PublicKey("FdSBYwMEfy21H3k64cvYdir3mxzmnZotiYUsC5iPPoxM"),
+        lendingPoolShareMint: new PublicKey("6CZhCFwA7hbqDEoVUQdFpHaCGQU7fSSwhaJWdG4DmsQ6"),
+        lendingPoolShareAccount: new PublicKey("C3EjtH3hVuLrU3j1y5ArMFRbAhxFf5hXNfk3b9SU91qN"),
+        lendingPoolCreditMint: new PublicKey("DqKuxgMxLPDCXtoQzLG1p85S2i3tP3EaeUVDAw7P8Nt4"),
+        lendingPoolCreditAccount: new PublicKey("Ednqn9Zo5HpDX2DRmCWu6x46ZXnHNmTmrq9G8hrTuBnz"),
+      }
+    },
+
+    ammInfo: {
+      swapProgramId: Orca_Swap_ProgramId,
+      swapPoolId: new PublicKey("EJRXAkKyDhDgzdZz1Ss5CpWKWSK9xTR5S6GDLAer8mdh"),
+      swapPoolAuthority: new PublicKey("2pQbngWBSWUjBHWVWQ3tppKxW3Y5NzUcye1822itKyzZ"),
+      lpMint: new PublicKey("9tf8rBSEQYG7AqL896fN2nZi1iYPqpWaLEdpbeQaC1Vy"),
+      lpDecimals: 6,
+      swapFeeAccount: new PublicKey("APyc1s8wES4Q2FTqHN8jXZtRuWQyRWZ82u7EFfras2iZ"),
+      swapTknVault0: new PublicKey("EdhG3vQbTVVAARZB4AbhU2HsVbvfFqX2yhBAfFV22nzA"),
+      swapTknVault1: new PublicKey("2JCxZv6LaFjtWqBXSC2brsWE9WryS4Cp3VwwDeNGvLyv"),
+
+      rewardsSwapPoolId: new PublicKey("2ZnVuidTHpi5WWKUwFXauYGhvdT9jRKYv5MDahtbwtYr"),
+      rewardsSwapPoolAuthority: new PublicKey("2PH1quJj9MHQXATCmNZ6qQ2gZqM8R236DpKaz99ggVpm"),
+      rewardsTargetlpMint: new PublicKey("2uVjAuRXavpM6h1scGQaxqb6HVaNRn6T2X7HHXTabz25"),
+      rewardsSwapfeeAccount: new PublicKey("4Zc4kQZhRQeGztihvcGSWezJE1k44kKEgPCAkdeBfras"),
+      rewardsSwapPoolRewardsVault: new PublicKey("AioST8HKQJRqjE1mknk4Rydc8wVADhdQwRJmAAYX1T6Z"),
+      rewardsSwapPoolTargetVault: new PublicKey("73zdy95DynZP4exdpuXTDsexcrWbDJX9TFi2E6CDzXh4"),
+
+      stakeProgramId: Orca_Stake_ProgramId,
+      stakeUserFarmInfoLayout: ORCA_USER_FARM_INFO_ACCOUNT_LAYOUT,
+      stakePoolRewardsMint: TOKENS.ORCA.mintAddress,
+
+      stakePoolFarmInfo: new PublicKey("5CQVdPpaW95X1atyfqunZf7eBE1rhQBXMfgJ1wRVF1p1"),
+      stakePoolAuthority: new PublicKey("HLuaNq1skJs1XapFMSoQV7ge1DYYitWJABacg52Xx7rV"),
+      stakePoolFarmTknMint: new PublicKey("D659zwnbeTgquChbaWC3KDHrkYoqMuz1doGLHTFaqTtD"),
+      stakePoolRewardsTknVault: new PublicKey("3jLGVn7atxg3DZ72TndmKwXVaCuNyR5YSVWCwtF8WbHr"),
+      stakePoolLpVault: new PublicKey("GF6ooimuYeZKbE8uUtJUJJr3dXaVpL7LwJVQv2Y19tp7"),
+    },
+  },
+
+  'FTT-USDC': {
+    protocolVersion: 2,
+    protocolSubVersion: 1,
+    alias: null,
+    orcaPoolId: 'FTT/USDC[aquafarm]',
+
+    programId: lyfOrcaProgramId,
+    tknMint0: TOKENS.USDC.mintAddress,
+    tknMint1: TOKENS.FTT.mintAddress,
+
+    strategyAccount: new PublicKey('HDjX4DPjeWfQx2oZrztkhYuP5L6zrvEtW3SwvCLPdSSV'),
+    strategyAuthority: new PublicKey('7FELsW1Ph4iore5EfMgzUoofbULeRYXTsdBbq7oSkGcz'),
+    strategyFarmInfo: new PublicKey('FZg5oxyDbU21UrEaCAghqfWWZevhYdbRJ1xPtdSNTo1F'),
+    strategyTknAccount0: new PublicKey('BGH5hjihTKWFeW7pp4a9ueVYFb5tgVsLkCjkSXiGM5qB'),
+    strategyTknAccount1: new PublicKey('6S1iVp1kBCDFPdJJyaHcLsk74p5MysuecCE7y6rKr9Mt'),
+    strategyLpTknAccount: new PublicKey('Eej8LwsXM8EsYLajrcqVa8BHjm7PcodpnQKGv4wFfiXk'),
+    strategyRewardTknAccount: new PublicKey('CS3ndLQpdAadaKm3wgVLW61GR76AYVUFYcLdLR4iBwvK'),
+    strategyFarmTknAccount: new PublicKey('DGv5KaJy3B3Ndd1vMaWffeBwwh8b4uarSs8N1CxKfnNj'),
+    strategyBorrowCreditAccount0: new PublicKey('HAyhp57SSCcHvUaYNtXuK3Tjsps774onjDcPkcMUSsGv'),
+    strategyBorrowCreditAccount1: new PublicKey('APMoxxteTK9QzqRPHmxvXmQ5pog1HxcYkjtjH3TuofMP'),
+
+    doubleDipStrategyFarmTknAccount: undefined,
+    doubleDipStrategyRewardTknAccount: undefined,
+    doubleDipStrategyFarmInfo: undefined,
+
+    strategyRewardsSwapTargetAccount: new PublicKey('BGH5hjihTKWFeW7pp4a9ueVYFb5tgVsLkCjkSXiGM5qB'),
+    strategyDoubleDipRewardsSwapTargetAccount: undefined,
+
+    lendingPoolConfig: {
+      programId: new PublicKey("FC81tbGt6JWRXidaWYFXxGnTk4VgobhJHATvTRVMqgWj"),
+      marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
+      marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+      marketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
+
+      "0": {
+        tknMint: TOKENS.USDC.mintAddress, // usdc
+        lendingPoolInfoAccount: new PublicKey("Hx6LbkMHe69DYawhPyVNs8Apa6tyfogfzQV6a7XkwBUU"),
+        lendingPoolTknAccount: new PublicKey("CFp9kt8z3Epb1QSiEp3xA44KbSwuJxhFR3wQoerFqYS9"),
+        lendingPoolFeeAccount: new PublicKey("CugsLyJk1Jghc7LkgvnFuUwshJhz1FE9mpkF7Z4acAMU"),
+        lendingPoolShareMint: new PublicKey("62fDf5daUJ9jBz8Xtj6Bmw1bh1DvHn8AG4L9hMmxCzpu"),
+        lendingPoolShareAccount: new PublicKey("Gyc1V1xbA9NjzuURE662ATw6W4AdhwvsL26yUnSGhbkz"),
+        lendingPoolCreditMint: new PublicKey("CZ2s85dnuAVyGbRWBNauHZwj9oTV2i9xTvFwc1Cedr7E"),
+        lendingPoolCreditAccount: new PublicKey("Bd71jEvypKFs8N5gByyhD2149tSqLy4PVAzFFShCTJTB"),
+      },
+      "1": {
+        tknMint: TOKENS.FTT.mintAddress,
+        lendingPoolInfoAccount: new PublicKey('BWickhMLCKEmmy6kNqKT64KBiXtnNtPL7iNpjrwMfgqy'),
+        lendingPoolTknAccount: new PublicKey('375Cp4ioTxaTN5FjVvKoPwGrEztzHWxvva8DeBnCtc7h'),
+        lendingPoolFeeAccount: new PublicKey('375Cp4ioTxaTN5FjVvKoPwGrEztzHWxvva8DeBnCtc7h'),
+        lendingPoolShareMint: new PublicKey('D9xafcA3jzwRWhuge74rhaCzE47LLJpAYSxKRHitvFmC'),
+        lendingPoolShareAccount: new PublicKey('9c35AUJR3Kcb7Xh6SmCP9zhenQsnHBX9RzNJyvbh5mcg'),
+        lendingPoolCreditMint: new PublicKey('HopVxw8AKrP2yh93adqNUCbGnGuMxE9X3zcNyGEp8whZ'),
+        lendingPoolCreditAccount: new PublicKey('9Yy8FCyzyWaY71q5Rp3why9bi6jm3FoBwZpEQYj2NibF'),
+      }
+    },
+
+    ammInfo: {
+      swapProgramId: Orca_Swap_ProgramId,
+      swapPoolId: new PublicKey("8npdwWX2BR39kcFLtTJABbcjNq7NWQvipfqxgsfk9mTX"),
+      swapPoolAuthority: new PublicKey("8zU13KiLb1e87skt4rf8q1LhamEKKecyu6Xxb4Hqnm7e"),
+      lpMint: new PublicKey("FwCombynV2fTVizxPCNA2oZKoWXLZgdJThjE4Xv9sjxc"),
+      lpDecimals: 6,
+      swapFeeAccount: new PublicKey("C8D52rGuZcsBENhWtR9aqJVRU62cL7jyyEhxesKwc1k8"),
+      swapTknVault0: new PublicKey("3wADiuUqoakdoYYYxKqwoA4VN3uWZy5UwvLePox1mEsK"),
+      swapTknVault1: new PublicKey("SasuKsATA2ATrMfFfSJr86wAGVgdS69PkQT3jFASBB8"),
+
+      rewardsSwapPoolId: new PublicKey("2p7nYbtPBgtmY69NsE8DAW6szpRJn7tQvDnqvoEWQvjY"),
+      rewardsSwapPoolAuthority: new PublicKey("3fr1AhdiAmWLeNrS24CMoAu9pPgbzVhwLtJ6QUPmw2ob"),
+      rewardsTargetlpMint: new PublicKey("n8Mpu28RjeYD7oUX3LG1tPxzhRZh3YYLRSHcHRdS3Zx"),
+      rewardsSwapfeeAccount: new PublicKey("7CXZED4jfRp3qdHB9Py3up6v1C4UhHofFvfT6RXbJLRN"),
+      rewardsSwapPoolRewardsVault: new PublicKey("9vYWHBPz817wJdQpE8u3h8UoY3sZ16ZXdCcvLB7jY4Dj"),
+      rewardsSwapPoolTargetVault: new PublicKey("6UczejMUv1tzdvUzKpULKHxrK9sqLm8edR1v9jinVWm9"),
+
+      stakeProgramId: Orca_Stake_ProgramId,
+      stakeUserFarmInfoLayout: ORCA_USER_FARM_INFO_ACCOUNT_LAYOUT,
+      stakePoolRewardsMint: TOKENS.ORCA.mintAddress,
+
+      stakePoolFarmInfo: new PublicKey("2FtSDVRmYq4x6NeTidpZVuLzgN2APzr3zHxpHx8zdgbr"),
+      stakePoolAuthority: new PublicKey("7KZiuJUNmCMxcJbCkCzzmNY2zVh2M7TcCZs9HM5D2ekh"),
+      stakePoolFarmTknMint: new PublicKey("2AAzmhZ9Kh9mFcQtHJVTafu69tc5GCGpi6CTgafYta1S"),
+      stakePoolRewardsTknVault: new PublicKey("DshBVg1rdufe7BKAeSn6qd3TZh5bd2xGp8GsLBSz1bM9"),
+      stakePoolLpVault: new PublicKey("26wvPwiQpAK1wWvFqyykjGKcvxQaJz7oKuT6p5nkJ6wY"),
+
+      doubleDipPool: undefined,
+    },
+  },
+  'COPE-SOL': {
+    protocolVersion: 2,
+    protocolSubVersion: 1,
+    alias: null,
+    orcaPoolId: 'COPE/SOL[aquafarm]',
+
+    programId: lyfOrcaProgramId,
+    tknMint0: NATIVE_MINT,
+    tknMint1: TOKENS.COPE.mintAddress,
+
+    strategyAccount: new PublicKey('5yPKMUGz8QUvFs7DpyU4s1JVvxf4Dxor7HHCqemyBJQQ'),
+    strategyAuthority: new PublicKey('3FeLcNHXqPQx1ksTLs8GQhdxJ18F9y1LqkVmoC2rLP7w'),
+    strategyFarmInfo: new PublicKey('CfdqhCJ1wcUEoaMVqyjVNBcjNsFsZL21xdy3EzEvUYcE'),
+    strategyTknAccount0: new PublicKey('3cHFG1xMkbFjFDb5uicbREAEmqTdJTaCeb47f63EbdtN'),
+    strategyTknAccount1: new PublicKey('CKesVv35rErkF6YQvqh3utuhfn7Ph61wmPpXtKXRkyXv'),
+    strategyLpTknAccount: new PublicKey('7Cxx9HjbuDruSa9Ddanxb7wMtNu98nYEEN4QtAJCYf8K'),
+    strategyRewardTknAccount: new PublicKey('HhgVPKeNsEfifp1pHaaKijkToS3nXYJF8J2UJdxtRNDe'),
+    strategyFarmTknAccount: new PublicKey('AN1354JWW6PmujevFBXyLZQwVU3f1MNCkmqVpfVjsfL1'),
+    strategyBorrowCreditAccount0: new PublicKey('2r6uEsf64nR3KruvUudHcNsw6RVdV4pTWaFvhLMs6wkT'),
+    strategyBorrowCreditAccount1: new PublicKey('6wh8P8Mch4TpnirRVhVh8EJp13GNZVqHCz5V5wUA2AKb'),
+
+    doubleDipStrategyFarmTknAccount: undefined,
+    doubleDipStrategyRewardTknAccount: undefined,
+    doubleDipStrategyFarmInfo: undefined,
+
+    strategyRewardsSwapTargetAccount: new PublicKey('3cHFG1xMkbFjFDb5uicbREAEmqTdJTaCeb47f63EbdtN'),
+    strategyDoubleDipRewardsSwapTargetAccount: undefined,
+
+    lendingPoolConfig: {
+      programId: new PublicKey("FC81tbGt6JWRXidaWYFXxGnTk4VgobhJHATvTRVMqgWj"),
+      marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
+      marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+      marketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
+
+      "0": {
+        tknMint: NATIVE_MINT, // wsol
+        lendingPoolInfoAccount: new PublicKey("EnZC8MB6QLTxwN1LNqCXYC7XMpvXqitnYQPf5y5AcQRn"),
+        lendingPoolTknAccount: new PublicKey("GiJwrxQW5NQWWAva4rnDMXwHxfrhyUzwMX5to1pmCCgF"),
+        lendingPoolFeeAccount: new PublicKey("2BDZqoVKAX3PJKeZJytjk7oEpbUu3jvdgdi6tA8VusnY"),
+        lendingPoolShareMint: new PublicKey("92Zst3rEoJsyZUW2yNc2811GtkBwFrm3tqgxMTtFWuSB"),
+        lendingPoolShareAccount: new PublicKey("Hyi1jMgc9MMEZyaG9ziL2PvT7zbeRNKhb5K1kj9bxz4x"),
+        lendingPoolCreditMint: new PublicKey("7x61NrCzeekHwgW5Nk4afMg2sxjMK6RyMkx8tCzzX4qG"),
+        lendingPoolCreditAccount: new PublicKey("WuPCgCuyLSXatdjyWqkGjCPSQFgKLwcfsNR9fDq3hVL"),
+      },
+      "1": {
+        tknMint: TOKENS.COPE.mintAddress,
+        lendingPoolInfoAccount: new PublicKey('Hmde6PfS3wv2wi1rePBTFSjMqpugPpBFc8HLiYfHwsTB'),
+        lendingPoolTknAccount: new PublicKey('BZwinxfYXhHgDc61AU9YFv7VkcuffVcQqBXXms8JAovX'),
+        lendingPoolFeeAccount: new PublicKey('BZwinxfYXhHgDc61AU9YFv7VkcuffVcQqBXXms8JAovX'),
+        lendingPoolShareMint: new PublicKey('GLvCYLcwQPr6CcJQKZSe2QoXj6tUiD2PxMPt9FJKSx7K'),
+        lendingPoolShareAccount: new PublicKey('59RQbAq1QVSeLKvjDrokxrH86oq7tVF2rTW4ydBU3KB4'),
+        lendingPoolCreditMint: new PublicKey('4HrgJueR9RHvmsyFfZcjtjg9Q7Q6ncrU1CGQqmeb9Y3a'),
+        lendingPoolCreditAccount: new PublicKey('DtgHkAtvqx7uzvba1518c2CCpaU5jcsaZtiAydHvnFN8'),
+      }
+    },
+
+    ammInfo: {
+      swapProgramId: Orca_Swap_ProgramId,
+      swapPoolId: new PublicKey("BRx4dJecxzeGYc1BskCWonfGCeMyv9G7tk66cf2QGhK6"),
+      swapPoolAuthority: new PublicKey("JAJr1D6BQHFj9qJ8pfXhvJgLfn9vTcviU9sTA8MhKzN4"),
+      lpMint: new PublicKey("CzieDbGRdN1QGaGDNpSqzEA18bi881ccvkkGZi51pe1k"),
+      lpDecimals: 6,
+      swapFeeAccount: new PublicKey("9X8VRnxk6EVKGA7TErdSZYFC8oLUM569pDbZTtycjvXw"),
+      swapTknVault0: new PublicKey("5tSgRUK6f2x1nAXA4gdcHNXiWdToqni9pr5xvq2Fq82u"),
+      swapTknVault1: new PublicKey("7v5GCdHH439SztxcqL4wpfWdPvv9EfMm8GYTHSUQoGoY"),
+
+      rewardsSwapPoolId: new PublicKey("2ZnVuidTHpi5WWKUwFXauYGhvdT9jRKYv5MDahtbwtYr"),
+      rewardsSwapPoolAuthority: new PublicKey("2PH1quJj9MHQXATCmNZ6qQ2gZqM8R236DpKaz99ggVpm"),
+      rewardsTargetlpMint: new PublicKey("2uVjAuRXavpM6h1scGQaxqb6HVaNRn6T2X7HHXTabz25"),
+      rewardsSwapfeeAccount: new PublicKey("4Zc4kQZhRQeGztihvcGSWezJE1k44kKEgPCAkdeBfras"),
+      rewardsSwapPoolRewardsVault: new PublicKey("AioST8HKQJRqjE1mknk4Rydc8wVADhdQwRJmAAYX1T6Z"),
+      rewardsSwapPoolTargetVault: new PublicKey("73zdy95DynZP4exdpuXTDsexcrWbDJX9TFi2E6CDzXh4"),
+
+      stakeProgramId: Orca_Stake_ProgramId,
+      stakeUserFarmInfoLayout: ORCA_USER_FARM_INFO_ACCOUNT_LAYOUT,
+      stakePoolRewardsMint: TOKENS.ORCA.mintAddress,
+
+      stakePoolFarmInfo: new PublicKey("CXYEVaqtDs4R9Bpeu4xYf8KT8S6nYis6VWkDEh9Mu1FS"),
+      stakePoolAuthority: new PublicKey("EM16G5QhfSDaSmYwU7QpGyR3FpKxp273wmr2oWf8H7qP"),
+      stakePoolFarmTknMint: new PublicKey("7CT19h7n2YBKiCFCaxXqMM79jNM4cmUvjXhNMjJNRYa"),
+      stakePoolRewardsTknVault: new PublicKey("EuXAfUGvUcoaycZjz33ek3Ff6ZNk6y3ppE74CebHLsgr"),
+      stakePoolLpVault: new PublicKey("55hFY776A6cUap1SiCmg1TAUNjxdYexiQh1t1vWxC4Pm"),
+    },
+  },
+
+  'mSOL-SOL': {
+    protocolVersion: 2,
+    protocolSubVersion: 2,
+    alias: null,
+    orcaPoolId: 'mSOL/SOL[stable][aquafarm]',
+
+    programId: lyfOrcaProgramId,
+    tknMint0: NATIVE_MINT,
+    tknMint1: TOKENS.mSOL.mintAddress,
+
+    strategyAccount: new PublicKey('Dw7J6xd8TBurbYZjuB9Ex2Wdhnk44HtuDyjzH7Pde1Ht'),
+    strategyAuthority: new PublicKey('FPwNUy67S6wpqjR28SzpS6bEYK5xQHbBgQnjU94U9NSE'),
+    strategyFarmInfo: new PublicKey('EyQQkH4hvTwwD6TY85vnPvzVuopY1Y9HeXGQG1W4QQEU'),
+    strategyTknAccount0: new PublicKey('5mnjRWfkXwsrb6bQumfFRzKeeoqFhmSLw5gomerbDczw'),
+    strategyTknAccount1: new PublicKey('4mANqTunAMJrjnnVphNuCwpxQsRtLcgPUdSSTjuZkDFk'),
+    strategyLpTknAccount: new PublicKey('8R2R63vTW8kYgdc6s63qfXrHP5NgAHas5z2xvMEywRfi'),
+    strategyRewardTknAccount: new PublicKey('FYWinjv2gXTA3sc4eu2m7kanjfGZj2oHDGspQWniUzcy'),
+    strategyFarmTknAccount: new PublicKey('CaHfuzodwtPaX74K861oVK2ZxJuvTfftfEapN2zRMKq8'),
+    strategyBorrowCreditAccount0: new PublicKey('2wLErDmWa6zQjqgsnSASA2VKCGiqb7BkL3onrEv7XPjA'),
+    strategyBorrowCreditAccount1: new PublicKey('FyMyzkPZHZkKSKtUevNbZYu7p2xWeCAA5gmispxe1B8y'),
+    doubleDipStrategyFarmTknAccount: new PublicKey('AgBm1gWmNZPTVse69qfMgoDqcRcazj7QoGijBqjE88AK'),
+    doubleDipStrategyRewardTknAccount: new PublicKey('C4D2E3L7W6sDZGeUCcpthkYfRvaCKJqi7nXRhLoFVNg4'),
+    doubleDipStrategyFarmInfo: new PublicKey('8ZrDc4JybYXfUK8NrggA3ZMbReLNvPTP35D3RT1rBYMV'),
+
+    strategyRewardsSwapTargetAccount: new PublicKey('5mnjRWfkXwsrb6bQumfFRzKeeoqFhmSLw5gomerbDczw'),
+    strategyDoubleDipRewardsSwapTargetAccount: new PublicKey("4mANqTunAMJrjnnVphNuCwpxQsRtLcgPUdSSTjuZkDFk"),
+
+    lendingPoolConfig: {
+      programId: new PublicKey("FC81tbGt6JWRXidaWYFXxGnTk4VgobhJHATvTRVMqgWj"),
+      marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
+      marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+      marketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
+
+      "0": {
+        tknMint: NATIVE_MINT, // wsol
+        lendingPoolInfoAccount: new PublicKey("EnZC8MB6QLTxwN1LNqCXYC7XMpvXqitnYQPf5y5AcQRn"),
+        lendingPoolTknAccount: new PublicKey("GiJwrxQW5NQWWAva4rnDMXwHxfrhyUzwMX5to1pmCCgF"),
+        lendingPoolFeeAccount: new PublicKey("2BDZqoVKAX3PJKeZJytjk7oEpbUu3jvdgdi6tA8VusnY"),
+        lendingPoolShareMint: new PublicKey("92Zst3rEoJsyZUW2yNc2811GtkBwFrm3tqgxMTtFWuSB"),
+        lendingPoolShareAccount: new PublicKey("Hyi1jMgc9MMEZyaG9ziL2PvT7zbeRNKhb5K1kj9bxz4x"),
+        lendingPoolCreditMint: new PublicKey("7x61NrCzeekHwgW5Nk4afMg2sxjMK6RyMkx8tCzzX4qG"),
+        lendingPoolCreditAccount: new PublicKey("WuPCgCuyLSXatdjyWqkGjCPSQFgKLwcfsNR9fDq3hVL"),
+      },
+      "1": {
+        tknMint: TOKENS.mSOL.mintAddress,
+        lendingPoolInfoAccount: new PublicKey('492Hr5QDQyrsLcyXqMZ7A5osjmqwtn4cdKNQLDBYBzvy'),
+        lendingPoolTknAccount: new PublicKey('ADW9ZJuRQ9xbzTtWCwX1Th24Vxq7GWHWwYtctrbyjSr1'),
+        lendingPoolFeeAccount: new PublicKey('ADW9ZJuRQ9xbzTtWCwX1Th24Vxq7GWHWwYtctrbyjSr1'),
+        lendingPoolShareMint: new PublicKey('4mntRxKJWib1YTWNV4aLfszF6FeziBHdwnNAwGSfKKMX'),
+        lendingPoolShareAccount: new PublicKey('EbWWhmDLKXDdq2guubVJCdSztuUaN6XhtwVMy9TMMwtV'),
+        lendingPoolCreditMint: new PublicKey('Fdu3QfaQ9VL4GF85NrkpzhKRAJECv9cx7gchHca5MsRt'),
+        lendingPoolCreditAccount: new PublicKey('HdTwUP1U3WQ1EnYPP8c8mx8sqHhXYQ9zwKVsLGxWi7W1'),
+      }
+    },
+    ammInfo: {
+      swapProgramId: Orca_Swap_ProgramId,
+      swapPoolId: new PublicKey("9EQMEzJdE2LDAY1hw1RytpufdwAXzatYfQ3M2UuT9b88"),
+      swapPoolAuthority: new PublicKey("6cwehd4xhKkJ2s7iGh4CaDb7KhMgqczSBnyNJieUYbHn"),
+      lpMint: new PublicKey("29cdoMgu6MS2VXpcMo1sqRdWEzdUR9tjvoh8fcK8Z87R"),
+      lpDecimals: 6,
+      swapFeeAccount: new PublicKey("6j2tt2UVYMQwqG3hRtyydW3odzBFwy3pN33tyB3xCKQ6"),
+      swapTknVault0: new PublicKey("Ew2coQtVGLeca31vqB2ssHntjzZgUy1ad9VuuAX8yw7p"),
+      swapTknVault1: new PublicKey("6xmki5RtGNHrfhTiHFfp9k3RQ9t8qgL1cYP2YCG2h179"),
+
+      rewardsSwapPoolId: new PublicKey("2ZnVuidTHpi5WWKUwFXauYGhvdT9jRKYv5MDahtbwtYr"),
+      rewardsSwapPoolAuthority: new PublicKey("2PH1quJj9MHQXATCmNZ6qQ2gZqM8R236DpKaz99ggVpm"),
+      rewardsTargetlpMint: new PublicKey("2uVjAuRXavpM6h1scGQaxqb6HVaNRn6T2X7HHXTabz25"),
+      rewardsSwapfeeAccount: new PublicKey("4Zc4kQZhRQeGztihvcGSWezJE1k44kKEgPCAkdeBfras"),
+      rewardsSwapPoolRewardsVault: new PublicKey("AioST8HKQJRqjE1mknk4Rydc8wVADhdQwRJmAAYX1T6Z"),
+      rewardsSwapPoolTargetVault: new PublicKey("73zdy95DynZP4exdpuXTDsexcrWbDJX9TFi2E6CDzXh4"),
+
+      stakeProgramId: Orca_Stake_ProgramId,
+      stakeUserFarmInfoLayout: ORCA_USER_FARM_INFO_ACCOUNT_LAYOUT,
+      stakePoolRewardsMint: TOKENS.ORCA.mintAddress,
+
+      stakePoolFarmInfo: new PublicKey("JADWjBW1Xs8WhW8kj3GTCRQn3LR4gwvbFTEMwv9ZNxQh"),
+      stakePoolAuthority: new PublicKey("CtXKDXJ4wzgto48QQFANestEgtov5dJRrs9qpRw7BV1h"),
+      stakePoolFarmTknMint: new PublicKey("3RTGL7gPF4V1ns1AeGFApT7cBEGVDfmJ77DqQi9AC6uG"),
+      stakePoolRewardsTknVault: new PublicKey("7dpUACKvEiuq5kyoGtgiA131hYwdxfFhEeD5TMT4mnzG"),
+      stakePoolLpVault: new PublicKey("DuTZUmTRydVc3EN78brdYFUfskn6s93zH4WhY3Fo53AJ"),
+
+      doubleDipPool: {
+        rewardTknMint: TOKENS.MNDE.mintAddress,
+        doubleDipStakePoolFarmInfo: new PublicKey("2SciNw7cEsKJc1PMRDzWCcEzvuScmEaUgmrJXCi9UFxY"),
+        doubleDipStakePoolAuthority: new PublicKey("5uk8F4MaFSu1pF9Q7k8xcyWgqyo9q2dqr3Kb4Esvd1n3"),
+        doubleDipStakePoolFarmTknMint: new PublicKey("576ABEdvLG1iFU3bLC8AMJ3mo5LhfgPPhMtTeVAGG6u7"),
+        doubleDipStakePoolRewardsTknVault: new PublicKey("DCHpFt1bCk9mTudj6VsKbADvUPT3tAJvJ2rcBZQry8Wz"),
+        doubleDipStakePoolFarmTknVault: new PublicKey("AEZpFdJ5hA7MwVS7AReBbS9pMhoYRhLXgDyc1GWbSoXc"),
+
+        doubleDipRewardsSwapPool: {
+          rewardsSwapPoolId: new PublicKey("vjHagYsgZwG9icyFLHu2xWHWdtiS5gfeNzRhDcPt5xq"),
+          rewardsSwapPoolAuthority: new PublicKey("3HWcojnC1ruEMmsE92Ez1BoebdDXzYQa4USaeWX7eTuM"),
+          rewardsTargetlpMint: new PublicKey("5PHS5w6hQwFNnLz1jJFe7TVTxSQ98cDYC3akmiAoFMXs"),
+          rewardsSwapfeeAccount: new PublicKey("46mdANZ2DCA2sTFchvD7WwbffbLQa4jCFkkRL23WuYG8"),
+          rewardsSwapPoolRewardsVault: new PublicKey("2LferrWvYWtHFfdkmixzt9g3aKa3yBNfgbRrP1CcWMMp"),
+          rewardsSwapPoolTargetVault: new PublicKey("GimsuZjYqMXM6xK6S3e9JpGvX6jaMPuNeR6s2piDESmy"),
+        }
+      }
+    },
+  },
+
+  'SLND-USDC': {
+    protocolVersion: 2,
+    protocolSubVersion: 1,
+    alias: null,
+    orcaPoolId: 'SLND/USDC[aquafarm]',
+
+    programId: lyfOrcaProgramId,
+    tknMint0: TOKENS.USDC.mintAddress,
+    tknMint1: TOKENS.SLND.mintAddress,
+
+    strategyAccount: new PublicKey('vtAhA236vRf9jsL3oW767FUvG1YabCkXSQrZcC3JfV7'),
+    strategyAuthority: new PublicKey('Jx9nuYUfwk1Nfs2A3eW8hGtoeGNwnnJ11CdqBijZPVU'),
+    strategyFarmInfo: new PublicKey('6pfJvZZwvf7KDqqz1QWuF67EoYEktVWQKLp1KFbVSM7D'),
+    strategyTknAccount0: new PublicKey('AJomje5nRfnQfRevRmjsfN4z6PRJTkiV8s6nPmgwTRwj'),
+    strategyTknAccount1: new PublicKey('H9ernabTqQik48pEdu8oyrGHsm5KNDaGqYEVpHWhdYwM'),
+    strategyLpTknAccount: new PublicKey('GRBAPJQcVNkMJzXBgYt616N4EGsXU1GHCKRUX8v2LdcY'),
+    strategyRewardTknAccount: new PublicKey('AnYNaXPV7xBcxUiQmsESbHcNi7ESmUkRrEPsy16vWLMB'),
+    strategyFarmTknAccount: new PublicKey('3MxHkP3ba9o51EGG628qg2yCYShUPSMPitK9Aivqa7HF'),
+    strategyBorrowCreditAccount0: new PublicKey('3tLRh4UZKrSUBMPSd1mgyvQhJCRA2vWJYVPCxXHNiThD'),
+    strategyBorrowCreditAccount1: new PublicKey('4CxsXcFmM7aw4BQhi1VPExr4Ch7XorQ7URVzxf6iCNZx'),
+
+    doubleDipStrategyFarmTknAccount: undefined,
+    doubleDipStrategyRewardTknAccount: undefined,
+    doubleDipStrategyFarmInfo: undefined,
+
+    strategyRewardsSwapTargetAccount: new PublicKey('AJomje5nRfnQfRevRmjsfN4z6PRJTkiV8s6nPmgwTRwj'),
+    strategyDoubleDipRewardsSwapTargetAccount: undefined,
+
+    lendingPoolConfig: {
+      programId: new PublicKey("FC81tbGt6JWRXidaWYFXxGnTk4VgobhJHATvTRVMqgWj"),
+      marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
+      marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+      marketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
+
+      "0": {
+        tknMint: TOKENS.USDC.mintAddress, // usdc
+        lendingPoolInfoAccount: new PublicKey("Hx6LbkMHe69DYawhPyVNs8Apa6tyfogfzQV6a7XkwBUU"),
+        lendingPoolTknAccount: new PublicKey("CFp9kt8z3Epb1QSiEp3xA44KbSwuJxhFR3wQoerFqYS9"),
+        lendingPoolFeeAccount: new PublicKey("CugsLyJk1Jghc7LkgvnFuUwshJhz1FE9mpkF7Z4acAMU"),
+        lendingPoolShareMint: new PublicKey("62fDf5daUJ9jBz8Xtj6Bmw1bh1DvHn8AG4L9hMmxCzpu"),
+        lendingPoolShareAccount: new PublicKey("Gyc1V1xbA9NjzuURE662ATw6W4AdhwvsL26yUnSGhbkz"),
+        lendingPoolCreditMint: new PublicKey("CZ2s85dnuAVyGbRWBNauHZwj9oTV2i9xTvFwc1Cedr7E"),
+        lendingPoolCreditAccount: new PublicKey("Bd71jEvypKFs8N5gByyhD2149tSqLy4PVAzFFShCTJTB"),
+      },
+      "1": {
+        tknMint: TOKENS.SLND.mintAddress,
+        lendingPoolInfoAccount: new PublicKey('6zAC5T2ADWHwE6wshtvVXkaJTJMhW32X1aaicbsKK7Ko'),
+        lendingPoolTknAccount: new PublicKey('9G2x27Rnv3hBvyDTFTs1JpFYKNhn6zD2fSb6s4eyzetD'),
+        lendingPoolFeeAccount: new PublicKey('9G2x27Rnv3hBvyDTFTs1JpFYKNhn6zD2fSb6s4eyzetD'),
+        lendingPoolShareMint: new PublicKey('CTEoJD8NrtUxUf7WSkQHhLpMEenTSKes3iuungsbJHmd'),
+        lendingPoolShareAccount: new PublicKey('Aff7WPYT1qSSuJYsLA5abJYvWfBS8ZREAgcQ66YMKtjF'),
+        lendingPoolCreditMint: new PublicKey('5pLYpkEjWf5xKBbKp8LmE9JxwKNM1gtgJvykS2mYWdX3'),
+        lendingPoolCreditAccount: new PublicKey('5oAxNCKqbcMzjE9ZJ4DH1DXCbKSfqTwBzi11V9VXLymG'),
+      }
+    },
+
+    ammInfo: {
+      swapProgramId: Orca_Swap_ProgramId,
+
+      swapPoolId: new PublicKey("GhosXH9yZPxqSyTHqJtXQt6w65YfiGjKXcEXciX1P3z8"),
+      swapPoolAuthority: new PublicKey("ChmSHndtXRsYnFjYA2F7yRRsnyZ8kCpxSogTsCUgCEsh"),
+      lpMint: new PublicKey("F59gkD7NnsdJbFKrRZsiBC8PAooN4c56T8QmahfW1iXN"),
+      lpDecimals: 6,
+      swapFeeAccount: new PublicKey("GMipxN5pu6F6wwUrq6RhpqgcMjcKLTsnDTeNFCuUm5n7"),
+      swapTknVault0: new PublicKey("6wEh8r3Czc3nKkN6JXobShnLG7ZqA5Y5DREGzkirYR36"),
+      swapTknVault1: new PublicKey("9RcdfprKxbTzp3erTJMwXKznNCLmbCUaKhibaTMXhToi"),
+
+      rewardsSwapPoolId: new PublicKey("2p7nYbtPBgtmY69NsE8DAW6szpRJn7tQvDnqvoEWQvjY"),
+      rewardsSwapPoolAuthority: new PublicKey("3fr1AhdiAmWLeNrS24CMoAu9pPgbzVhwLtJ6QUPmw2ob"),
+      rewardsTargetlpMint: new PublicKey("n8Mpu28RjeYD7oUX3LG1tPxzhRZh3YYLRSHcHRdS3Zx"),
+      rewardsSwapfeeAccount: new PublicKey("7CXZED4jfRp3qdHB9Py3up6v1C4UhHofFvfT6RXbJLRN"),
+      rewardsSwapPoolRewardsVault: new PublicKey("9vYWHBPz817wJdQpE8u3h8UoY3sZ16ZXdCcvLB7jY4Dj"),
+      rewardsSwapPoolTargetVault: new PublicKey("6UczejMUv1tzdvUzKpULKHxrK9sqLm8edR1v9jinVWm9"),
+
+      stakeProgramId: Orca_Stake_ProgramId,
+      stakeUserFarmInfoLayout: ORCA_USER_FARM_INFO_ACCOUNT_LAYOUT,
+      stakePoolRewardsMint: TOKENS.ORCA.mintAddress,
+
+      stakePoolFarmInfo: new PublicKey("5NrUSiG134QLY4JkmX82n4hdZQnmqsWMrBapQwfAtpeu"),
+      stakePoolAuthority: new PublicKey("AwnMydtkLqWj5vdKCfGiYewUfieHAMv4sskowqeyzb6a"),
+      stakePoolFarmTknMint: new PublicKey("GdySZb2nbeEjCLBg65veC5kzfMCfCWgtgqwH9YWDtDXr"),
+      stakePoolRewardsTknVault: new PublicKey("7TYYnjehVPFPJK8NPAxk6PvC97cguahEwQJN5MpWmLz4"),
+      stakePoolLpVault: new PublicKey("B3JUYawRQGkButod7ZtsYxiKNQhUEsXETy6WiVG1612x"),
+
+      doubleDipPool: undefined,
+    },
+  },
 };

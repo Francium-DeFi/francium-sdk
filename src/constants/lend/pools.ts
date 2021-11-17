@@ -230,11 +230,19 @@ export const lendingPoolList = [
     scale: 6
   },
   {
+    pool: 'SRM',
+    scale: 6
+  },
+  {
     pool: 'ORCA',
     scale: 6
   },
   {
     pool: 'whETH',
     scale: 8
+  },
+  {
+    pool: 'RAY',
+    scale: 6
   }
 ]

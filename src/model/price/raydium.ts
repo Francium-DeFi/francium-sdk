@@ -3,13 +3,13 @@ import * as BN from 'bn.js';
 import { forEach, map, find } from "lodash";
 import { OpenOrders } from "@project-serum/serum";
 import { ACCOUNT_LAYOUT, MINT_LAYOUT, AMM_INFO_LAYOUT_V4 } from "../../constants/price/layout";
-import { lyfPubkeyConfig, SERUM_PROGRAM_ID_V3 } from "../../constants/farm/raydium/info";
-import { getTokenDecimals } from "../../utils/tools";
+import { RAYDIUM_FARM_CONFIG, SERUM_PROGRAM_ID_V3 } from "../../constants/farm/raydium/info";
+import { getTokenDecimals, splitMultipleAccountsInfo } from "../../utils/tools";
 import { getAmountByDecimals } from "../../utils/math";
 import { BaseLPInfo, FormatLPInfo } from "./types";
 import { legacyInfoList } from '../../constants/farm/raydium/legacy';
 
-const list = {...lyfPubkeyConfig, ...legacyInfoList};
+const list = {...RAYDIUM_FARM_CONFIG, ...legacyInfoList};
 
 export async function getRaydiumLPInfo(connection: Connection) {
   const publicKeys = [] as any;
@@ -18,8 +18,9 @@ export async function getRaydiumLPInfo(connection: Connection) {
     [pool: string]: BaseLPInfo
   } = {};
 
-  map(list, (value, key) => {
+  map(list, (value, poolKey) => {
     const raydiumInfo: any = value.raydiumInfo;
+    const key = (value as any)?.alias || poolKey;
     const {
       ammOpenOrders,
       ammId,
@@ -59,7 +60,7 @@ export async function getRaydiumLPInfo(connection: Connection) {
       }
     );
 
-    const [token1, token0] = key.split('-');
+    const [token1, token0] = poolKey.split('-');
 
     poolInfo[key] = {
       pcToken: token0,
@@ -73,7 +74,8 @@ export async function getRaydiumLPInfo(connection: Connection) {
 
   const keysList = publicKeys.map(i => i.value);
 
-  const multipleInfo = await connection.getMultipleAccountsInfo(keysList, 'confirmed');
+  // getMultipleAccountsInfo MAX is 100; 
+  const multipleInfo = await splitMultipleAccountsInfo(connection, keysList);
 
   multipleInfo.forEach((info, index) => {
     if (info) {
@@ -138,7 +140,8 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
     [pool: string]: FormatLPInfo
   } = {};
   const raydiumLPInfo = await getRaydiumLPInfo(connection);
-  forEach(list, (value, key) => {
+  forEach(list, (value, poolKey) => {
+    const key = (value as any)?.alias || poolKey;
     const targetPoolInfo = raydiumLPInfo[key];
     if (targetPoolInfo) {
       const pcPrice = priceList[targetPoolInfo.pcToken];
@@ -150,6 +153,7 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
       const lpAmount = getAmountByDecimals(targetPoolInfo.lpTotalSupply, targetPoolInfo.lpDecimals);
       const pcPerLP = pcAmount / lpAmount;
       const coinPerLP = coinAmount / lpAmount;
+
       const price = pcPerLP * pcPrice + coinPerLP * coinPrice;
       info[key] = {
         price,

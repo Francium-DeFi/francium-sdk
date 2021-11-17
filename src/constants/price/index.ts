@@ -118,5 +118,37 @@ export default [
   {
     id: 'allbridge',
     token: 'ABR'
+  },
+  {
+    id: 'ftx-token',
+    token: 'FTT'
+  },
+  {
+    id: 'sushi',
+    token: 'weSUSHI'
+  },
+  {
+    id: 'uniswap',
+    token: 'weUNI'
+  },
+  {
+    id: 'starlaunch',
+    token: 'STARS'
+  },
+  {
+    id: 'dydx',
+    token: 'weDYDX'
+  },
+  {
+    id: 'axie-infinity',
+    token: 'weAXS'
+  },
+  {
+    id: 'shiba-inu',
+    token: 'weSHIB'
+  },
+  {
+    id: 'solend',
+    token: 'SLND'
   }
 ]

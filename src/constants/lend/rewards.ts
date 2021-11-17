@@ -90,10 +90,10 @@ export const lendRewardInfo: {
     farmingPoolAuthority: new PublicKey('gbPTC9F2tnP9z9xzjeQWjNXBsuHw9ZjkG9NahZ7wDPa'),
     farmingPoolStakeTknMint: new PublicKey('5uZERkJVyhCABEdocEssPZyMXYa8GJpLhngi95yXr9jc'),
     farmingPoolStakeTknAccount: new PublicKey('GKV52HXiEDR8Qqazdp9LA5Aiwjny94v9CavCVAt7TvxS'),
-    farmingPoolRewardsTknMint: new PublicKey('Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS'),
-    farmingPoolRewardsTknAccount: new PublicKey('E2S5VGgkvRtjSqj5qxeMKzUhE3XVsyQ2ouNgdNsaNobQ'),
+    farmingPoolRewardsTknMint: new PublicKey('4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R'),
+    farmingPoolRewardsTknAccount: new PublicKey('9dvYPm8LjhTrKF3bJ4Lt8YwQqxhxzWWXWGnbqfamNVQK'),
     farmingPoolRewardsTknMintB: new PublicKey('4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R'),
-    farmingPoolRewardsTknAccountB: new PublicKey('9dvYPm8LjhTrKF3bJ4Lt8YwQqxhxzWWXWGnbqfamNVQK')
+    farmingPoolRewardsTknAccountB: new PublicKey('9dvYPm8LjhTrKF3bJ4Lt8YwQqxhxzWWXWGnbqfamNVQK'),
   },
   USDT: {
     programId: lendRewardProgramId,

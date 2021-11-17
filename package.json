@@ -1,6 +1,6 @@
 {
-  "name": "francium-sdk",
-  "version": "1.2.7",
+  "name": "francium-sdk-source",
+  "version": "1.2.16",
   "description": "francium sdk",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

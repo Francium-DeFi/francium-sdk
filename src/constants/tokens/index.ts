@@ -307,4 +307,46 @@ export const TOKENS = {
     mintAddress: new PublicKey('a11bdAAuV8iB2fu7X6AxAvDTo1QZ8FXB3kk5eecdasp'),
     decimals: 9
   },
+  weSUSHI: {
+    symbol: 'weSUSHI',
+    name: 'allbridge',
+    mintAddress: new PublicKey("ChVzxWRmrTeSgwd3Ui3UumcN8KX7VK3WaD4KGeSKpypj"),
+    decimals: 8
+  },
+  weUNI: {
+    symbol: 'weUNI',
+    name: 'allbridge',
+    mintAddress: new PublicKey("8FU95xFJhUUkyyCLU13HSzDLs7oC4QZdXQHL6SCeab36"),
+    decimals: 8
+  },
+  STARS: {
+    symbol: 'STARS',
+    name: 'starlaunch',
+    mintAddress: new PublicKey("HCgybxq5Upy8Mccihrp7EsmwwFqYZtrHrsmsKwtGXLgW"),
+    decimals: 6
+  },
+  weDYDX: {
+    symbol: 'weDYDX',
+    name: 'dydx',
+    mintAddress: new PublicKey("4Hx6Bj56eGyw8EJrrheM6LBQAvVYRikYCWsALeTrwyRU"),
+    decimals: 8
+  },
+  weAXS: {
+    symbol: 'weAXS',
+    name: 'axie-infinity',
+    mintAddress: new PublicKey("HysWcbHiYY9888pHbaqhwLYZQeZrcQMXKQWRqS7zcPK5"),
+    decimals: 8
+  },
+  weSHIB: {
+    symbol: 'weSHIB',
+    name: 'shiba-inu',
+    mintAddress: new PublicKey("CiKu4eHsVrc1eueVQeHn7qhXTcVu95gSQmBpX4utjL9z"),
+    decimals: 8
+  },
+  SLND: {
+    symbol: 'SLND',
+    name: 'solend',
+    mintAddress: new PublicKey("SLNDpmoWTVADgEdndyvWzroNL7zSi1dF9PC3xHGtPwp"),
+    decimals: 6
+  }
 };
