@@ -22,6 +22,15 @@ export const activePools = [
   'weDYDX-USDC[Raydium Fusion Pool]',
   'weAXS-USDC[Raydium Fusion Pool]',
   'weSHIB-USDC[Raydium Fusion Pool]',
+  'weMANA-USDC[Raydium Fusion Pool]',
+  'weSAND-USDC[Raydium Fusion Pool]',
+  'GENE-USDC[Raydium Fusion Pool]',
+  'GENE-RAY[Raydium Fusion Pool]',
+  'ATLAS-RAY[Raydium Fusion Pool]',
+  'POLIS-RAY[Raydium Fusion Pool]',
+  'SONAR-USDC[Raydium Fusion Pool]',
+  'CAVE-USDC[Raydium Fusion Pool]',
+  'DFL-USDC[Raydium Fusion Pool]',
 
   'RAY-USDC[Raydium Fusion Pool]',
   'RAY-USDT[Raydium Fusion Pool]',
@@ -53,8 +62,13 @@ export const activePools = [
   'SBR-USDC[Orca Aquafarm]',
   'FTT-USDC[Orca Aquafarm]',
   'SRM-SOL[Orca Aquafarm]',
-  'COPE-SOL[Orca Aquafarm]'
-]
+  'COPE-SOL[Orca Aquafarm]',
+  'SLND-USDC[Orca Aquafarm]',
+
+  // strategies
+  'whETH-USDC-Strategy-1[Raydium Fusion Pool]',
+  'whETH-USDC-Strategy0[Orca Aquafarm]',
+];
 
 export const farmPools = filter(allPools, i => {
   const poolKey = `${i.pair}[${i.from}]`;

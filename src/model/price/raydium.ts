@@ -8,6 +8,7 @@ import { getTokenDecimals, splitMultipleAccountsInfo } from "../../utils/tools";
 import { getAmountByDecimals } from "../../utils/math";
 import { BaseLPInfo, FormatLPInfo } from "./types";
 import { legacyInfoList } from '../../constants/farm/raydium/legacy';
+import BigNumber from "bignumber.js";
 
 const list = {...RAYDIUM_FARM_CONFIG, ...legacyInfoList};
 
@@ -150,7 +151,10 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
       const coinDecimals = getTokenDecimals(targetPoolInfo.coinToken);
       const pcAmount = getAmountByDecimals(targetPoolInfo.pcAmount, pcDecimals);
       const coinAmount = getAmountByDecimals(targetPoolInfo.coinAmount, coinDecimals);
-      const lpAmount = getAmountByDecimals(targetPoolInfo.lpTotalSupply, targetPoolInfo.lpDecimals);
+      // const lpAmount = getAmountByDecimals(targetPoolInfo.lpTotalSupply, targetPoolInfo.lpDecimals);
+      
+      const lpA = new BigNumber(targetPoolInfo.lpTotalSupply.toString());
+      const lpAmount = lpA.div(new BigNumber(10 ** targetPoolInfo.lpDecimals)).toNumber();
       const pcPerLP = pcAmount / lpAmount;
       const coinPerLP = coinAmount / lpAmount;
 

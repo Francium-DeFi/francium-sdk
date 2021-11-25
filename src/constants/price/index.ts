@@ -150,5 +150,29 @@ export default [
   {
     id: 'solend',
     token: 'SLND'
+  },
+  {
+    id: 'decentraland',
+    token: 'weMANA'
+  },
+  {
+    id: 'the-sandbox',
+    token: 'weSAND'
+  },
+  {
+    id: 'cave',
+    token: 'CAVE'
+  },
+  {
+    id: 'genopets',
+    token: 'GENE'
+  },
+  {
+    id: 'sonarwatch',
+    token: 'SONAR'
+  },
+  {
+    id: 'defi-land',
+    token: 'DFL'
   }
 ]

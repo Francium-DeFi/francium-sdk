@@ -7,6 +7,7 @@ import {
 } from "../model";
 import * as BN from 'bn.js';
 import { formatFarmUserPosition } from "../utils/formatters/farm";
+import { aprToApy, getAPRByUtilization } from "../utils/math";
 
 export class FranciumSDK {
   public connection: Connection;
@@ -105,17 +106,22 @@ export class FranciumSDK {
 
   public async getLendingPoolTVL () {
     const { tokenPrice } = await this.getTokenPriceInfo();
-    console.log(tokenPrice);
     const lendingPoolInfos = await this.getLendingPoolInfo();
     const info = lendingPoolInfos.map(info => {
       const availableAmount = info.avaliableAmount;
       const totalAmount = info.totalAmount;
       const price = tokenPrice[info.pool];
+      const liquidityLocked = (totalAmount.div(new BN(10).pow(new BN(info.scale))).toNumber()) * price;
+      const available = (availableAmount.div(new BN(10).pow(new BN(info.scale))).toNumber()) * price;
+      const utilization = 1 - available / liquidityLocked;
+      const apr = getAPRByUtilization(utilization);
+      const apy = aprToApy(apr) * 100;
       return {
         id: info.pool,
-        liquidityLocked: (totalAmount.div(new BN(10).pow(new BN(info.scale))).toNumber()) * price,
-        available: (availableAmount.div(new BN(10).pow(new BN(info.scale))).toNumber()) * price
-      }
+        apy,
+        liquidityLocked,
+        available
+      };
     });
     return info;
   }

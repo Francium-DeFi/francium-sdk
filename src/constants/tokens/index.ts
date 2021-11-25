@@ -348,5 +348,41 @@ export const TOKENS = {
     name: 'solend',
     mintAddress: new PublicKey("SLNDpmoWTVADgEdndyvWzroNL7zSi1dF9PC3xHGtPwp"),
     decimals: 6
+  },
+  weMANA: {
+    symbol: 'weMANA',
+    name: 'decentraland',
+    mintAddress: new PublicKey("7dgHoN8wBZCc5wbnQ2C47TDnBMAxG4Q5L3KjP67z8kNi"),
+    decimals: 8
+  },
+  weSAND: {
+    symbol: 'weSAND',
+    name: 'the-sandbox',
+    mintAddress: new PublicKey("49c7WuCZkQgc3M4qH8WuEUNXfgwupZf1xqWkDQ7gjRGt"),
+    decimals: 8  
+  },
+  CAVE: {
+    symbol: 'CAVE',
+    name: 'cave',
+    mintAddress: new PublicKey("4SZjjNABoqhbd4hnapbvoEPEqT8mnNkfbEoAwALf1V8t"),
+    decimals: 6  
+  },
+  GENE: {
+    symbol: 'GENE',
+    name: 'genopets',
+    mintAddress: new PublicKey("GENEtH5amGSi8kHAtQoezp1XEXwZJ8vcuePYnXdKrMYz"),
+    decimals: 9
+  },
+  SONAR: {
+    symbol: 'SONAR',
+    name: 'sonarwatch',
+    mintAddress: new PublicKey('sonarX4VtVkQemriJeLm6CKeW3GDMyiBnnAEMw1MRAE'),
+    decimals: 9
+  },
+  DFL: {
+    symbol: 'DFL',
+    name: 'defi-land',
+    mintAddress: new PublicKey('DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh'),
+    decimals: 9
   }
 };

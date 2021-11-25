@@ -18,7 +18,7 @@ export async function getLendingPoolInfo(
     const borrowedAmount = new BN(decodeData.liquidity_borrowed_amount_wads, 'le').div(new BN(10).pow(new BN(18)));
     const totalShareMintSupply = new BN(decodeData.share_mint_total_supply, 'le');
     const totalAmount = avaliableAmount.add(borrowedAmount);
-    const utilization = borrowedAmount.div(totalAmount).toNumber();
+    const utilization = totalAmount.gtn(0) ? borrowedAmount.div(totalAmount).toNumber() : 0;
 
     // let borrowingRate = 0 + 0.25 * utilization;
     // if (utilization > 0.6 && utilization < 0.9) {
