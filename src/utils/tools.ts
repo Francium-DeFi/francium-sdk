@@ -20,7 +20,7 @@ export async function findAssociatedTokenAddress(walletAddress: PublicKey, token
 export async function splitMultipleAccountsInfo(connection: Connection, accountList: PublicKey[]) {
   // getMultipleAccountsInfo MAX is 100;
   const MAX = 100;
-  let info = [];
+  const info = [];
   const totalSplit = Math.ceil(accountList.length / 100);
   for (let index = 0; index < totalSplit; index++) {
     const accounts = accountList.slice(index * MAX, (index + 1) * MAX);

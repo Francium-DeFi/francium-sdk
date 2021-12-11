@@ -159,8 +159,13 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
       const coinPerLP = coinAmount / lpAmount;
 
       const price = pcPerLP * pcPrice + coinPerLP * coinPrice;
+      const priceAmm = 2 * pcPerLP * pcPrice;
+      const coinRelativePrice = pcPerLP / coinPerLP * pcPrice;
+
       info[key] = {
         price,
+        priceAmm,
+        coinRelativePrice,
         pcPerLP,
         coinPerLP,
         ...targetPoolInfo

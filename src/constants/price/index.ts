@@ -174,5 +174,13 @@ export default [
   {
     id: 'defi-land',
     token: 'DFL'
+  },
+  {
+    id: 'binancecoin',
+    token: 'wbWBNB'
+  },
+  {
+    id: 'realy-metaverse',
+    token: 'REAL'
   }
-]
+];

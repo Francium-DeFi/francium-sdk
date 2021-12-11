@@ -1,7 +1,8 @@
 import { BN } from "@project-serum/anchor";
+import BigNumber from "bignumber.js";
 
 export function getAmountByDecimals(amount: BN, decimals: number) {
-  return amount.div(new BN(10).pow(new BN(decimals))).toNumber()
+  return new BigNumber(amount.toString()).dividedBy(new BigNumber(10 ** decimals)).toNumber();
 }
 
 export function getAPRByUtilization(utilization: number) {

@@ -233,6 +233,7 @@ export const TOKENS = {
   LIKE: {
     symbol: 'LIKE',
     name: 'LIKE',
+    mintAddress: new PublicKey("3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR"),
     decimals: 9
   },
   ATLAS: {
@@ -383,6 +384,18 @@ export const TOKENS = {
     symbol: 'DFL',
     name: 'defi-land',
     mintAddress: new PublicKey('DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh'),
+    decimals: 9
+  },
+  wbWBNB: {
+    symbol: 'wbWBNB',
+    name: 'binancecoin',
+    mintAddress: new PublicKey('9gP2kCy3wA1ctvYWQk75guqXuHfrEomqydHLtcTCqiLa'),
+    decimals: 8
+  },
+  REAL: {
+    symbol: 'REAL',
+    name: 'realy-metaverse',
+    mintAddress: new PublicKey('AD27ov5fVU2XzwsbvnFvb1JpCBaCB5dRXrczV9CqSVGb'),
     decimals: 9
   }
 };

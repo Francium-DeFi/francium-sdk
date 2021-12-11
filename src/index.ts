@@ -8,13 +8,17 @@ import { getAmountByDecimals } from './utils/math';
 import priceConfig from './constants/price';
 import { TOKENS } from './constants/tokens';
 import { farmPools } from './constants/farm';
+import RAYDIUM_FARM_IDL from './constants/farm/raydium/config';
+import ORCA_FARM_IDL from './constants/farm/orca/config';
 
 export default FranciumSDK;
 export const LENDING_CONFIG = lendingPools;
 export const LENDING_REWARD_CONFIG = lendRewardInfo;
 export {
   ORCA_FARM_CONFIG,
-  RAYDIUM_FARM_CONFIG
+  RAYDIUM_FARM_CONFIG,
+  RAYDIUM_FARM_IDL,
+  ORCA_FARM_IDL
 };
 export const PRICE_CONFIG = priceConfig;
 export const TOKENS_LIST = TOKENS;

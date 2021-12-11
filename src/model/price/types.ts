@@ -11,6 +11,8 @@ export interface BaseLPInfo {
 
 export interface FormatLPInfo extends BaseLPInfo {
   price: number;
+  priceAmm?: number;
   pcPerLP: number;
   coinPerLP: number;
+  coinRelativePrice: number;
 }

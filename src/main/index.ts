@@ -5,9 +5,9 @@ import {
   getLendingPoolInfo, getTokenPrice, FranciumFarm, getOrcaLPPrice,
   getRaydiumLPPrice, getUserRewardPosition, getLendingPoolBalance
 } from "../model";
-import * as BN from 'bn.js';
+import BigNumber from 'bignumber.js';
 import { formatFarmUserPosition } from "../utils/formatters/farm";
-import { aprToApy, getAPRByUtilization } from "../utils/math";
+import { aprToApy, getAmountByDecimals, getAPRByUtilization } from "../utils/math";
 
 export class FranciumSDK {
   public connection: Connection;
@@ -36,7 +36,7 @@ export class FranciumSDK {
     this.tokenPrice = tokenPrice;
     return {
       tokenPrice
-    }
+    };
   }
 
   public async getFarmLPPriceInfo() {
@@ -77,7 +77,7 @@ export class FranciumSDK {
       const rewardPosition = rewardsList[info.pool]?.amount || 0;
       const balancePosition = balanceList[info.pool]?.amount || 0;
       const totalPosition = rewardPosition + balancePosition;
-      const sharePrice = info.totalAmount.toNumber() / info.totalShareMintSupply.toNumber();
+      const sharePrice = new BigNumber(info.totalAmount.toString()).dividedBy(new BigNumber(info.totalShareMintSupply.toString())).toNumber();
       return {
         pool: info.pool,
         scale: info.scale,
@@ -85,7 +85,7 @@ export class FranciumSDK {
         balancePosition,
         totalPosition,
         totalAmount: (sharePrice * totalPosition) / 10 ** info.scale
-      }
+      };
     });
   }
 
@@ -93,8 +93,8 @@ export class FranciumSDK {
     const farmLPPrice = await this.getFarmLPPriceInfo();
     const farmPoolInfos = await this.getFarmPoolInfo();
     const pools = farmPoolInfos.map(info => {
-      const totalLP = info.totalLp.div(new BN(10).pow(new BN(info.lpDecimals))).toNumber();
-      const price = farmLPPrice[info.priceKey].price || 0;
+      const totalLP = getAmountByDecimals(info.totalLp, info.lpDecimals);
+      const price = farmLPPrice[info.priceKey].priceAmm || 0;
       return {
         id: info.id,
         lpAmount: totalLP,
@@ -111,14 +111,16 @@ export class FranciumSDK {
       const availableAmount = info.avaliableAmount;
       const totalAmount = info.totalAmount;
       const price = tokenPrice[info.pool];
-      const liquidityLocked = (totalAmount.div(new BN(10).pow(new BN(info.scale))).toNumber()) * price;
-      const available = (availableAmount.div(new BN(10).pow(new BN(info.scale))).toNumber()) * price;
+      const liquidityLocked = getAmountByDecimals(totalAmount, info.scale) * price;
+      const available = getAmountByDecimals(availableAmount, info.scale) * price;
       const utilization = 1 - available / liquidityLocked;
-      const apr = getAPRByUtilization(utilization);
-      const apy = aprToApy(apr) * 100;
+      const borrowApr = getAPRByUtilization(utilization);
+      const lendingApr = borrowApr * utilization;
+      const apy = aprToApy(lendingApr) * 100;
       return {
         id: info.pool,
         apy,
+        borrowApr: borrowApr * 100,
         liquidityLocked,
         available
       };

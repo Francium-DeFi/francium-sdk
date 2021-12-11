@@ -96,12 +96,12 @@ export default {
           "isSigner": false
         },
         {
-          "name": "ammPoolReserve0",
+          "name": "ammIdRewards",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "ammPoolReserve1",
+          "name": "ammIdRewardsB",
           "isMut": false,
           "isSigner": false
         },
@@ -236,6 +236,22 @@ export default {
         {
           "name": "clock",
           "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "closeEmptyAccount",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "userInfoAccount",
+          "isMut": true,
           "isSigner": false
         }
       ],
@@ -462,6 +478,137 @@ export default {
           "type": {
             "defined": "BorrowParam"
           }
+        }
+      ]
+    },
+    {
+      "name": "swapLimit",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "raydiumAmmProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammOpenOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTargetOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lpMintAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serumMarketId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumBids",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumAsks",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumEventQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumTknVault0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumTknVault1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumVaultSinger",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "swapLimit",
+          "type": "u64"
         }
       ]
     },
@@ -894,6 +1041,119 @@ export default {
       ]
     },
     {
+      "name": "unstakeLpWithType",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyRewardTknAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyRewardTknAccountB",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyFarmInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "raydiumStakingProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolRewardTknAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolRewardTknAccountB",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "clock",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolInfoAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolInfoAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userRewardsTknAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyRewardsTknAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "param",
+          "type": {
+            "defined": "WithdrawParam"
+          }
+        }
+      ]
+    },
+    {
       "name": "removeLiquidity",
       "accounts": [
         {
@@ -1013,6 +1273,146 @@ export default {
         }
       ],
       "args": []
+    },
+    {
+      "name": "swapForWithdrawLimit",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "raydiumAmmProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammOpenOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTargetOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serumMarketId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumBids",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumAsks",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumEventQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumTknVault1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumTknVault0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumVaultSinger",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "swapLimit",
+          "type": "u64"
+        },
+        {
+          "name": "withdrawType",
+          "type": "u8"
+        }
+      ]
     },
     {
       "name": "swapAndWithdraw",
@@ -1365,6 +1765,69 @@ export default {
       "args": []
     },
     {
+      "name": "userRepay",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfoAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolInfoAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolInfoAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "param",
+          "type": {
+            "defined": "UserRepayParam"
+          }
+        }
+      ]
+    },
+    {
       "name": "liquidateUnstakeLp",
       "accounts": [
         {
@@ -1501,6 +1964,122 @@ export default {
       "args": [
         {
           "name": "liquidateType",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "swapRewardsToTarget",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "raydiumAmmProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammOpenOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTargetOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serumMarketId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumBids",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumAsks",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumEventQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumTknVault0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumTknVault1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumVaultSinger",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "direction",
           "type": "u8"
         }
       ]
@@ -1716,6 +2295,116 @@ export default {
         }
       ],
       "args": []
+    },
+    {
+      "name": "adminUpdateRewardsAmmId",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "rewardsAmmId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rewardsAmmIdB",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "adminUpdateMaxLeverage",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "newLeverage",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "adminUpdateLiquidateLine",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "newLiquidateLine",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "adminUpdateCompoundRewardsRate",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "compoundRewardsRate",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "adminCloseEmptyAccount",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfoAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -1885,11 +2574,11 @@ export default {
             "type": "publicKey"
           },
           {
-            "name": "ammTknAccount0",
+            "name": "ammIdForRewards",
             "type": "publicKey"
           },
           {
-            "name": "ammTknAccount1",
+            "name": "ammIdForRewardsB",
             "type": "publicKey"
           },
           {
@@ -2027,9 +2716,13 @@ export default {
             "type": {
               "array": [
                 "u8",
-                32
+                31
               ]
             }
+          },
+          {
+            "name": "isEmpty",
+            "type": "u8"
           }
         ]
       }
@@ -2137,6 +2830,22 @@ export default {
       }
     },
     {
+      "name": "WithdrawParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "withdrawType",
+            "type": "u8"
+          },
+          {
+            "name": "sharesAmount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
       "name": "SwapAndWithdrawParam",
       "type": {
         "kind": "struct",
@@ -2144,6 +2853,22 @@ export default {
           {
             "name": "withdrawType",
             "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserRepayParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "repaySide",
+            "type": "u8"
+          },
+          {
+            "name": "repayAmount",
+            "type": "u64"
           }
         ]
       }
@@ -2270,6 +2995,16 @@ export default {
       "code": 321,
       "name": "AmountTooLarge",
       "msg": "Amount Too Large"
+    },
+    {
+      "code": 322,
+      "name": "CurrentSlotTooOld",
+      "msg": "Current Slot Too Old"
+    },
+    {
+      "code": 323,
+      "name": "AccountNotEmpty",
+      "msg": "Account Not Empty"
     }
   ]
-}
+};
