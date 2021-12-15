@@ -69,6 +69,8 @@ export const activePools = [
   'SRM-SOL[Orca Aquafarm]',
   'COPE-SOL[Orca Aquafarm]',
   'SLND-USDC[Orca Aquafarm]',
+  'SOL-USDT[Orca Aquafarm]',
+  'ETH-USDC[Orca Aquafarm]',
 
   // strategies
   'whETH-USDC-Strategy-1[Raydium Fusion Pool]',
