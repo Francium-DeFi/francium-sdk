@@ -2,6 +2,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import * as BN from 'bn.js';
 import BigNumber from "bignumber.js";
 import { LendingPoolLayout, lendingPools } from '../../constants/lend/pools';
+import { aprToApy, getAPRByUtilization } from 'src/utils/math';
 
 export async function getLendingPoolInfo(
   connection: Connection, pools: { pool: string, scale?: number }[] = []
@@ -21,6 +22,8 @@ export async function getLendingPoolInfo(
     const totalAmount = avaliableAmount.add(borrowedAmount);
     const utilization = totalAmount.gtn(0) ?
       new BigNumber(borrowedAmount.toString()).dividedBy(totalAmount.toString()).toNumber() : 0;
+    const borrowingInterestApr = getAPRByUtilization(utilization);
+    const apy = aprToApy(utilization * borrowingInterestApr);
 
     return {
       pool: pools[index].pool,
@@ -29,6 +32,8 @@ export async function getLendingPoolInfo(
       borrowedAmount,
       totalAmount,
       utilization,
+      borrowingInterestApr,
+      apy,
       totalShareMintSupply
     };
   });
