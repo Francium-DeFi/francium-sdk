@@ -7,6 +7,7 @@ import { lyfOrcaProgramId, ORCA_FARM_CONFIG } from '../../constants/farm/orca/in
 import { PublicKey, SYSVAR_CLOCK_PUBKEY, Connection } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokenDecimals } from '../../utils/tools';
+import { isString } from 'lodash';
 
 const commitment: web3.Commitment = 'confirmed';
 
@@ -78,6 +79,53 @@ export class FranciumFarm {
   public getConfig(pair: string, type = 'raydium') {
     const { config } = this.configs[type];
     return config[pair];
+  }
+
+  public async getUserPositionsAll(userPublicKey: PublicKey | string) {
+    let pubkey: any = userPublicKey;
+    if (isString(userPublicKey)) {
+      pubkey = new PublicKey(userPublicKey);
+    }
+    const orcaInfos = await this.getUserPositionsByProgram('orca', pubkey);
+    const raydiumInfos = await this.getUserPositionsByProgram('raydium', pubkey);
+    return {
+      orca: orcaInfos,
+      raydium: raydiumInfos
+    };
+  }
+
+  public async getUserPositionsByProgram(programType: string, userPublicKey: PublicKey) {
+    const program = this.getProgram(programType || 'raydium');
+    const decodeResult: {
+      publicKey: PublicKey;
+      data: any;
+    }[] = [];
+    try {
+      const infos = await this.connection.getProgramAccounts(
+        program.programId,
+        {
+          filters: [
+            { dataSize: program.account.userInfo.size + 1 },
+            {
+              memcmp: {
+                offset: 8 + 1 + 8 + 32,
+                bytes: userPublicKey.toBase58()
+              }
+            }
+          ]
+        }
+      );
+      infos.forEach((item, index) => {
+        const userInfo = program.coder.accounts.decode('UserInfo', item.account.data);
+        decodeResult.push({
+          publicKey: item.pubkey,
+          data: userInfo
+        });
+      });
+    } catch (err) {
+
+    }
+    return decodeResult;
   }
 
   public async getUserPositions(pools: any[], userPublicKey: PublicKey) {

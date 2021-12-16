@@ -27,7 +27,17 @@ export const LendingPoolLayout: typeof BufferLayout.Structure = BufferLayout.str
     BufferLayout.blob(32, "credit_mint_pubkey"),
     BufferLayout.blob(8, "credit_mint_total_supply"),
     BufferLayout.blob(32, "credit_supply_pubkey"),
-    BufferLayout.blob(128, "padding")
+    BufferLayout.u8("threshold_1"),
+    BufferLayout.u8("threshold_2"),
+    BufferLayout.u8("base_1"),
+    BufferLayout.u16("factor_1"),
+    BufferLayout.u8("base_2"),
+    BufferLayout.u16("factor_2"),
+    BufferLayout.u8("base_3"),
+    BufferLayout.u16("factor_3"),
+    BufferLayout.u8("interest_reverse_rate"),
+    BufferLayout.nu64('accumulated_interest_reverse'),
+    BufferLayout.blob(108, "padding"),
   ]
 );
 

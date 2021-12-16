@@ -4,7 +4,7 @@ import { RAYDIUM_FARM_CONFIG } from './constants/farm/raydium/info';
 import { lendingPools } from './constants/lend/pools';
 import { lendRewardInfo } from './constants/lend/rewards';
 import { getTokenDecimals, splitMultipleAccountsInfo } from './utils/tools';
-import { getAmountByDecimals } from './utils/math';
+import { getAmountByDecimals, getAprInfo } from './utils/math';
 import priceConfig from './constants/price';
 import { TOKENS } from './constants/tokens';
 import { farmPools } from './constants/farm';
@@ -26,5 +26,6 @@ export const FARM_POOLS_CONFIG = farmPools;
 export const utils = {
   getTokenDecimals,
   getAmountByDecimals,
-  splitMultipleAccountsInfo
+  splitMultipleAccountsInfo,
+  getAprInfo
 };

@@ -76,7 +76,9 @@ fr.getLendingPoolInfo()
     //     borrowedAmount: BN,
     //     totalAmount: BN,
     //     utilization: 0.9,
-    //     totalShareMintSupply: BN
+    //     totalShareMintSupply: BN,
+    //     apr: 8.36,
+    //     apy: 8.72,
     //   }
     // ]
   });

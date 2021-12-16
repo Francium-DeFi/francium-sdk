@@ -242,6 +242,46 @@ export default {
       "args": []
     },
     {
+      "name": "initializeUserWithNonce",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfoAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "clock",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nonce",
+          "type": "u32"
+        },
+        {
+          "name": "bumpSeed",
+          "type": "u8"
+        }
+      ]
+    },
+    {
       "name": "closeEmptyAccount",
       "accounts": [
         {
@@ -2627,7 +2667,7 @@ export default {
             "type": "publicKey"
           },
           {
-            "name": "accountNonce",
+            "name": "padding0",
             "type": "u8"
           },
           {
@@ -2703,7 +2743,7 @@ export default {
             "type": "u16"
           },
           {
-            "name": "padding0",
+            "name": "padding1",
             "type": {
               "array": [
                 "u8",
@@ -2712,13 +2752,17 @@ export default {
             }
           },
           {
-            "name": "padding1",
+            "name": "padding2",
             "type": {
               "array": [
                 "u8",
-                31
+                27
               ]
             }
+          },
+          {
+            "name": "accountNonce",
+            "type": "u32"
           },
           {
             "name": "isEmpty",

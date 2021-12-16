@@ -1,5 +1,7 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import * as BN from 'bn.js';
+import BigNumber from 'bignumber.js';
+import { getAprInfo } from '../../utils/math';
 import { LendingPoolLayout, lendingPools } from '../../constants/lend/pools';
 
 export async function getLendingPoolInfo(
@@ -14,20 +16,26 @@ export async function getLendingPoolInfo(
   const formatResults = accountInfos.map((accountInfo, index) => {
     const buf = Buffer.from(accountInfo.data);
     const decodeData = LendingPoolLayout.decode(buf);
-    const avaliableAmount = new BN(decodeData.liquidity_available_amount);
+
+    const avaliableAmount = new BN(String(decodeData.liquidity_available_amount));
     const borrowedAmount = new BN(decodeData.liquidity_borrowed_amount_wads, 'le').div(new BN(10).pow(new BN(18)));
     const totalShareMintSupply = new BN(decodeData.share_mint_total_supply, 'le');
     const totalAmount = avaliableAmount.add(borrowedAmount);
-    const utilization = totalAmount.gtn(0) ? borrowedAmount.div(totalAmount).toNumber() : 0;
+    const utilization = totalAmount.gtn(0) ?
+      new BigNumber(borrowedAmount.toString()).dividedBy(totalAmount.toString()).toNumber() : 0;
 
-    // let borrowingRate = 0 + 0.25 * utilization;
-    // if (utilization > 0.6 && utilization < 0.9) {
-    //   borrowingRate = 0.15 + 0.25 * (utilization - 0.6);
-    // } else if (utilization >= 0.9) {
-    //   borrowingRate = 0.225 + 13 * (utilization - 0.9);
-    // }
+    const aprData = {
+      threshold1: decodeData.threshold_1,
+      threshold2: decodeData.threshold_2,
+      base1: decodeData.base_1,
+      factor1: decodeData.factor_1,
+      base2: decodeData.base_2,
+      factor2: decodeData.factor_2,
+      base3: decodeData.base_3,
+      factor3: decodeData.factor_3,
+    };
 
-    // const apr = borrowingRate * 100 * lpBorrowedAmount / totalAmount;
+    const { borrowInterest, apr, apy } = getAprInfo(utilization, aprData);
 
     return {
       pool: pools[index].pool,
@@ -36,7 +44,11 @@ export async function getLendingPoolInfo(
       borrowedAmount,
       totalAmount,
       utilization,
-      totalShareMintSupply
+      totalShareMintSupply,
+      borrowInterest,
+      apr,
+      apy,
+      aprData
     };
   });
 

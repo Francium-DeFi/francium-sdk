@@ -7,7 +7,7 @@ import {
 } from "../model";
 import BigNumber from 'bignumber.js';
 import { formatFarmUserPosition } from "../utils/formatters/farm";
-import { aprToApy, getAmountByDecimals, getAPRByUtilization } from "../utils/math";
+import { aprToApy, getAmountByDecimals } from "../utils/math";
 
 export class FranciumSDK {
   public connection: Connection;
@@ -56,6 +56,12 @@ export class FranciumSDK {
   public async getFarmPoolInfo() {
     const farmPoolInfos = await this.farmHub.getFarmPoolsInfo(this.farmPools);
     return farmPoolInfos;
+  }
+
+  public async getUserFarmPositionByProgram(userPublicKey: PublicKey) {
+    const infos = await this.farmHub.getUserPositionsAll(userPublicKey);
+    console.log(infos);
+    return infos;
   }
 
   public async getUserFarmPosition(userPublicKey: PublicKey) {
@@ -113,14 +119,10 @@ export class FranciumSDK {
       const price = tokenPrice[info.pool];
       const liquidityLocked = getAmountByDecimals(totalAmount, info.scale) * price;
       const available = getAmountByDecimals(availableAmount, info.scale) * price;
-      const utilization = 1 - available / liquidityLocked;
-      const borrowApr = getAPRByUtilization(utilization);
-      const lendingApr = borrowApr * utilization;
-      const apy = aprToApy(lendingApr) * 100;
       return {
         id: info.pool,
-        apy,
-        borrowApr: borrowApr * 100,
+        apy: info.apy,
+        borrowApr: info.borrowInterest,
         liquidityLocked,
         available
       };

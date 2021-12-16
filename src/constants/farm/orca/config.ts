@@ -324,10 +324,10 @@ export default {
       "args": [
         {
           "name": "nonce",
-          "type": "u8"
+          "type": "u32"
         },
         {
-          "name": "seedBump",
+          "name": "bumpSeed",
           "type": "u8"
         }
       ]
@@ -2804,7 +2804,7 @@ export default {
             "type": "publicKey"
           },
           {
-            "name": "accountNonce",
+            "name": "pending0",
             "type": "u8"
           },
           {
@@ -2892,26 +2892,26 @@ export default {
             "type": "u64"
           },
           {
-            "name": "seedBump",
-            "type": "u8"
-          },
-          {
-            "name": "padding0",
-            "type": {
-              "array": [
-                "u8",
-                18
-              ]
-            }
-          },
-          {
             "name": "padding1",
             "type": {
               "array": [
                 "u8",
-                31
+                19
               ]
             }
+          },
+          {
+            "name": "padding2",
+            "type": {
+              "array": [
+                "u8",
+                27
+              ]
+            }
+          },
+          {
+            "name": "accountNonce",
+            "type": "u32"
           },
           {
             "name": "isEmpty",
