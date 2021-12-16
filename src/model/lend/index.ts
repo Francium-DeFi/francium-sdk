@@ -1,5 +1,6 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import * as BN from 'bn.js';
+import BigNumber from "bignumber.js";
 import { LendingPoolLayout, lendingPools } from '../../constants/lend/pools';
 
 export async function getLendingPoolInfo(
@@ -18,16 +19,8 @@ export async function getLendingPoolInfo(
     const borrowedAmount = new BN(decodeData.liquidity_borrowed_amount_wads, 'le').div(new BN(10).pow(new BN(18)));
     const totalShareMintSupply = new BN(decodeData.share_mint_total_supply, 'le');
     const totalAmount = avaliableAmount.add(borrowedAmount);
-    const utilization = totalAmount.gtn(0) ? borrowedAmount.div(totalAmount).toNumber() : 0;
-
-    // let borrowingRate = 0 + 0.25 * utilization;
-    // if (utilization > 0.6 && utilization < 0.9) {
-    //   borrowingRate = 0.15 + 0.25 * (utilization - 0.6);
-    // } else if (utilization >= 0.9) {
-    //   borrowingRate = 0.225 + 13 * (utilization - 0.9);
-    // }
-
-    // const apr = borrowingRate * 100 * lpBorrowedAmount / totalAmount;
+    const utilization = totalAmount.gtn(0) ?
+      new BigNumber(borrowedAmount.toString()).dividedBy(totalAmount.toString()).toNumber() : 0;
 
     return {
       pool: pools[index].pool,
