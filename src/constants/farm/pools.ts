@@ -1838,4 +1838,25 @@ export default [
     orca: {},
     isNew: true
   },
+  {
+    id: '83',
+    strategyName: 'MBS-USDC',
+    pair: 'MBS-USDC',
+    author: 'Francium',
+    from: 'Raydium Fusion Pool',
+    yieldFarmingAPR: 0,
+    strategyAPR: 0,
+    tradingFeeAPR: 0,
+    borrowAPR: 0,
+    maxLeverage: 3,
+    minLeverage: 1,
+    lpDecimal: 6,
+    marketCap: 1333333,
+    token0: 'USDC',
+    token1: 'MBS',
+    status: 'active',
+    version: 3,
+    borrowList: ['USDC'],
+    isNew: true
+  },
 ];

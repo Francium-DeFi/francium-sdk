@@ -8,6 +8,7 @@ import {
 import BigNumber from 'bignumber.js';
 import { formatFarmUserPosition } from "../utils/formatters/farm";
 import { aprToApy, getAmountByDecimals } from "../utils/math";
+import { find } from 'lodash';
 
 export class FranciumSDK {
   public connection: Connection;
@@ -60,20 +61,61 @@ export class FranciumSDK {
 
   public async getUserFarmPositionByProgram(userPublicKey: PublicKey) {
     const infos = await this.farmHub.getUserPositionsAll(userPublicKey);
-    console.log(infos);
     return infos;
   }
 
   public async getUserFarmPosition(userPublicKey: PublicKey) {
     const farmInfo = await this.getFarmPoolInfo();
-    const userFarmPositions = await this.farmHub.getUserPositions(this.farmPools, userPublicKey);
-    return userFarmPositions.map((userInfo, index) => {
-      if (userInfo) {
-        return formatFarmUserPosition(farmInfo[index], userInfo);
+    const infos = await this.farmHub.getUserPositionsAll(userPublicKey);
+    const raydiumInfos = infos.raydium;
+    const orcaInfos = infos.orca;
+
+    const strategyAccountPools = this.farmPools.map(i => {
+      const targetFarmInfo = this.farmHub.getConfig(i.pair, i.lyfType || 'raydium');
+      return {
+        strategyAccount: targetFarmInfo.strategyAccount,
+        pool: i
+      };
+    });
+
+    const formattedUserInfos = [...raydiumInfos, ...orcaInfos].map(i => {
+      const poolStrategyInfoAccount: PublicKey = i.data.strategyStateAccount;
+      const targetPool = find(strategyAccountPools, target => {
+        return target.strategyAccount.toBase58() === poolStrategyInfoAccount.toBase58();
+      });
+      const targetPoolInfo = find(farmInfo, target => {
+        return target.strategyAccount.toBase58() === poolStrategyInfoAccount.toBase58();
+      });
+      return {
+        ...(targetPool?.pool || {}),
+        userinfo: i.data,
+        userInfoPublicKey: i.publicKey,
+        strategyInfo: targetPoolInfo
+      };
+    });
+
+    const userPositions = formattedUserInfos.filter(
+      i => i.strategyInfo
+    ).map((info) => {
+      if (info) {
+        return formatFarmUserPosition(info.strategyInfo, info.userinfo);
       }
       return null;
     });
+
+    return userPositions;
   }
+
+  // public async getUserFarmPosition(userPublicKey: PublicKey) {
+  //   const farmInfo = await this.getFarmPoolInfo();
+  //   const userFarmPositions = await this.farmHub.getUserPositions(this.farmPools, userPublicKey);
+  //   return userFarmPositions.map((userInfo, index) => {
+  //     if (userInfo) {
+  //       return formatFarmUserPosition(farmInfo[index], userInfo);
+  //     }
+  //     return null;
+  //   });
+  // }
 
   public async getUserLendingPosition(userPublicKey: PublicKey) {
     const lendingPoolInfos = await this.getLendingPoolInfo();

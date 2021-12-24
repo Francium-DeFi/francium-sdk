@@ -182,5 +182,9 @@ export default [
   {
     id: 'realy-metaverse',
     token: 'REAL'
+  },
+  {
+    id: 'monkeyball',
+    token: 'MBS'
   }
 ];

@@ -44,9 +44,11 @@ export class FranciumFarm {
       const poolItem = pools[index];
       const program = this.getProgram(poolItem.lyfType || 'raydium');
       const strategyInfo = program.coder.accounts.decode('StrategyState', i.data);
+      const strategyAccount = strategyAccounts[index];
       return {
         id: `${poolItem.pair}[${poolItem.from}]`,
         priceKey: poolItem.alias || poolItem.pair,
+        strategyAccount,
         token0: poolItem.token0,
         token1: poolItem.token1,
         lpDecimals: poolItem.lyfType === 'orca' ? 6 : getTokenDecimals(poolItem.token1),

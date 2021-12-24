@@ -397,5 +397,11 @@ export const TOKENS = {
     name: 'realy-metaverse',
     mintAddress: new PublicKey('AD27ov5fVU2XzwsbvnFvb1JpCBaCB5dRXrczV9CqSVGb'),
     decimals: 9
+  },
+  MBS: {
+    symbol: 'MBS',
+    name: 'monkeyball',
+    mintAddress: new PublicKey('Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A'),
+    decimals: 6
   }
 };

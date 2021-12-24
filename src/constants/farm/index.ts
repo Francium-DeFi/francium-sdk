@@ -36,6 +36,7 @@ export const activePools = [
   'SOL-USDC[Raydium Fusion Pool]',
   'SOL-USDT[Raydium Fusion Pool]',
   'REAL-USDC[Raydium Fusion Pool]',
+  'MBS-USDC[Raydium Fusion Pool]',
 
   'RAY-USDC[Raydium Fusion Pool]',
   'RAY-USDT[Raydium Fusion Pool]',
@@ -50,7 +51,7 @@ export const activePools = [
   'ORCA-mSOL[Orca Double-Dip]',
   'BTC-mSOL[Orca Double-Dip]',
   'NINJA-SOL[Orca Double-Dip]',
-  'mSOL-whETH[Orca Doubledip]',
+  'mSOL-whETH[Orca Double-Dip]',
   'SAMO-USDC[Orca Double-Dip]',
   'LIQ-USDC[Orca Double-Dip]',
   'PORT-USDC[Orca Double-Dip]',
