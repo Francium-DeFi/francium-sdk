@@ -403,5 +403,23 @@ export const TOKENS = {
     name: 'monkeyball',
     mintAddress: new PublicKey('Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A'),
     decimals: 6
+  },
+  stSOL: {
+    tag: 'stSOL',
+    name: 'lido-staked-sol',
+    mintAddress: new PublicKey('7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj'),
+    decimals: 9
+  },
+  wLDO: {
+    symbol: 'wLDO',
+    name: 'lido-dao',
+    mintAddress: new PublicKey('HZRCwxP2Vq9PCpPXooayhJ2bxTpo5xfpQrwB1svh332p'),
+    decimals: 8
+  },
+  PRISM: {
+    symbol: 'PRISM',
+    name: 'prism',
+    mintAddress: new PublicKey('PRSMNsEPqhGVCH1TtWiJqPjJyh2cKrLostPZTNy1o5x'),
+    decimals: 6
   }
 };

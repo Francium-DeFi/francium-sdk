@@ -186,5 +186,13 @@ export default [
   {
     id: 'monkeyball',
     token: 'MBS'
+  },
+  {
+    id: 'lido-staked-sol',
+    token: 'stSOL'
+  },
+  {
+    id: 'lido-dao',
+    token: 'wLDO'
   }
 ];
