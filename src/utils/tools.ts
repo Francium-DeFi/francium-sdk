@@ -1,4 +1,4 @@
-import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { TOKENS } from "../constants/tokens";
 
@@ -28,4 +28,14 @@ export async function splitMultipleAccountsInfo(connection: Connection, accountL
     info.push(...multipleInfo);
   }
   return info;
+}
+
+export function isNativeMint (publicKey: PublicKey) {
+  if (!publicKey) {
+    return false;
+  }
+  if (publicKey.toBase58() === NATIVE_MINT.toBase58()) {
+    return true;
+  }
+  return false;
 }

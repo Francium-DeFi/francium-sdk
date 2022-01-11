@@ -1,4 +1,4 @@
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import { lendingPoolList } from "../constants/lend/pools";
 import { farmPools } from "../constants/farm";
 import {
@@ -9,6 +9,10 @@ import BigNumber from 'bignumber.js';
 import { formatFarmUserPosition } from "../utils/formatters/farm";
 import { aprToApy, getAmountByDecimals } from "../utils/math";
 import { find } from 'lodash';
+import * as BN from 'bn.js';
+import buildFarmTransactions from "../model/farm/farm";
+import buildWithdrawTransactions from "../model/farm/withdraw";
+import { send2TransactionsListOneByOneWithErrorCatch } from "../utils/sign";
 
 export class FranciumSDK {
   public connection: Connection;
@@ -26,9 +30,78 @@ export class FranciumSDK {
     }>;
   }) {
     this.connection = config.connection;
-    this.farmHub = new FranciumFarm({ connection: this.connection});
+    this.farmHub = new FranciumFarm({ connection: this.connection });
     this.farmPools = farmPools.filter(i => i.version > 2);
     this.getTokenPrice = config.getTokenPrice;
+  }
+
+  public async getFarmTransactions(
+    pair: string,
+    lyfType: string,
+    userPublicKey: PublicKey,
+    configs: {
+      depositPcAmount: BN,
+      depositCoinAmount: BN,
+      borrowPcAmount: BN,
+      borrowCoinAmount: BN,
+      stopLoss?: number,
+      currentUserInfoAccount?: PublicKey
+    }
+  ) {
+    return buildFarmTransactions(
+      this.connection,
+      pair,
+      lyfType,
+      userPublicKey,
+      this.farmHub,
+      {
+        amount0: configs.depositPcAmount,
+        amount1: configs.depositCoinAmount,
+        borrow0: configs.borrowPcAmount,
+        borrow1: configs.borrowCoinAmount,
+        stopLoss: configs.stopLoss || 80,
+        currentUserInfoAccount: configs.currentUserInfoAccount
+      }
+    );
+  }
+
+  public async getClosePositionTransactions(
+    pair: string,
+    lyfType: string,
+    userPublicKey: PublicKey,
+    configs: {
+      lpShares: BN;
+      withdrawType: number;
+      currentUserInfoAccount: PublicKey;
+    }
+  ) {
+    return buildWithdrawTransactions(
+      this.connection,
+      pair,
+      lyfType,
+      userPublicKey,
+      this.farmHub,
+      {
+        lpShares: new BigNumber(configs.lpShares.toString()),
+        withdrawType: configs.withdrawType,
+        currentUserInfoAccount: configs.currentUserInfoAccount
+      }
+    );
+  }
+
+  public async sendMultipleTransactions(
+    trxs: Transaction[],
+    wallet: any,
+    onTrxSended?: (index: number, txid: string) => void,
+    onTrxConfirmed?: (index: number, txid: string, stateInfo?: { state: string, msg: string, total?: number }) => void,
+  ) {
+    return send2TransactionsListOneByOneWithErrorCatch(
+      trxs,
+      this.connection,
+      wallet,
+      onTrxSended,
+      onTrxConfirmed
+    );
   }
 
   public async getTokenPriceInfo() {
@@ -98,7 +171,7 @@ export class FranciumSDK {
       i => i.strategyInfo
     ).map((info) => {
       if (info) {
-        return formatFarmUserPosition(info.strategyInfo, info.userinfo);
+        return formatFarmUserPosition(info.strategyInfo, info.userinfo, info.userInfoPublicKey);
       }
       return null;
     });

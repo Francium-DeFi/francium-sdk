@@ -16,13 +16,76 @@ fr.getUserFarmPosition(new PublicKey('23fxxxxxxxxxxxxxxxxxxx'))
     // [{
     //   id: 'ORCA-USDC[Orca Aquafarm]',
     //   lpAmount: BN,
+    //   lpShares: BN,
     //   lpDecimals: 6,
+    //   userInfoPublicKey: PublicKey,
     //   borrowed: [{
     //     symbol: 'USDC',
     //     amount: BN
     //   }]
     // }]
   });
+```
+
+### Get Farm Transactions
+```javascript
+import { Connection, PublicKey } from '@solana/web3.js';
+import FranciumSDK from 'francium-sdk';
+const fr = new FranciumSDK({
+  connection: new Connection('https://free.rpcpool.com')
+});
+
+async function farm() {
+  // supply 1 USDC, borrow 1 USDC
+  const trxs = fr.getFarmTransactions(
+    'SHDW-USDC',
+    'orca',
+    new PublicKey('23xxxxxxx'),
+    {
+      depositPcAmount: new BN(1000000),
+      depositCoinAmount: new BN(0),
+      borrowPcAmount: new BN(1000000),
+      borrowCoinAmount: new BN(0)
+    }
+  );
+
+  // sign and send trxs
+  await fr.sendMultipleTransactions(trxs, wallet);
+}
+
+```
+### Get Close Position Transactions
+```javascript
+import { Connection, PublicKey } from '@solana/web3.js';
+import FranciumSDK from 'francium-sdk';
+const fr = new FranciumSDK({
+  connection: new Connection('https://free.rpcpool.com')
+});
+
+async function farm() {
+  // supply 1 USDC, borrow 1 USDC
+  const trxs = fr.getClosePositionTransactions(
+    'SHDW-USDC',
+    'orca',
+    new PublicKey('23xxxxxxx'),
+    {
+      // 0: swap to PC token
+      // 1: swap to Coin Token
+      // 2: minimize trading 
+      withdrawType: 2,
+
+      // userPosition.lpShares
+      lpShares: BN,
+
+      // userPosition.userInfoPublicKey
+      currentUserInfoAccount: PublicKey 
+    }
+  );
+
+  // sign and send trxs
+  await fr.sendMultipleTransactions(trxs, wallet);
+}
+
 ```
 
 ### Get Pool Info

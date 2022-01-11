@@ -194,5 +194,9 @@ export default [
   {
     id: 'lido-dao',
     token: 'wLDO'
+  },
+  {
+    id: 'genesysgo-shadow',
+    token: 'SHDW'
   }
 ];

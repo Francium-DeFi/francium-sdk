@@ -1909,4 +1909,64 @@ export default [
     borrowList: ['USDC'],
     isNew: true
   },
+
+  {
+    id: '86',
+    strategyName: 'SHDW-USDC',
+    pair: 'SHDW-USDC',
+    author: 'Francium',
+    from: 'Orca Double-Dip',
+    yieldFarmingAPR: 0,
+    strategyAPR: 0,
+    tradingFeeAPR: 0,
+    borrowAPR: 0,
+    maxLeverage: 3,
+    minLeverage: 1,
+    marketCap: 1333333,
+    lpDecimal: 6,
+    token0: 'USDC',
+    token1: 'SHDW',
+    status: 'active',
+    version: 3,
+    lyfType: 'orca',
+    borrowList: ['USDC', 'SHDW'],
+    orca: {
+      tokenBDecimal: 6,
+      isDoubleDip: true,
+      rewardToken: 'SHDW',
+      rewardDecimal: 9,
+      // poolKey: 'USDC/USDT[stable][aquafarm]'
+    },
+    isNew: true
+  },
+
+  {
+    id: '87',
+    strategyName: 'SHDW-SOL',
+    pair: 'SHDW-SOL',
+    author: 'Francium',
+    from: 'Orca Double-Dip',
+    yieldFarmingAPR: 0,
+    strategyAPR: 0,
+    tradingFeeAPR: 0,
+    borrowAPR: 0,
+    maxLeverage: 3,
+    minLeverage: 1,
+    marketCap: 1333333,
+    lpDecimal: 6,
+    token0: 'SOL',
+    token1: 'SHDW',
+    status: 'active',
+    version: 3,
+    lyfType: 'orca',
+    borrowList: ['SOL', 'SHDW'],
+    orca: {
+      tokenBDecimal: 9,
+      isDoubleDip: true,
+      rewardToken: 'SHDW',
+      rewardDecimal: 9,
+      // poolKey: 'USDC/USDT[stable][aquafarm]'
+    },
+    isNew: true
+  },
 ];

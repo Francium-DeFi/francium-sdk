@@ -1,6 +1,7 @@
+import { PublicKey } from "@solana/web3.js";
 import * as BN from "bn.js";
 
-export function formatFarmUserPosition(poolInfo: any, userInfo: any) {
+export function formatFarmUserPosition(poolInfo: any, userInfo: any, userInfoPublicKey?: PublicKey) {
   const totalLP = poolInfo?.totalLp;
   const totalShares = poolInfo?.totalShares;
   const userShares = userInfo?.lpShares;
@@ -16,8 +17,10 @@ export function formatFarmUserPosition(poolInfo: any, userInfo: any) {
   return {
     id: poolInfo.id,
     lpAmount: userLP,
+    lpShares: userShares,
     priceKey: poolInfo.priceKey,
     lpDecimals: poolInfo.lpDecimals,
+    userInfoPublicKey,
     borrowed: [
       {
         symbol: poolInfo.token0,

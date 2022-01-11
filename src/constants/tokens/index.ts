@@ -421,5 +421,11 @@ export const TOKENS = {
     name: 'prism',
     mintAddress: new PublicKey('PRSMNsEPqhGVCH1TtWiJqPjJyh2cKrLostPZTNy1o5x'),
     decimals: 6
+  },
+  SHDW: {
+    symbol: 'SHDW',
+    name: 'genesysgo-shadow',
+    mintAddress: new PublicKey('SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y'),
+    decimals: 9
   }
 };

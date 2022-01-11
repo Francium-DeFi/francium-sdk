@@ -8,6 +8,7 @@ import { PublicKey, SYSVAR_CLOCK_PUBKEY, Connection } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokenDecimals } from '../../utils/tools';
 import { isString } from 'lodash';
+import buildFarmTransactions from './farm';
 
 const commitment: web3.Commitment = 'confirmed';
 
@@ -159,7 +160,7 @@ export class FranciumFarm {
 
   // generate instruction params
   // borrow
-  private getBorrowParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  public getBorrowParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     if (type === 'orca') {
       return this.getOrcaBorrowParams(config, userMainAccount, userInfoAccount);
     }
@@ -230,7 +231,7 @@ export class FranciumFarm {
   }
 
   // swap
-  private getSwapParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  public getSwapParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     if (type === 'orca') {
       return this.getOrcaSwapParams(config, userMainAccount, userInfoAccount);
     }
@@ -299,7 +300,7 @@ export class FranciumFarm {
   }
 
   // add liquidity
-  private getLiquidityParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  public getLiquidityParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     if (type === 'orca') {
       return this.getOrcaLiquidityParams(config, userMainAccount, userInfoAccount);
     }
@@ -361,7 +362,7 @@ export class FranciumFarm {
   }
 
   // stakeLp
-  private getStakeLpParams(config: any, type = 'raydium') {
+  public getStakeLpParams(config: any, type: string = 'raydium') {
     if (type === 'orca') {
       return this.getOrcaStakeLpParams(config);
     }
@@ -412,7 +413,7 @@ export class FranciumFarm {
     }];
   }
 
-  private getOrcaDoubleDipStakeParams(config: any) {
+  public getOrcaDoubleDipStakeParams(config: any) {
     return [{
       accounts: {
         strategyState: config.strategyAccount,
@@ -434,14 +435,14 @@ export class FranciumFarm {
   }
 
   // unstakeLp - withdraw
-  private getUnstakeLpParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  public getUnstakeLpParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     if (type === 'orca') {
       return this.getOrcaUnstakeLpParams(config, userMainAccount, userInfoAccount, type);
     }
     return this.getRaydiumUnstakeLpParams(config, userMainAccount, userInfoAccount, type);
   }
 
-  private getRaydiumUnstakeLpParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  private getRaydiumUnstakeLpParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     return [
       {
         accounts: {
@@ -471,7 +472,7 @@ export class FranciumFarm {
     ];
   }
 
-  private getOrcaUnstakeLpParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  private getOrcaUnstakeLpParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     return [{
       accounts: {
         userMainAccount: userMainAccount,
@@ -498,7 +499,7 @@ export class FranciumFarm {
     }];
   }
 
-  private getOrcaDoubleDipUnstakeParams(config: any) {
+  public getOrcaDoubleDipUnstakeParams(config: any) {
     return [{
       accounts: {
         strategyState: config.strategyAccount,
@@ -520,14 +521,14 @@ export class FranciumFarm {
   }
 
   // remove liquidity - withdraw
-  private getRemoveLiquidityParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  public getRemoveLiquidityParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     if (type === 'orca') {
       return this.getOrcaRemoveLiquidityParams(config, userMainAccount, userInfoAccount, type);
     }
     return this.getRaydiumRemoveLiquidityParams(config, userMainAccount, userInfoAccount, type);
   }
 
-  private getRaydiumRemoveLiquidityParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  private getRaydiumRemoveLiquidityParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     return [
       {
         accounts: {
@@ -559,7 +560,7 @@ export class FranciumFarm {
     ];
   }
 
-  private getOrcaRemoveLiquidityParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type = 'raydium') {
+  private getOrcaRemoveLiquidityParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
     return [{
       accounts: {
         userMainAccount: userMainAccount,
@@ -582,9 +583,9 @@ export class FranciumFarm {
   }
 
   // swap and withdraw - withdraw
-  private getSwapAndWithdrawParams(
+  public getSwapAndWithdrawParams(
     config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey,
-    userTokenAccount0: PublicKey, userTokenAccount1: PublicKey, type = 'raydium'
+    userTokenAccount0: PublicKey, userTokenAccount1: PublicKey, type: string = 'raydium'
   ) {
     if (type === 'orca') {
       return this.getOrcaSwapAndWithdrawParams(
@@ -600,7 +601,7 @@ export class FranciumFarm {
 
   private getRaydiumSwapAndWithdrawParams(
     config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey,
-    userTokenAccount0: PublicKey, userTokenAccount1: PublicKey, type = 'raydium'
+    userTokenAccount0: PublicKey, userTokenAccount1: PublicKey, type: string = 'raydium'
   ) {
     return [
       {
@@ -638,7 +639,7 @@ export class FranciumFarm {
 
   private getOrcaSwapAndWithdrawParams(
     config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey,
-    userTokenAccount0: PublicKey, userTokenAccount1: PublicKey, type = 'raydium'
+    userTokenAccount0: PublicKey, userTokenAccount1: PublicKey, type: string = 'raydium'
   ) {
     return [{
       accounts: {
@@ -664,7 +665,7 @@ export class FranciumFarm {
   }
 
   // repay - withdraw
-  private getRepayParams(config: any, userMainAccount: PublicKey, type = 'raydium') {
+  public getRepayParams(config: any, userMainAccount: PublicKey, type: string = 'raydium') {
     if (type === 'orca') {
       return this.getOrcaRepayParams(config, userMainAccount);
     }
