@@ -198,5 +198,9 @@ export default [
   {
     id: 'genesysgo-shadow',
     token: 'SHDW'
+  },
+  {
+    id: 'basis-markets',
+    token: 'BASIS'
   }
 ];
