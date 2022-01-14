@@ -4,7 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 export const TOKENS = {
   SOL: {
     symbol: 'SOL',
-    name: 'Solana',
+    name: 'solana',
     mintAddress: NATIVE_MINT,
     decimals: 9
   },
@@ -16,13 +16,13 @@ export const TOKENS = {
   },
   BTC: {
     symbol: 'BTC',
-    name: 'Wrapped Bitcoin',
+    name: 'bitcoin',
     mintAddress: new PublicKey('9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E'),
     decimals: 6
   },
   ETH: {
     symbol: 'ETH',
-    name: 'Wrapped Ethereum',
+    name: 'ethereum',
     mintAddress: new PublicKey('2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk'),
     decimals: 6
   },
@@ -196,25 +196,25 @@ export const TOKENS = {
   },
   RAY: {
     symbol: 'RAY',
-    name: 'Raydium',
+    name: 'raydium',
     mintAddress: new PublicKey('4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R'),
     decimals: 6
   },
   COPE: {
     symbol: 'COPE',
-    name: 'COPE',
+    name: 'cope',
     mintAddress: new PublicKey('8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh'),
     decimals: 6,
   },
   STEP: {
     symbol: 'STEP',
-    name: 'STEP',
+    name: 'step-finance',
     mintAddress: new PublicKey('StepAscQoEioFxxWGnh2sLBDFp9d8rvKz2Yp39iDpyT'),
     decimals: 9,
   },
   MEDIA: {
     symbol: 'MEDIA',
-    name: 'MEDIA',
+    name: 'media-network',
     mintAddress: new PublicKey('ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs'),
     decimals: 6
   },
@@ -238,43 +238,43 @@ export const TOKENS = {
   },
   ATLAS: {
     symbol: 'ATLAS',
-    name: 'ATLAS',
+    name: 'star-atlas',
     decimals: 8,
     mintAddress: new PublicKey("ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx")
   },
   POLIS: {
     symbol: 'POLIS',
-    name: 'POLIS',
+    name: 'star-atlas-dao',
     decimals: 8,
     mintAddress: new PublicKey("poLisWXnNRwC6oBu1vHiuKQzFjGL4XDSu4g9qjz9qVk"),
   },
   ORCA: {
     symbol: 'ORCA',
-    name: 'Orca',
+    name: 'orca',
     decimals: 6,
     mintAddress: new PublicKey("orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE")
   },
   mSOL: {
     symbol: 'mSOL',
-    name: 'Marinade.finance',
+    name: 'msol',
     decimals: 9,
     mintAddress: new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So")
   },
   MNDE: {
     symbol: 'MNDE',
-    name: 'Marinade.finance',
+    name: 'marinade',
     decimals: 9,
     mintAddress: new PublicKey("MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey")
   },
   NINJA: {
     symbol: 'NINJA',
-    name: 'Ninja.Protocol',
+    name: 'ninja-protocol',
     decimals: 6,
     mintAddress: new PublicKey("FgX1WD9WzMU3yLwXaFSarPfkgzjLb2DZCqmkx9ExpuvJ")
   },
   whETH: {
     symbol: 'whETH',
-    name: 'wormhole',
+    name: 'ethereum',
     mintAddress: new PublicKey('7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs'),
     decimals: 8
   },
@@ -427,5 +427,11 @@ export const TOKENS = {
     name: 'genesysgo-shadow',
     mintAddress: new PublicKey('SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y'),
     decimals: 9
+  },
+  BASIS: {
+    symbol: 'BASIS',
+    name: 'basis-markets',
+    mintAddress: new PublicKey('Basis9oJw9j8cw53oMV7iqsgo6ihi9ALw4QR31rcjUJa'),
+    decimals: 6
   }
 };

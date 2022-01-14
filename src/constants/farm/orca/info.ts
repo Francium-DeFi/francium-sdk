@@ -2904,4 +2904,103 @@ export const ORCA_FARM_CONFIG = {
       }
     },
   },
+
+  'BASIS-USDC': {
+    needsLiquidate: true,
+    needsCompound: true,
+
+    protocolVersion: 2,
+    protocolSubVersion: 1,
+    alias: null,
+    orcaPoolId: 'BASIS/USDC[aquafarm]',
+
+    programId: lyfOrcaProgramId,
+    tknMint0: TOKENS.USDC.mintAddress,
+    tknMint1: TOKENS.BASIS.mintAddress,
+
+    strategyAccount: new PublicKey('4UBtXNvm58whfhj1xPwbHLXA3TmuTbgxHXxvD5ju6Lk5'),
+    strategyAuthority: new PublicKey('7DYVU8KFxrKEUr9cBwUYDK9huUmSyzNzxU6TW2FiQGjK'),
+    strategyFarmInfo: new PublicKey('9CsMPYUfGo6VYzL2dbAqhBEfgAWQWZvatcCUkvBA6hyU'),
+    strategyFeeAccount: new PublicKey('FpJfAGAQkURG2vBkvZ6QwjDF9DhWyMwLskTVtQMg4kRW'),
+    strategyTknAccount0: new PublicKey('DPy8TZZuHyJcvZWhTxjYbcoeksWrpymDjpPh2oz1uZdw'),
+    strategyTknAccount1: new PublicKey('1hNxbVxzXWk3kf6yzXBzJiCTfN9scFNYWpmJXGyx4bh'),
+    strategyLpTknAccount: new PublicKey('2Rk6qrrdCUQtK4Dd1JkGZ1Gzkk2aacBmMpMzA5X6wME1'),
+    strategyRewardTknAccount: new PublicKey('ALP1HoFdNkr7aU8P9RwsVpztEMX5dHq7vgZSd5gC42dX'),
+    strategyFarmTknAccount: new PublicKey('twNXUQdvGX3QLAt2MwkyJdNfQEaj6yP5MXDv6kzUMUC'),
+    strategyBorrowCreditAccount0: new PublicKey('BJ4Vk7d7TLX1oitgcnkYdg3eSdXGBio74K8YWbHTLsM3'),
+    strategyBorrowCreditAccount1: new PublicKey('4P7KcoNSvDk89YG8AgmaJsne6eKdjc9xewaRUxtUYkah'),
+
+    doubleDipStrategyFarmTknAccount: new PublicKey('EBC67bbgfVNBzH5dbJ1kNYAUk4QdZtnPTs1CJ55WbTrK'),
+    doubleDipStrategyRewardTknAccount: new PublicKey('1hNxbVxzXWk3kf6yzXBzJiCTfN9scFNYWpmJXGyx4bh'),
+    doubleDipStrategyFarmInfo: new PublicKey('9u5eqgeWp6YsbQ5tvFxmr72Vr2RTJDUc6MFRwxGN2QA'),
+
+    strategyRewardsSwapTargetAccount: new PublicKey('DPy8TZZuHyJcvZWhTxjYbcoeksWrpymDjpPh2oz1uZdw'),
+    strategyDoubleDipRewardsSwapTargetAccount: undefined,
+
+    lendingPoolConfig: {
+      programId: new PublicKey("FC81tbGt6JWRXidaWYFXxGnTk4VgobhJHATvTRVMqgWj"),
+      marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
+      marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+      marketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
+
+      "0": {
+        tknMint: TOKENS.USDC.mintAddress, // usdc
+        lendingPoolInfoAccount: new PublicKey("Hx6LbkMHe69DYawhPyVNs8Apa6tyfogfzQV6a7XkwBUU"),
+        lendingPoolTknAccount: new PublicKey("CFp9kt8z3Epb1QSiEp3xA44KbSwuJxhFR3wQoerFqYS9"),
+        lendingPoolFeeAccount: new PublicKey("6h6vVc42moDmRs7KahQpFs8YWL5GfWBrxT9UrsUvpApn"),
+        lendingPoolShareMint: new PublicKey("62fDf5daUJ9jBz8Xtj6Bmw1bh1DvHn8AG4L9hMmxCzpu"),
+        lendingPoolShareAccount: new PublicKey("Gyc1V1xbA9NjzuURE662ATw6W4AdhwvsL26yUnSGhbkz"),
+        lendingPoolCreditMint: new PublicKey("CZ2s85dnuAVyGbRWBNauHZwj9oTV2i9xTvFwc1Cedr7E"),
+        lendingPoolCreditAccount: new PublicKey("Bd71jEvypKFs8N5gByyhD2149tSqLy4PVAzFFShCTJTB"),
+      },
+      "1": {
+        tknMint: TOKENS.BASIS.mintAddress,
+        lendingPoolInfoAccount: new PublicKey('499SnZR7dFzLU6BF9v9obfSCsmgui3FBtYtFDakD89zQ'),
+        lendingPoolTknAccount: new PublicKey('E85Eyi4NmBp2Der1ntoNNx3AH5FHmjp4gGoUPW7qYVJ8'),
+        lendingPoolShareMint: new PublicKey('9s2iRZBzSNCNTUtuzSRHcv3q4Q9SaFFhSFZVnFXGtHUp'),
+        lendingPoolShareAccount: new PublicKey('5phQAZCwdfbYqj1tsv4xYWREpLZuxhqnMaZ126RAfVNb'),
+        lendingPoolCreditMint: new PublicKey('AVRoCxDDfx525L1XJJ5JbKrPPbuHs1JL6Z17vWS3HpKc'),
+        lendingPoolCreditAccount: new PublicKey('FeMzBdYfGJtqeRAadiC4fStY13cjxe6GutTyFCFsP1vL'),
+        lendingPoolFeeAccount: new PublicKey('CtdMN3hrU9yq2GJpojbU1oQZbMXJyuVZYMfNkAPbgaZN'),
+      }
+    },
+
+    ammInfo: {
+      swapProgramId: Orca_Swap_ProgramId,
+      swapPoolId: new PublicKey("9wb29L97MmPp7Nw8oaqiAGkXceETGNQurhySiUNLv5wh"),
+      swapPoolAuthority: new PublicKey("786ezhfHqkmJUBmjrWYGpzPnVWR8zhy2V71qNws7D89z"),
+      lpMint: new PublicKey("GoaAiajubRgeCFEz9L6mLnSmT2QFegoJDH5tpLfivpj"),
+      lpDecimals: 6,
+      swapFeeAccount: new PublicKey("4FjEd37W9FExXq85nLeuNWuhUaTwkFdnqewt3E3qoYAh"),
+      swapTknVault0: new PublicKey("AmP22dYrTsG2LrkQX9cLg79jUrzDJcmWqGEWmM3Mdn46"),
+      swapTknVault1: new PublicKey("7QM71YvJm86bN9RLFoEvyDX8dBgLh2xjnabcHf4d1Q1y"),
+
+      rewardsSwapPoolId: new PublicKey("2p7nYbtPBgtmY69NsE8DAW6szpRJn7tQvDnqvoEWQvjY"),
+      rewardsSwapPoolAuthority: new PublicKey("3fr1AhdiAmWLeNrS24CMoAu9pPgbzVhwLtJ6QUPmw2ob"),
+      rewardsTargetlpMint: new PublicKey("n8Mpu28RjeYD7oUX3LG1tPxzhRZh3YYLRSHcHRdS3Zx"),
+      rewardsSwapfeeAccount: new PublicKey("7CXZED4jfRp3qdHB9Py3up6v1C4UhHofFvfT6RXbJLRN"),
+      rewardsSwapPoolRewardsVault: new PublicKey("9vYWHBPz817wJdQpE8u3h8UoY3sZ16ZXdCcvLB7jY4Dj"),
+      rewardsSwapPoolTargetVault: new PublicKey("6UczejMUv1tzdvUzKpULKHxrK9sqLm8edR1v9jinVWm9"),
+
+      stakeProgramId: Orca_Stake_ProgramId,
+      stakeUserFarmInfoLayout: ORCA_USER_FARM_INFO_ACCOUNT_LAYOUT,
+      stakePoolRewardsMint: TOKENS.ORCA.mintAddress,
+
+      stakePoolFarmInfo: new PublicKey("A8CNiARq7zYMMGKYbqJVfByVyBzdMexhc5EEGzCN13dS"),
+      stakePoolAuthority: new PublicKey("37zeuhxH2ANPw1AQb8jQ8EkZDYoCftDV5qSXM5TGUd6M"),
+      stakePoolFarmTknMint: new PublicKey("4yx2aHMa7N4m1uUaBRy9QPtpstw3HFPtvcCPJQaGFHKL"),
+      stakePoolRewardsTknVault: new PublicKey("2CAFkxSUTSUhVDncagnRXooi6wfeakVhc3WB4bEZF8K7"),
+      stakePoolLpVault: new PublicKey("GtRcfta8aD8BbZqAZV2gaWELSZBe4qKvexTWqSRUvdYw"),
+
+      doubleDipPool: {
+        rewardTknMint: TOKENS.BASIS.mintAddress,
+        doubleDipStakePoolFarmInfo: new PublicKey("DasaXe2Wqcks6csFv1bWwdW41mV8rMD5c27Uw9rFYVu4"),
+        doubleDipStakePoolAuthority: new PublicKey("EWXsQ5XMMn1tesDhtuMhgH5e5wg7hWgsQPZxGhaZdBaL"),
+        doubleDipStakePoolFarmTknMint: new PublicKey("8XtNSYBhLHa4cYzNsXd6yDAweMECumrxFJ7F2qxk2xN"),
+        doubleDipStakePoolRewardsTknVault: new PublicKey("8kmH4C6nek3hLgzVeb3xwXu4oF7zx8emoRnuGjwbwkgp"),
+        doubleDipStakePoolFarmTknVault: new PublicKey("DaHbgd7j9aCmWaidevgPw1YiwnvRt2Q7HYTWVXmeqGmF"),
+        doubleDipRewardsSwapPool: undefined
+      }
+    },
+  },
 };

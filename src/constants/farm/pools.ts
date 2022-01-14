@@ -1969,4 +1969,34 @@ export default [
     },
     isNew: true
   },
+
+  {
+    id: '88',
+    strategyName: 'BASIS-USDC',
+    pair: 'BASIS-USDC',
+    author: 'Francium',
+    from: 'Orca Double-Dip',
+    yieldFarmingAPR: 0,
+    strategyAPR: 0,
+    tradingFeeAPR: 0,
+    borrowAPR: 0,
+    maxLeverage: 3,
+    minLeverage: 1,
+    marketCap: 1333333,
+    lpDecimal: 6,
+    token0: 'USDC',
+    token1: 'BASIS',
+    status: 'active',
+    version: 3,
+    lyfType: 'orca',
+    borrowList: ['USDC'],
+    orca: {
+      tokenBDecimal: 6,
+      isDoubleDip: true,
+      rewardToken: 'BASIS',
+      rewardDecimal: 6,
+      // poolKey: 'USDC/USDT[stable][aquafarm]'
+    },
+    isNew: true
+  },
 ];
