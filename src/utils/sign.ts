@@ -19,6 +19,7 @@ export async function send2TransactionsListOneByOneWithErrorCatch(
   const signed = await wallet.signAllTransactions(trxs);
   console.info('----- Sign end -----');
 
+  const stateInfos: {state: string, msg: string, total: number}[] = [];
   for (let index = 0; index < signed.length; index++) {
     const signedTrx = signed[index];
     const txid = await connection.sendRawTransaction(signedTrx.serialize(), {
@@ -55,11 +56,14 @@ export async function send2TransactionsListOneByOneWithErrorCatch(
       console.info('----- Confirm Timeout -----', err);
       stateInfo.state = 'timeout';
       stateInfo.msg = err?.toString();
+    } finally {
+      stateInfos.push(stateInfo);
     }
 
     console.log('confirmResponse', stateInfo);
     if (onTrxConfirmed) {
       onTrxConfirmed(index, txid, stateInfo);
     }
+    return stateInfos;
   }
 }
