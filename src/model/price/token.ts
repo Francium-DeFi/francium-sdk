@@ -10,9 +10,12 @@ export async function getTokenPrice() {
     }
   });
 
-  const res = {
+  const res: {
+    [x: string]: number
+  } = {
     USDC: 1,
-    USDT: 1
+    USDT: 1,
+    wUST: 1,
   };
 
   forEach(priceMap.data, (value, key) => {
@@ -21,6 +24,6 @@ export async function getTokenPrice() {
     res[targetItem.token] = price;
   });
 
-  res['whETH'] = res['ETH'];
+  res.whETH = res.ETH;
   return res;
 }

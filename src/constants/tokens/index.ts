@@ -124,7 +124,7 @@ export const TOKENS = {
   },
   SRM: {
     symbol: 'SRM',
-    name: 'Serum',
+    name: 'serum',
     mintAddress: new PublicKey('SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt'),
     decimals: 6
   },
@@ -432,6 +432,24 @@ export const TOKENS = {
     symbol: 'BASIS',
     name: 'basis-markets',
     mintAddress: new PublicKey('Basis9oJw9j8cw53oMV7iqsgo6ihi9ALw4QR31rcjUJa'),
+    decimals: 6
+  },
+  GRAPE: {
+    symbol: 'GRAPE',
+    name: 'grape-2',
+    mintAddress: new PublicKey('8upjSpvjcdpuzhfR1zriwg5NXkwDruejqNE9WNbPRtyA'),
+    decimals: 6
+  },
+  wUST: {
+    symbol: 'wUST',
+    name: 'wUST',
+    mintAddress: new PublicKey('9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i'),
+    decimals: 6
+  },
+  wLUNA: {
+    symbol: 'wLUNA',
+    name: 'terra-luna',
+    mintAddress: new PublicKey("F6v4wfAdJB8D8p77bMXZgYt8TDKsYxLYxH5AFhUkYx9W"),
     decimals: 6
   }
 };

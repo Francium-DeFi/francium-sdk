@@ -1999,4 +1999,35 @@ export default [
     },
     isNew: true
   },
+
+  {
+    id: '89',
+    strategyName: 'wUST-USDC',
+    pair: 'wUST-USDC',
+    author: 'Francium',
+    from: 'Orca Double-Dip',
+    yieldFarmingAPR: 0,
+    strategyAPR: 0,
+    tradingFeeAPR: 0,
+    borrowAPR: 0,
+    maxLeverage: 3,
+    minLeverage: 1,
+    marketCap: 1333333,
+    lpDecimal: 6,
+    token0: 'USDC',
+    token1: 'wUST',
+    status: 'active',
+    version: 3,
+    lyfType: 'orca',
+    borrowList: ['USDC'],
+    orca: {
+      tokenBDecimal: 6,
+      isDoubleDip: true,
+      rewardToken: 'wLUNA',
+      rewardDecimal: 6,
+      poolKey: 'wUST/USDC[stable][aquafarm]'
+    },
+    isNew: true,
+    stable: true
+  },
 ];

@@ -202,5 +202,9 @@ export default [
   {
     id: 'basis-markets',
     token: 'BASIS'
+  },
+  {
+    id: 'terra-luna',
+    token: 'wLUNA'
   }
 ];
