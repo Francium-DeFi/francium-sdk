@@ -1,4 +1,4 @@
-import { Connection, PublicKey, Transaction } from "@solana/web3.js";
+import { Connection, Keypair, PublicKey, Transaction } from "@solana/web3.js";
 import { lendingPoolList } from "../constants/lend/pools";
 import { farmPools } from "../constants/farm";
 import {
@@ -12,7 +12,9 @@ import { find } from 'lodash';
 import * as BN from 'bn.js';
 import buildFarmTransactions from "../model/farm/farm";
 import buildWithdrawTransactions from "../model/farm/withdraw";
-import { send2TransactionsListOneByOneWithErrorCatch } from "../utils/sign";
+import { send2TransactionsListOneByOneWithErrorCatch, sendWalletTransaction } from "../utils/sign";
+import { deposit } from "../model/lend/deposit";
+import { withdraw } from "../model/lend/withdraw";
 
 export class FranciumSDK {
   public connection: Connection;
@@ -33,6 +35,50 @@ export class FranciumSDK {
     this.farmHub = new FranciumFarm({ connection: this.connection });
     this.farmPools = farmPools.filter(i => i.version > 2);
     this.getTokenPrice = config.getTokenPrice;
+  }
+
+  public async getLendingDepositTransaction(
+    pool: string,
+    amount: BN,
+    userPublicKey: PublicKey,
+    configs: {
+      noRewards?: boolean;
+    }
+  ) {
+    const {trx, signers} = await deposit(
+      this.connection,
+      new BigNumber(amount.toString()).toNumber(),
+      pool,
+      userPublicKey,
+      configs
+    );
+    return {
+      trx,
+      signers
+    };
+  }
+
+  public async getLendWithdrawTransaction(
+    pool: string,
+    rewardAmount: number,
+    tokenAmount: number,
+    userPublicKey: PublicKey,
+    configs: {
+      noRewards?: boolean;
+    }
+  ) {
+    const {trx, signers} = await withdraw(
+      this.connection,
+      rewardAmount,
+      tokenAmount,
+      pool,
+      userPublicKey,
+      configs
+    );
+    return {
+      trx,
+      signers
+    };
   }
 
   public async getFarmTransactions(
@@ -86,6 +132,19 @@ export class FranciumSDK {
         withdrawType: configs.withdrawType,
         currentUserInfoAccount: configs.currentUserInfoAccount
       }
+    );
+  }
+
+  public async sendSingleTransaction(
+    trx: Transaction,
+    wallet: any,
+    signers?: Keypair[]
+  ) {
+    return sendWalletTransaction(
+      trx,
+      this.connection,
+      wallet,
+      signers
     );
   }
 

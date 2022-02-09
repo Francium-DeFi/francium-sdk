@@ -37,7 +37,7 @@ const fr = new FranciumSDK({
 
 async function farm() {
   // supply 1 USDC, borrow 1 USDC
-  const trxs = fr.getFarmTransactions(
+  const trxs = await fr.getFarmTransactions(
     'SHDW-USDC',
     'orca',
     new PublicKey('23xxxxxxx'),
@@ -62,9 +62,9 @@ const fr = new FranciumSDK({
   connection: new Connection('https://free.rpcpool.com')
 });
 
-async function farm() {
+async function close() {
   // supply 1 USDC, borrow 1 USDC
-  const trxs = fr.getClosePositionTransactions(
+  const trxs = await fr.getClosePositionTransactions(
     'SHDW-USDC',
     'orca',
     new PublicKey('23xxxxxxx'),
@@ -98,6 +98,31 @@ async function getInfo() {
 ```
 
 ## Lend
+
+### Get Lending Transaction
+```javascript
+import { Connection, PublicKey } from '@solana/web3.js';
+import FranciumSDK from 'francium-sdk';
+const fr = new FranciumSDK({
+  connection: new Connection('https://free.rpcpool.com')
+});
+
+async function deposit() {
+  const { trx, signers }  = await frsdk.getLendingDepositTransaction('USDC', new BN(1000000), new PublicKey('23fxxxxxxxxxxxxxxxxxxx'));
+  const { txid, response } = await fr.sendSingleTransaction(trx, wallet, signers);
+  console.log(txid, response);
+}
+
+async function withdraw() {
+  // You can get this value by getUserLendingPosition method
+  const rewardAmount = 1002232;
+  const tokenAmount = 0;
+  const { trx, signers }  = await frsdk.getLendingDepositTransaction('USDC', rewardAmount, tokenAmount, new PublicKey('23fxxxxxxxxxxxxxxxxxxx'));
+  const { txid, response } = await fr.sendSingleTransaction(trx, wallet, signers);
+  console.log(txid, response);
+}
+
+```
 ### Get User Lending Pool
 
 user lending position, the `totalAmount` is the token amount.
@@ -106,23 +131,16 @@ user lending position, the `totalAmount` is the token amount.
 fr.getUserLendingPosition(new PublicKey('23fxxxxxxxxxxxxxxxxxxx'))
   .then((res) => {
     console.log(res);
-    // [
-    //   {
-    //     pool: 'USDC',
-    //     scale: 6,
-    //     totalAmount: 0.100434
-    //   },
-    //   {
-    //     pool: 'SOL',
-    //     scale: 9,
-    //     totalAmount: 0.100434
-    //   },
-    //   {
-    //     pool: 'ORCA',
-    //     scale: 6,
-    //     totalAmount: 0.100434
-    //   }
-    // ]
+      // [
+      //   {   
+      //     balancePosition: 0,
+      //     pool: "USDC",
+      //     rewardPosition: 41354540149,
+      //     scale: 6,
+      //     totalAmount: 50386.25041249344,
+      //     totalPosition: 41354540149,
+      //   }
+      // ]
   })
 ```
 
