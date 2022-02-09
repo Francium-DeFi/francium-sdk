@@ -108,7 +108,7 @@ const fr = new FranciumSDK({
 });
 
 async function deposit() {
-  const { trx, signers }  = await frsdk.getLendingDepositTransaction('USDC', new BN(1000000), new PublicKey('23fxxxxxxxxxxxxxxxxxxx'));
+  const { trx, signers }  = await fr.getLendingDepositTransaction('USDC', new BN(1000000), new PublicKey('23fxxxxxxxxxxxxxxxxxxx'));
   const { txid, response } = await fr.sendSingleTransaction(trx, wallet, signers);
   console.log(txid, response);
 }
@@ -117,7 +117,7 @@ async function withdraw() {
   // You can get this value by getUserLendingPosition method
   const rewardAmount = 1002232;
   const tokenAmount = 0;
-  const { trx, signers }  = await frsdk.getLendingDepositTransaction('USDC', rewardAmount, tokenAmount, new PublicKey('23fxxxxxxxxxxxxxxxxxxx'));
+  const { trx, signers }  = await fr.getLendingDepositTransaction('USDC', rewardAmount, tokenAmount, new PublicKey('23fxxxxxxxxxxxxxxxxxxx'));
   const { txid, response } = await fr.sendSingleTransaction(trx, wallet, signers);
   console.log(txid, response);
 }
