@@ -31,6 +31,32 @@ export async function withdraw(
   let userTokenAccount = userParsedAccount[targetLendInfo.tokenMint.toBase58()]?.tokenAccountAddress;
 
   let newAccount: Keypair;
+
+  // update lending pool info
+  const updateLendingIx0 = new TransactionInstruction({
+    keys: [
+      {
+        pubkey: targetLendInfo.marketInfoAccount,
+        isWritable: true,
+        isSigner: false
+      },
+      {
+        pubkey: targetLendInfo.lendingPoolInfoAccount,
+        isWritable: true,
+        isSigner: false
+      },
+      {
+        pubkey: SYSVAR_CLOCK_PUBKEY,
+        isWritable: false,
+        isSigner: false
+      }
+    ],
+    programId: targetLendInfo.programId,
+    data: Buffer.alloc(1, 12)
+  });
+
+  trx.add(updateLendingIx0);
+
   // WSOL
   if (isNativeMint(targetLendInfo.tokenMint)) {
     const rentExemptLamports =  await connection.getMinimumBalanceForRentExemption(ACCOUNT_LAYOUT.span);

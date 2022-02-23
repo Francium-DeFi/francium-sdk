@@ -232,7 +232,7 @@ export const TOKENS = {
   },
   LIKE: {
     symbol: 'LIKE',
-    name: 'LIKE',
+    name: 'only1',
     mintAddress: new PublicKey("3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR"),
     decimals: 9
   },

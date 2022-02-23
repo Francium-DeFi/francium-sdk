@@ -555,7 +555,12 @@ export class FranciumFarm {
           serumTknVault1: config.raydiumInfo.serumCoinVault,
           serumTknVault0: config.raydiumInfo.serumPCVault,
           serumVaultSinger: config.raydiumInfo.serumVaultSigner
-        }
+        },
+        remainingAccounts: [
+          {pubkey: config.raydiumInfo.serumEventQueue, isSigner:false, isWritable: true},
+          {pubkey: config.raydiumInfo.serumBids, isSigner:false, isWritable: true},
+          {pubkey: config.raydiumInfo.serumAsks, isSigner:false, isWritable: true},
+        ]
       }
     ];
   }
