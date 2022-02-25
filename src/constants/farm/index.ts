@@ -38,6 +38,8 @@ export const activePools = [
   'REAL-USDC[Raydium Fusion Pool]',
   'MBS-USDC[Raydium Fusion Pool]',
   'PRISM-USDC[Raydium Fusion Pool]',
+  'stSOL-USDC[Raydium Fusion Pool]',
+  'stSOL-USDT[Raydium Fusion Pool]',
 
   'RAY-USDC[Raydium Fusion Pool]',
   'RAY-USDT[Raydium Fusion Pool]',
