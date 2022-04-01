@@ -21,7 +21,7 @@ export default {
           "isSigner": false
         },
         {
-          "name": "tokenProgramId",
+          "name": "strategyFeeAccount",
           "isMut": false,
           "isSigner": false
         },
@@ -200,11 +200,6 @@ export default {
           "isSigner": false
         },
         {
-          "name": "strategyFranciumRewardsMint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "strategyFranciumRewardsTkn",
           "isMut": true,
           "isSigner": false
@@ -349,7 +344,7 @@ export default {
       "args": []
     },
     {
-      "name": "setUserPostion",
+      "name": "setPositionStopLoss",
       "accounts": [
         {
           "name": "userMainAccount",
@@ -369,10 +364,46 @@ export default {
       ],
       "args": [
         {
-          "name": "param",
-          "type": {
-            "defined": "SetUserPositionParam"
-          }
+          "name": "stopLossType",
+          "type": "u8"
+        },
+        {
+          "name": "stopLossRatio",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "setPositionRangeStop",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfoAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "rangeStopType",
+          "type": "u8"
+        },
+        {
+          "name": "priceRange0",
+          "type": "u128"
+        },
+        {
+          "name": "priceRange1",
+          "type": "u128"
         }
       ]
     },
@@ -2574,6 +2605,154 @@ export default {
         }
       ],
       "args": []
+    },
+    {
+      "name": "adminClearWithdrawFlag",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "adminRepayBadDebts",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "adminTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "adminTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tknRepay0",
+          "type": "u64"
+        },
+        {
+          "name": "tknRepay1",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "adminBurnBorrowCredit",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "creditMint0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyCreditAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creditMint1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyCreditAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "adminSetFeeAccount",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyFeeAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -2771,13 +2950,8 @@ export default {
             "type": "publicKey"
           },
           {
-            "name": "padding0",
-            "type": {
-              "array": [
-                "u8",
-                32
-              ]
-            }
+            "name": "feeAccount",
+            "type": "publicKey"
           }
         ]
       }
@@ -2892,20 +3066,23 @@ export default {
             "type": "u64"
           },
           {
-            "name": "padding1",
-            "type": {
-              "array": [
-                "u8",
-                19
-              ]
-            }
+            "name": "stopPositionType",
+            "type": "u8"
+          },
+          {
+            "name": "priceRange0",
+            "type": "u128"
+          },
+          {
+            "name": "priceRange1",
+            "type": "u128"
           },
           {
             "name": "padding2",
             "type": {
               "array": [
                 "u8",
-                27
+                13
               ]
             }
           },
@@ -2939,17 +3116,41 @@ export default {
       }
     },
     {
-      "name": "SetUserPositionParam",
+      "name": "PositionStopParam",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "stopLoss",
+            "name": "liquidateType",
             "type": "u8"
           },
           {
-            "name": "takeProfitLine",
+            "name": "stopLossType",
+            "type": "u8"
+          },
+          {
+            "name": "stopLossRatio",
+            "type": "u8"
+          },
+          {
+            "name": "takeProfitType",
+            "type": "u8"
+          },
+          {
+            "name": "takeProfitRatio",
             "type": "u16"
+          },
+          {
+            "name": "rangeStopType",
+            "type": "u8"
+          },
+          {
+            "name": "priceRange0",
+            "type": "u128"
+          },
+          {
+            "name": "priceRange1",
+            "type": "u128"
           }
         ]
       }
@@ -3177,6 +3378,11 @@ export default {
       "code": 1325,
       "name": "AccountNotEmpty",
       "msg": "Account Not Empty"
+    },
+    {
+      "code": 1326,
+      "name": "LeverageTooHigh",
+      "msg": "Leverage Too High"
     }
   ]
 };

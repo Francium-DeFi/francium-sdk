@@ -405,7 +405,7 @@ export const TOKENS = {
     decimals: 6
   },
   stSOL: {
-    tag: 'stSOL',
+    symbol: 'stSOL',
     name: 'lido-staked-sol',
     mintAddress: new PublicKey('7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj'),
     decimals: 9
