@@ -1,3 +1,5 @@
+import { TOKENS } from "../tokens";
+
 export default [
   {
     id: 'ethereum',
@@ -206,5 +208,29 @@ export default [
   {
     id: 'terra-luna',
     token: 'wLUNA'
+  },
+  {
+    id: 'solice',
+    token: 'SLC'
+  },
+  {
+    id: 'meanfi',
+    token: 'MEAN'
+  },
+  {
+    id: 'zebec-protocol',
+    token: 'ZBC'
+  },
+  {
+    id: 'atlas-dex',
+    token: 'ATS'
+  },
+  {
+    id: TOKENS.GST.name,
+    token: 'GST'
+  },
+  {
+    id: TOKENS.GMT.name,
+    token: 'GMT'
   }
 ];

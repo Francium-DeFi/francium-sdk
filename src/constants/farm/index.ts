@@ -44,6 +44,8 @@ export const activePools = [
   'mSOL-USDC[Raydium Fusion Pool]',
   'BTC-stSOL[Raydium Fusion Pool]',
   'whETH-stSOL[Raydium Fusion Pool]',
+  'ZBC-USDC[Raydium Fusion Pool]',
+  'ATS-USDC[Raydium Fusion Pool]',
 
   'RAY-USDC[Raydium Fusion Pool]',
   'RAY-USDT[Raydium Fusion Pool]',
@@ -71,6 +73,8 @@ export const activePools = [
   'BASIS-USDC[Orca Double-Dip]',
   'wUST-USDC[Orca Double-Dip]',
   'stSOL-USDT[Orca Double-Dip]',
+  'SLC-USDC[Orca Double-Dip]',
+  'MEAN-USDC[Orca Double-Dip]',
 
   'ORCA-USDC[Orca Aquafarm]',
   'ORCA-SOL[Orca Aquafarm]',
@@ -85,6 +89,10 @@ export const activePools = [
   'SLND-USDC[Orca Aquafarm]',
   'SOL-USDT[Orca Aquafarm]',
   'ETH-USDC[Orca Aquafarm]',
+  'ORCA-USDT[Orca Aquafarm]',
+  'ORCA-whETH[Orca Aquafarm]',
+  'GST-USDC[Orca Aquafarm]',
+  'GMT-USDC[Orca Aquafarm]',
 
   // strategies
   'whETH-USDC-Strategy-1[Raydium Fusion Pool]',

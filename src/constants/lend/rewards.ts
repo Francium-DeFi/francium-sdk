@@ -320,5 +320,29 @@ export const lendRewardInfo: {
     farmingPoolRewardsTknAccount: new PublicKey('BTgLyeGfjYzA3joa62k78wvsEE3a8eFHhzVoLMTDVPhM'),
     farmingPoolRewardsTknMintB: new PublicKey('Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS'),
     farmingPoolRewardsTknAccountB: new PublicKey('CqsbNDh1im9bJx8rFUCdi72o26sZFNrbvHET3i7mFkzj'),
+  },
+  
+  GST: {
+    programId: lendRewardProgramId,
+    farmingPoolAccount: new PublicKey('FeWUu6GVAvbpvcYqxymDPLsE4bWjtfLsJNg9FFVjQHwb'),
+    farmingPoolAuthority: new PublicKey('AqTdNkV6ZcpgN3QyBH1cSQZx8DHm6AvoHWusrGT9cPiw'),
+    farmingPoolStakeTknMint: new PublicKey('4GDuSZwHUQvL6zga2UNdjgXSqXjcWaUYc4S36N9q4567'),
+    farmingPoolStakeTknAccount: new PublicKey('A2d7G4aNKt4emJHdKpz7fb1C8GCw6gZxA5d9pUF1hxEW'),
+    farmingPoolRewardsTknMint: new PublicKey('Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS'),
+    farmingPoolRewardsTknAccount: new PublicKey('BVRKUs86o7b1tiyGWByag6DtpejxZdvz9BkBRkZv1auh'),
+    farmingPoolRewardsTknMintB: new PublicKey('Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS'),
+    farmingPoolRewardsTknAccountB: new PublicKey('E81P1ip8ynf8q9Y3d365fghEhNgHK5yPcYkiuTF7WjVs'),
+  },
+  
+  GMT: {
+    programId: lendRewardProgramId,
+    farmingPoolAccount: new PublicKey('BvZ4vUfiXRvxcKV6ZiPcZdWJRtRpovMV19nZ1S8WV7JU'),
+    farmingPoolAuthority: new PublicKey('5G8BjukrA9tvU3dsafR95wywdj8vq44pg8TcMSbN1r2z'),
+    farmingPoolStakeTknMint: new PublicKey('9R6toP3xTFBWoqwBY8bfjUj6Tyd5hyR192jY4NeMmkNg'),
+    farmingPoolStakeTknAccount: new PublicKey('DPXP9bkB5A183bfbpHrCYdXpRSEFehWqF4PhpG1P5NtJ'),
+    farmingPoolRewardsTknMint: new PublicKey('Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS'),
+    farmingPoolRewardsTknAccount: new PublicKey('2Bo8GWQoysSTswVPxsMdCFC8fmVP84D7CJPuqfSiKPJd'),
+    farmingPoolRewardsTknMintB: new PublicKey('Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS'),
+    farmingPoolRewardsTknAccountB: new PublicKey('29TsFVuj7ZdFwLUvfBeBt7Wcw5jBGguGi8LGRau9TRaz'),
   }
 };

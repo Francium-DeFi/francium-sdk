@@ -1,5 +1,5 @@
-import { NATIVE_MINT } from "@solana/spl-token";
-import { PublicKey } from "@solana/web3.js";
+import { NATIVE_MINT } from '@solana/spl-token';
+import { PublicKey } from '@solana/web3.js';
 
 export const TOKENS = {
   SOL: {
@@ -233,44 +233,44 @@ export const TOKENS = {
   LIKE: {
     symbol: 'LIKE',
     name: 'only1',
-    mintAddress: new PublicKey("3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR"),
+    mintAddress: new PublicKey('3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR'),
     decimals: 9
   },
   ATLAS: {
     symbol: 'ATLAS',
     name: 'star-atlas',
     decimals: 8,
-    mintAddress: new PublicKey("ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx")
+    mintAddress: new PublicKey('ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx')
   },
   POLIS: {
     symbol: 'POLIS',
     name: 'star-atlas-dao',
     decimals: 8,
-    mintAddress: new PublicKey("poLisWXnNRwC6oBu1vHiuKQzFjGL4XDSu4g9qjz9qVk"),
+    mintAddress: new PublicKey('poLisWXnNRwC6oBu1vHiuKQzFjGL4XDSu4g9qjz9qVk'),
   },
   ORCA: {
     symbol: 'ORCA',
     name: 'orca',
     decimals: 6,
-    mintAddress: new PublicKey("orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE")
+    mintAddress: new PublicKey('orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE')
   },
   mSOL: {
     symbol: 'mSOL',
     name: 'msol',
     decimals: 9,
-    mintAddress: new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So")
+    mintAddress: new PublicKey('mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So')
   },
   MNDE: {
     symbol: 'MNDE',
     name: 'marinade',
     decimals: 9,
-    mintAddress: new PublicKey("MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey")
+    mintAddress: new PublicKey('MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey')
   },
   NINJA: {
     symbol: 'NINJA',
     name: 'ninja-protocol',
     decimals: 6,
-    mintAddress: new PublicKey("FgX1WD9WzMU3yLwXaFSarPfkgzjLb2DZCqmkx9ExpuvJ")
+    mintAddress: new PublicKey('FgX1WD9WzMU3yLwXaFSarPfkgzjLb2DZCqmkx9ExpuvJ')
   },
   whETH: {
     symbol: 'whETH',
@@ -311,67 +311,67 @@ export const TOKENS = {
   weSUSHI: {
     symbol: 'weSUSHI',
     name: 'allbridge',
-    mintAddress: new PublicKey("ChVzxWRmrTeSgwd3Ui3UumcN8KX7VK3WaD4KGeSKpypj"),
+    mintAddress: new PublicKey('ChVzxWRmrTeSgwd3Ui3UumcN8KX7VK3WaD4KGeSKpypj'),
     decimals: 8
   },
   weUNI: {
     symbol: 'weUNI',
     name: 'allbridge',
-    mintAddress: new PublicKey("8FU95xFJhUUkyyCLU13HSzDLs7oC4QZdXQHL6SCeab36"),
+    mintAddress: new PublicKey('8FU95xFJhUUkyyCLU13HSzDLs7oC4QZdXQHL6SCeab36'),
     decimals: 8
   },
   STARS: {
     symbol: 'STARS',
     name: 'starlaunch',
-    mintAddress: new PublicKey("HCgybxq5Upy8Mccihrp7EsmwwFqYZtrHrsmsKwtGXLgW"),
+    mintAddress: new PublicKey('HCgybxq5Upy8Mccihrp7EsmwwFqYZtrHrsmsKwtGXLgW'),
     decimals: 6
   },
   weDYDX: {
     symbol: 'weDYDX',
     name: 'dydx',
-    mintAddress: new PublicKey("4Hx6Bj56eGyw8EJrrheM6LBQAvVYRikYCWsALeTrwyRU"),
+    mintAddress: new PublicKey('4Hx6Bj56eGyw8EJrrheM6LBQAvVYRikYCWsALeTrwyRU'),
     decimals: 8
   },
   weAXS: {
     symbol: 'weAXS',
     name: 'axie-infinity',
-    mintAddress: new PublicKey("HysWcbHiYY9888pHbaqhwLYZQeZrcQMXKQWRqS7zcPK5"),
+    mintAddress: new PublicKey('HysWcbHiYY9888pHbaqhwLYZQeZrcQMXKQWRqS7zcPK5'),
     decimals: 8
   },
   weSHIB: {
     symbol: 'weSHIB',
     name: 'shiba-inu',
-    mintAddress: new PublicKey("CiKu4eHsVrc1eueVQeHn7qhXTcVu95gSQmBpX4utjL9z"),
+    mintAddress: new PublicKey('CiKu4eHsVrc1eueVQeHn7qhXTcVu95gSQmBpX4utjL9z'),
     decimals: 8
   },
   SLND: {
     symbol: 'SLND',
     name: 'solend',
-    mintAddress: new PublicKey("SLNDpmoWTVADgEdndyvWzroNL7zSi1dF9PC3xHGtPwp"),
+    mintAddress: new PublicKey('SLNDpmoWTVADgEdndyvWzroNL7zSi1dF9PC3xHGtPwp'),
     decimals: 6
   },
   weMANA: {
     symbol: 'weMANA',
     name: 'decentraland',
-    mintAddress: new PublicKey("7dgHoN8wBZCc5wbnQ2C47TDnBMAxG4Q5L3KjP67z8kNi"),
+    mintAddress: new PublicKey('7dgHoN8wBZCc5wbnQ2C47TDnBMAxG4Q5L3KjP67z8kNi'),
     decimals: 8
   },
   weSAND: {
     symbol: 'weSAND',
     name: 'the-sandbox',
-    mintAddress: new PublicKey("49c7WuCZkQgc3M4qH8WuEUNXfgwupZf1xqWkDQ7gjRGt"),
+    mintAddress: new PublicKey('49c7WuCZkQgc3M4qH8WuEUNXfgwupZf1xqWkDQ7gjRGt'),
     decimals: 8  
   },
   CAVE: {
     symbol: 'CAVE',
     name: 'cave',
-    mintAddress: new PublicKey("4SZjjNABoqhbd4hnapbvoEPEqT8mnNkfbEoAwALf1V8t"),
+    mintAddress: new PublicKey('4SZjjNABoqhbd4hnapbvoEPEqT8mnNkfbEoAwALf1V8t'),
     decimals: 6  
   },
   GENE: {
     symbol: 'GENE',
     name: 'genopets',
-    mintAddress: new PublicKey("GENEtH5amGSi8kHAtQoezp1XEXwZJ8vcuePYnXdKrMYz"),
+    mintAddress: new PublicKey('GENEtH5amGSi8kHAtQoezp1XEXwZJ8vcuePYnXdKrMYz'),
     decimals: 9
   },
   SONAR: {
@@ -449,7 +449,43 @@ export const TOKENS = {
   wLUNA: {
     symbol: 'wLUNA',
     name: 'terra-luna',
-    mintAddress: new PublicKey("F6v4wfAdJB8D8p77bMXZgYt8TDKsYxLYxH5AFhUkYx9W"),
+    mintAddress: new PublicKey('F6v4wfAdJB8D8p77bMXZgYt8TDKsYxLYxH5AFhUkYx9W'),
     decimals: 6
+  },
+  SLC: {
+    symbol: 'SLC',
+    name: 'solice',
+    mintAddress: new PublicKey('METAmTMXwdb8gYzyCPfXXFmZZw4rUsXX58PNsDg7zjL'),
+    decimals: 6
+  },
+  MEAN: {
+    symbol: 'MEAN',
+    name: 'meanfi',
+    mintAddress: new PublicKey('MEANeD3XDdUmNMsRGjASkSWdC8prLYsoRJ61pPeHctD'),
+    decimals: 6
+  },
+  ZBC: {
+    symbol: 'ZBC',
+    name: 'zebec-protocol',
+    mintAddress: new PublicKey('zebeczgi5fSEtbpfQKVZKCJ3WgYXxjkMUkNNx7fLKAF'),
+    decimals: 9
+  },
+  ATS: {
+    symbol: 'ATS',
+    name: 'atlas-dex',
+    mintAddress: new PublicKey('HJbNXx2YMRxgfUJ6K4qeWtjatMK5KYQT1QnsCdDWywNv'),
+    decimals: 9
+  },
+  GST: {
+    symbol: 'GST',
+    name: 'green-satoshi-token',
+    mintAddress: new PublicKey("AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB"),
+    decimals: 9
+  },
+  GMT: {
+    symbol: 'GMT',
+    name: 'stepn',
+    mintAddress: new PublicKey("7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx"),
+    decimals: 9
   }
 };

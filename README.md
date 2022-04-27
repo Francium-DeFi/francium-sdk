@@ -1,5 +1,7 @@
 # Francium SDK
 
+Javascript sdk of Francium lending pools and farming pools. [Learn more about Francium.](https://docs.francium.io/)
+
 ## Farm
 
 ### Get User Farm Positions

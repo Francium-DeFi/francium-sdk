@@ -264,6 +264,8 @@ export default async function buildFarmTransactions(
       });
       return [ins1, ins2];
     }
+
+    console.log(tokenAmount0, );
   
     // if need transfer sol, transfer sol to wsol
     if (isNativeMint(targetFarmInfo.tknMint0)) {
@@ -272,7 +274,7 @@ export default async function buildFarmTransactions(
         trx.add(...instructions);
       }
     } else if (isNativeMint(targetFarmInfo.tknMint1)) {
-      if (tokenAmount0.gtn(0)) {
+      if (tokenAmount1.gtn(0)) {
         const instructions = transferToWSOL(tokenAmount1, new PublicKey(userTknAccount1), userPublicKey);
         trx.add(...instructions);
       }

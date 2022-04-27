@@ -196,7 +196,7 @@ export async function lendWithReward(
   try {
     await loadLendRewardUserInfo(connection, userFarmInfoPublicKey, targetLendInfo.programId);
   } catch (err) {
-    console.log('loadUserInfo Error', err);
+    // console.log('loadUserInfo Error', err);
     // if not exist, create
     const infokeys = [
       {pubkey: userPublicKey, isWritable: true, isSigner: true},

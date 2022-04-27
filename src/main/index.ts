@@ -1,20 +1,20 @@
-import { Connection, Keypair, PublicKey, Transaction } from "@solana/web3.js";
-import { lendingPoolList } from "../constants/lend/pools";
-import { farmPools } from "../constants/farm";
+import { Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js';
+import { lendingPoolList } from '../constants/lend/pools';
+import { farmPools } from '../constants/farm';
 import {
   getLendingPoolInfo, getTokenPrice, FranciumFarm, getOrcaLPPrice,
   getRaydiumLPPrice, getUserRewardPosition, getLendingPoolBalance
-} from "../model";
+} from '../model';
 import BigNumber from 'bignumber.js';
-import { formatFarmUserPosition } from "../utils/formatters/farm";
-import { aprToApy, getAmountByDecimals } from "../utils/math";
+import { formatFarmUserPosition } from '../utils/formatters/farm';
+import { aprToApy, getAmountByDecimals } from '../utils/math';
 import { find } from 'lodash';
 import * as BN from 'bn.js';
-import buildFarmTransactions from "../model/farm/farm";
-import buildWithdrawTransactions from "../model/farm/withdraw";
-import { send2TransactionsListOneByOneWithErrorCatch, sendWalletTransaction } from "../utils/sign";
-import { deposit } from "../model/lend/deposit";
-import { withdraw } from "../model/lend/withdraw";
+import buildFarmTransactions from '../model/farm/farm';
+import buildWithdrawTransactions from '../model/farm/withdraw';
+import { send2TransactionsListOneByOneWithErrorCatch, sendWalletTransaction } from '../utils/sign';
+import { deposit } from '../model/lend/deposit';
+import { withdraw } from '../model/lend/withdraw';
 
 export class FranciumSDK {
   public connection: Connection;
@@ -35,6 +35,11 @@ export class FranciumSDK {
     this.farmHub = new FranciumFarm({ connection: this.connection });
     this.farmPools = farmPools.filter(i => i.version > 2);
     this.getTokenPrice = config.getTokenPrice;
+  }
+
+  public updateConnection(connection: Connection) {
+    this.connection = connection;
+    this.farmHub.connection = connection;
   }
 
   public async getLendingDepositTransaction(
