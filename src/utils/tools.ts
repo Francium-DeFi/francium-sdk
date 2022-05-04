@@ -9,6 +9,10 @@ export function getTokenDecimals (token: string) {
   return TOKENS[token]?.decimals || 6;
 }
 
+export function getTokenMintAddress(token: string) {
+  return TOKENS[token]?.mintAddress;
+}
+
 export async function findAssociatedTokenAddress(walletAddress: PublicKey, tokenMintAddress: PublicKey) {
   const [publicKey] = await PublicKey.findProgramAddress(
     [walletAddress.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), tokenMintAddress.toBuffer()],

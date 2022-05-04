@@ -264,9 +264,6 @@ export default async function buildFarmTransactions(
       });
       return [ins1, ins2];
     }
-
-    console.log(tokenAmount0, );
-  
     // if need transfer sol, transfer sol to wsol
     if (isNativeMint(targetFarmInfo.tknMint0)) {
       if (tokenAmount0.gtn(0)) {

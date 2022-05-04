@@ -1,5 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 import * as BN from "bn.js";
+import { getTokenMintAddress } from "../tools";
 
 export function formatFarmUserPosition(poolInfo: any, userInfo: any, userInfoPublicKey?: PublicKey) {
   const totalLP = poolInfo?.totalLp;
@@ -21,14 +22,18 @@ export function formatFarmUserPosition(poolInfo: any, userInfo: any, userInfoPub
     priceKey: poolInfo.priceKey,
     lpDecimals: poolInfo.lpDecimals,
     userInfoPublicKey,
+    pcMint: getTokenMintAddress(poolInfo.token0),
+    coinMint: getTokenMintAddress(poolInfo.token1),
     borrowed: [
       {
         symbol: poolInfo.token0,
-        amount: userBorrowed0
+        amount: userBorrowed0,
+        mint: getTokenMintAddress(poolInfo.token0)
       },
       {
         symbol: poolInfo.token1,
-        amount: userBorrowed1
+        amount: userBorrowed1,
+        mint: getTokenMintAddress(poolInfo.token1)
       }
     ]
   };
