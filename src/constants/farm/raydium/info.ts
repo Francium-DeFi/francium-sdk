@@ -4468,4 +4468,97 @@ export const RAYDIUM_FARM_CONFIG = {
     },
   },
 
+  'RAY-whETH': {
+    needsLiquidate: true,
+    needsCompound: true,
+
+    protocolVersion: 1,
+    protocolSubVersion: 2,
+
+    programId: lyfRaydiumProgramId,
+    tknMint0: TOKENS.whETH.mintAddress,
+    tknMint1: TOKENS.RAY.mintAddress,
+    lpMint: new PublicKey("DWk7Xg8q3jotVGuVBteJ31PjdmEn2iyjQTectbrkjBaq"),
+    rewardMint: TOKENS.RAY.mintAddress,
+    rewardMintB: TOKENS.USDC.mintAddress,
+
+    strategyAccount: new PublicKey('8nrEBwtLHb9FwUvtneTSurCJamhXZkZahF5zoDHe6j5m'),
+    strategyAuthority: new PublicKey('4iB1uELx7bWirmoyGGe5kJLT5jD6ix8oTvuVCG2nrcvb'),
+    strategyFarmInfo: new PublicKey('8bWji35XMngAJE21Vzwodxk7JAFnUYs3j1b6mybghNz2'),
+    strategyFeeAccount: new PublicKey('3jM52D7ZKPYBQ7k7FF5Fu2B4dZiSuzfT8Cerx9z344rN'),
+    strategyTknAccount0: new PublicKey('2kT23bTfXtk2nbwjeAaAzWFHun3cwnq4Yszw8DrFvubz'),
+    strategyTknAccount1: new PublicKey('8PQnnmHSN6Po2M9a5ujnsogZprVcN2MpsmZVX6EAnsp2'),
+    strategyLpAccount: new PublicKey('GJ36VZ4Jz86gjytdymNY3rYGgRwvdkxPobAdBqz3aWHy'),
+    strategRewardAccount: new PublicKey('8PQnnmHSN6Po2M9a5ujnsogZprVcN2MpsmZVX6EAnsp2'),
+    strategRewardAccountB: new PublicKey('3KehMsEkMavA8Hch5ZcGKMPMFq9HYhEoxRc1jRvRzabe'),
+    strategyBorrowCreditAccount0: new PublicKey('2aphbMazGByt3Dq6pT1dVafKCXVSXxFCvDSGVmnmia5m'),
+    strategyBorrowCreditAccount1: new PublicKey('B58D3fA6W1C8DikSdV9EkX627pucLNsuVx1T31s4RpzG'),
+
+    strategyRewardsSwapTarget: undefined,
+    strategyRewardsSwapTargetB: undefined,
+
+    stakeUserFarmInfoLayout: USER_STAKE_INFO_ACCOUNT_LAYOUT_V4,
+
+    lendingPoolConfig: {
+      programId: new PublicKey("FC81tbGt6JWRXidaWYFXxGnTk4VgobhJHATvTRVMqgWj"),
+      marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
+      marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+      marketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
+      "0": {
+        tknMint: TOKENS.whETH.mintAddress,
+        lendingPoolInfoAccount: new PublicKey('EEokU6r9bBdTz1umHjGhkjgfikARsJzJBXhYxnTmN4Xk'),
+        lendingPoolTknAccount: new PublicKey('9Mq6KEyW1nF24TcGrdLLfnK2pE5VdMxbY2SZtcP84R5X'),
+        lendingPoolFeeAccount: new PublicKey('EeNLz3tqBogKGs7pbtE556rfQEaV1AtYwKrjo4hHgd5V'),
+        lendingPoolShareMint: new PublicKey('Hk8b6i2C7PxFBPdd1TCrGssuZpCDEg4fh8yFuyHNJuJe'),
+        lendingPoolShareAccount: new PublicKey('FNG4A4GWF1EsQVEjNrQMRT9Dr3H28TycQabtnsQF1MiD'),
+        lendingPoolCreditMint: new PublicKey('7f7mU3tQvxD9t3f5ckhxcGSdwqoHHdWrJg43HXiUFWri'),
+        lendingPoolCreditAccount: new PublicKey('7LvrwstXyshwVn7BPDgjR8Cndersy9GzbbGhyHwQcX3W'),
+      },
+
+      "1": {
+        tknMint: TOKENS.RAY.mintAddress,
+        lendingPoolInfoAccount: new PublicKey("ENZ7vdrvNGdAfVa8DoGpT2GrfoSFUtWKRoesf2dvqpuq"),
+        lendingPoolTknAccount: new PublicKey("BUK8XbZeEqVULYRxGp4Va2R1BRqrYzXDrCVnWt6B7TZf"),
+        lendingPoolFeeAccount: new PublicKey("CbZydUBTvy2xqKshUByMdQR7FQ39EB5n2dyZpFXYDnXm"),
+        lendingPoolShareMint: new PublicKey("5uZERkJVyhCABEdocEssPZyMXYa8GJpLhngi95yXr9jc"),
+        lendingPoolShareAccount: new PublicKey("GrVpvHCRkTHESGwyaj4gtNLn95NAdkBSnZbKusoFumup"),
+        lendingPoolCreditMint: new PublicKey("GZqhoJhN1bz5Frq9GCaUSJ2nimnizXzHwsH12Qgh4YmR"),
+        lendingPoolCreditAccount: new PublicKey("6EZzqDqfTfdoFF4KD1gmki3btEHfULK4SjNcuJMTEDUt"),
+      },
+    },
+
+    raydiumInfo: {
+      raydiumProgramId: LIQUIDITY_POOL_PROGRAM_ID_V4,
+      ammId: new PublicKey("E9Bg7Fg5TVSXge9ADN7fDjsR7MXRKsgq3STJ9aCdZoTZ"),
+      ammAuthority: new PublicKey("5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1"),
+      ammOpenOrders: new PublicKey("CjxJmstrrEWWsSsB5mni7c5xpw318G6RYQedyZNrVmZ3"),
+      ammTargetOrders: new PublicKey("fGmtAtLo69KjY4qdP46muqWk5qct6cXuaxZoaZCBjK6"),
+      lpDecimals: 6,
+
+      ammCoinAccount: new PublicKey("2qjhBJrjrmjcdjefbz2MdPmLWTZygpGJuN4EzN8uTZMX"),
+      ammPcAccount: new PublicKey("9Uxt1Hc9ynje4m6CF8a72fMQWAg9Aw7mYi7Jfk4tpbgt"),
+      poolWithdrawQueue: new PublicKey("7CjLtB7nt1hF3dJkqGR8CSnkuHA2HdtsxTYXPHx9uCH8"),
+      poolTempLpTokenAccount: new PublicKey("BtsLEy8MFUhJQAvXaw8cSXY8PomvpAJ3f6RFQNcabc5Z"),
+      serumProgramId: SERUM_PROGRAM_ID_V3,
+      serumMarketId: new PublicKey("CHRHzGLaQja4dj1ysMmzkNMWGSn7wQbzeuAS6BYYL4rd"),
+      serumBids: new PublicKey("7EgBRZDcWJEZSyHwc2Le2YN62Sq1eL9QD1MqcgMXk89P"),
+      serumAsks: new PublicKey("BRBNSDSsPF136gNgEmrfCfgJPGQFir7HyAQ5g8Hw9xLX"),
+      serumEventQueue: new PublicKey("w8QEaxckzg9Yj5PwbRC3TrCnsJAsiw2kjY1B9AxHid5"),
+      serumCoinVault: new PublicKey("99mCLVgi9x7x6UWyoq7d11EG6q18Q3xkyMWuKdcm4mBN"),
+      serumPCVault: new PublicKey("HQUPs1cv8NWgnwWbftctfpvyLtTPcTJX3NWBp8hqnZKP"),
+      serumVaultSigner: new PublicKey("3a7Ch4e3thFscgvPM5DLfcMAVPZTMJziZdAg6K7xpT7V"),
+
+      stakePoolProgramId: STAKE_PROGRAM_ID_V5,
+      stakePoolId: new PublicKey("CV2WzYEphJnNFfLLRinDo9BqfpT3rRhxEwbaw1RiKnyQ"),
+      stakePoolAuthority: new PublicKey("8ZgRpndiMyVDarZe871ufXCFDbmyZuH4bauEdweiz7iX"),
+      stakePoolLpAccount: new PublicKey("m352YFLtVmNxFnLb9UYkKhXMsNrQW3VerEX1gLqKxK3"),
+      stakePoolRewardAccount: new PublicKey("Di2uxoRXywcZTbHgmn8AKvKa6irxsBXMpeQGbWUkdA6h"),
+      stakePoolRewardAccountB: new PublicKey("9LNn1MTvNaRYyrffJi5xAQ4mzGLpekWqhLmPtTga669B"),
+    },
+
+    rewardsAmmInfo: undefined,
+
+    rewardsAmmInfoB: undefined
+  },
+
 };

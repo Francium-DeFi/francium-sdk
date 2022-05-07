@@ -2399,4 +2399,25 @@ export default [
     },
     isNew: true
   },
+  {
+    id: '105',
+    strategyName: 'RAY-whETH',
+    pair: 'RAY-whETH',
+    author: 'Francium',
+    from: 'Raydium Fusion Pool',
+    yieldFarmingAPR: 0,
+    strategyAPR: 0,
+    tradingFeeAPR: 0,
+    borrowAPR: 0,
+    maxLeverage: 3,
+    minLeverage: 1,
+    lpDecimal: 6,
+    marketCap: 1333333,
+    token0: 'whETH',
+    token1: 'RAY',
+    status: 'active',
+    version: 3,
+    borrowList: ['whETH', 'RAY'],
+    isNew: true
+  },
 ];

@@ -52,6 +52,7 @@ export const activePools = [
   'RAY-SOL[Raydium Fusion Pool]',
   'RAY-ETH[Raydium Fusion Pool]',
   'RAY-SRM[Raydium Fusion Pool]',
+  'RAY-whETH[Raydium Fusion Pool]',
   
   'ATLAS-USDC[Orca Double-Dip]',
   'POLIS-USDC[Orca Double-Dip]',
