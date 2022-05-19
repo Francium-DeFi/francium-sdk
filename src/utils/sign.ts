@@ -56,7 +56,7 @@ export async function send2TransactionsListOneByOneWithErrorCatch(
       // catch and continue
       console.info('----- Confirm Timeout -----', err);
       stateInfo.state = 'timeout';
-      stateInfo.msg = err?.toString();
+      stateInfo.msg = `Transaction was not confirmed in 30 seconds. Bots 🤖️ will help complete unfinished transactions. You could retry manually either.`;
     } finally {
       stateInfos.push(stateInfo);
     }

@@ -84,6 +84,12 @@ export class FranciumFarm {
     return config[pair];
   }
 
+  public getSwapPoolId(pair: string, type = 'raydium') {
+    console.log(pair, type);
+    const config = this.getConfig(pair, type);
+    return config.raydiumInfo?.ammId || config.ammInfo?.swapPoolId;
+  }
+
   public async getUserPositionsAll(userPublicKey: PublicKey | string) {
     let pubkey: any = userPublicKey;
     if (isString(userPublicKey)) {

@@ -1,5 +1,5 @@
 import { ASSOCIATED_TOKEN_PROGRAM_ID, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { AccountInfo, Connection, PublicKey } from "@solana/web3.js";
 import { TOKENS } from "../constants/tokens";
 
 export function getTokenDecimals (token: string) {
@@ -24,7 +24,7 @@ export async function findAssociatedTokenAddress(walletAddress: PublicKey, token
 export async function splitMultipleAccountsInfo(connection: Connection, accountList: PublicKey[]) {
   // getMultipleAccountsInfo MAX is 100;
   const MAX = 100;
-  const info = [];
+  const info: AccountInfo<Buffer>[]  = [];
   const totalSplit = Math.ceil(accountList.length / 100);
   for (let index = 0; index < totalSplit; index++) {
     const accounts = accountList.slice(index * MAX, (index + 1) * MAX);

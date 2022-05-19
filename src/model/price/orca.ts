@@ -1,12 +1,65 @@
 import { BN } from "@project-serum/anchor";
 // import axios from "axios";
-import { forEach } from "lodash";
+import { forEach, map } from "lodash";
 import { ORCA_FARM_CONFIG } from "../../constants/farm/orca/info";
-import { getTokenDecimals } from "../../utils/tools";
+import { getTokenDecimals, splitMultipleAccountsInfo } from "../../utils/tools";
 import { getAmountByDecimals } from '../../utils/math';
 import cacheGet from '../../utils/cacheGet';
-import { FormatLPInfo } from "./types";
-import { Connection } from "@solana/web3.js";
+import { BaseLPInfo, FormatLPInfo } from "./types";
+import { Connection, PublicKey } from "@solana/web3.js";
+import { AccountLayout, u64, MintLayout } from '@solana/spl-token';
+import BigNumber from "bignumber.js";
+
+// export async function getOrcaLPPrice(connection: Connection, priceList: {
+//   [symbol: string]: number
+// }) {
+//   const orcaLpInfo: {
+//     [pool: string]: FormatLPInfo
+//   } = {};
+//   const r = await cacheGet('https://api.orca.so/allPools');
+//   forEach(ORCA_FARM_CONFIG, (value, key) => {
+//     const [coinToken, pcToken] = key.split('-');
+//     const targetKey = value?.orcaPoolId || `${key.replace('-', '/')}[aquafarm]`;
+//     const targetPoolInfo = r.data[targetKey];
+//     if (targetPoolInfo) {
+//       const pcDecimals = getTokenDecimals(pcToken);
+//       const coinDecimals = getTokenDecimals(coinToken);
+//       const lpDecimals = 6;
+//       const pcAmount = new BN(targetPoolInfo.tokenBAmount);
+//       const coinAmount = new BN(targetPoolInfo.tokenAAmount);
+//       const lpTotalSupply = new BN(targetPoolInfo.poolTokenSupply);
+//       const lpKey = value?.alias || key;
+//       const pcCount = getAmountByDecimals(pcAmount, pcDecimals);
+//       const coinCount = getAmountByDecimals(coinAmount, coinDecimals);
+//       const lpAmount = getAmountByDecimals(lpTotalSupply, lpDecimals);
+//       const pcPerLP = pcCount / lpAmount;
+//       const coinPerLP = coinCount / lpAmount;
+//       const price = pcPerLP * priceList[pcToken] + coinPerLP * priceList[coinToken];
+//       let priceAmm = 2 * pcPerLP * priceList[pcToken];      
+//       let coinRelativePrice = pcPerLP / coinPerLP * priceList[pcToken];
+
+//       if (targetKey.includes('stable')) {
+//         priceAmm = price;
+//         coinRelativePrice = priceList[coinToken];
+//       }
+
+//       orcaLpInfo[lpKey] = {
+//         price,
+//         priceAmm,
+//         pcToken,
+//         coinToken,
+//         pcAmount,
+//         coinAmount,
+//         lpDecimals,
+//         lpTotalSupply,
+//         pcPerLP,
+//         coinPerLP,
+//         coinRelativePrice
+//       };
+//     }
+//   });
+//   return orcaLpInfo;
+// }
 
 export async function getOrcaLPPrice(connection: Connection, priceList: {
   [symbol: string]: number
@@ -14,47 +67,88 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
   const orcaLpInfo: {
     [pool: string]: FormatLPInfo
   } = {};
-  const r = await cacheGet('https://api.orca.so/allPools');
-  forEach(ORCA_FARM_CONFIG, (value, key) => {
-    const [coinToken, pcToken] = key.split('-');
-    const targetKey = value?.orcaPoolId || `${key.replace('-', '/')}[aquafarm]`;
-    const targetPoolInfo = r.data[targetKey];
-    if (targetPoolInfo) {
-      const pcDecimals = getTokenDecimals(pcToken);
-      const coinDecimals = getTokenDecimals(coinToken);
-      const lpDecimals = 6;
-      const pcAmount = new BN(targetPoolInfo.tokenBAmount);
-      const coinAmount = new BN(targetPoolInfo.tokenAAmount);
-      const lpTotalSupply = new BN(targetPoolInfo.poolTokenSupply);
-      const lpKey = value?.alias || key;
-      const pcCount = getAmountByDecimals(pcAmount, pcDecimals);
-      const coinCount = getAmountByDecimals(coinAmount, coinDecimals);
-      const lpAmount = getAmountByDecimals(lpTotalSupply, lpDecimals);
-      const pcPerLP = pcCount / lpAmount;
-      const coinPerLP = coinCount / lpAmount;
-      const price = pcPerLP * priceList[pcToken] + coinPerLP * priceList[coinToken];
-      let priceAmm = 2 * pcPerLP * priceList[pcToken];      
-      let coinRelativePrice = pcPerLP / coinPerLP * priceList[pcToken];
 
-      if (targetKey.includes('stable')) {
-        priceAmm = price;
-        coinRelativePrice = priceList[coinToken];
-      }
+  const keysList = [];
+  const LPInfo: {
+    [pool: string]: BaseLPInfo
+  } = {};
+  const info: {
+    [pool: string]: FormatLPInfo
+  } = {};
+  
+  const formattedConfig = map(ORCA_FARM_CONFIG, (value, key) => {
+    const [token1, token0] = key.split('-');
+    const poolKey = value?.alias || key;
+    keysList.push(value?.ammInfo?.swapTknVault0, value?.ammInfo?.swapTknVault1, value?.ammInfo?.lpMint);
+    LPInfo[poolKey] = {
+      pcToken: token0,
+      pcAmount: new BN(0),
+      coinToken: token1,
+      coinAmount: new BN(0),
+      lpTotalSupply: new BN(0),
+      lpDecimals:  6
+    };
+    return {
+      key: value?.alias || key,
+      token0Account: value?.ammInfo?.swapTknVault0,
+      token1Account: value?.ammInfo?.swapTknVault1,
+      lpMint:  value?.ammInfo?.lpMint
+    };
+  });
 
-      orcaLpInfo[lpKey] = {
-        price,
-        priceAmm,
-        pcToken,
-        coinToken,
-        pcAmount,
-        coinAmount,
-        lpDecimals,
-        lpTotalSupply,
-        pcPerLP,
-        coinPerLP,
-        coinRelativePrice
-      };
+  const multipleInfo = await splitMultipleAccountsInfo(connection, keysList);
+
+  multipleInfo.forEach((value, index) => {
+    const configIndex = Math.floor(index / 3);
+    const poolKey = formattedConfig[configIndex].key;
+    // lpMintInfo
+    if (index % 3 === 2) {
+      const info = MintLayout.decode(value.data);
+      LPInfo[poolKey].lpTotalSupply = new BN(u64.fromBuffer(info.supply).toString());
+    } else if (index % 3 === 0){
+      // token0
+      const accountInfo = AccountLayout.decode(value.data);
+      const amount = u64.fromBuffer(accountInfo.amount);
+      LPInfo[poolKey].pcAmount = new BN(amount.toString());
+    } else if (index % 3 === 1) {
+      // token1
+      const accountInfo = AccountLayout.decode(value.data);
+      const amount = u64.fromBuffer(accountInfo.amount);
+      LPInfo[poolKey].coinAmount = new BN(amount.toString());
     }
   });
-  return orcaLpInfo;
+
+  forEach(ORCA_FARM_CONFIG,  (value, key) => {
+    const poolKey = (value as any)?.alias || key;
+    const targetPoolInfo = LPInfo[poolKey];
+    const pcPrice = priceList[targetPoolInfo.pcToken];
+    const coinPrice = priceList[targetPoolInfo.coinToken];
+    const pcDecimals = getTokenDecimals(targetPoolInfo.pcToken);
+    const coinDecimals = getTokenDecimals(targetPoolInfo.coinToken);
+    const pcAmount = getAmountByDecimals(targetPoolInfo.pcAmount, pcDecimals);
+    const coinAmount = getAmountByDecimals(targetPoolInfo.coinAmount, coinDecimals);
+
+    const lpA = new BigNumber(targetPoolInfo.lpTotalSupply.toString());
+    const lpAmount = lpA.div(new BigNumber(10 ** targetPoolInfo.lpDecimals)).toNumber();
+    const pcPerLP = pcAmount / lpAmount;
+    const coinPerLP = coinAmount / lpAmount;
+
+    const price = pcPerLP * pcPrice + coinPerLP * coinPrice;
+    const priceAmm = 2 * pcPerLP * pcPrice;
+    const coinRelativePrice = pcPerLP / coinPerLP * pcPrice;
+
+
+    info[poolKey] = {
+      price,
+      priceAmm,
+      coinRelativePrice,
+      pcPerLP,
+      coinPerLP,
+      ...targetPoolInfo
+    };
+  });
+
+  console.log(info);
+
+  return info;
 }

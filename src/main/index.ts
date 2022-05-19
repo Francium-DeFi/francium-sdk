@@ -116,6 +116,10 @@ export class FranciumSDK {
     );
   }
 
+  public getFarmSwapPoolId(pair: string, platform: string) {
+    return this.farmHub.getSwapPoolId(pair, platform);
+  }
+
   public async getClosePositionTransactions(
     pair: string,
     lyfType: string,
