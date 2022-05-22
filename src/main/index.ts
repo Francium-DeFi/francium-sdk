@@ -24,6 +24,12 @@ export class FranciumSDK {
     [token: string]: number
   }>;
   public tokenPrice;
+  public tokenPriceOnChain: {
+    [token: string]: number
+  } = {
+      USDT: 1,
+      USDC: 1
+    };
 
   constructor(config: {
     connection: Connection;
@@ -50,7 +56,7 @@ export class FranciumSDK {
       noRewards?: boolean;
     }
   ) {
-    const {trx, signers} = await deposit(
+    const { trx, signers } = await deposit(
       this.connection,
       new BigNumber(amount.toString()).toNumber(),
       pool,
@@ -72,7 +78,7 @@ export class FranciumSDK {
       noRewards?: boolean;
     }
   ) {
-    const {trx, signers} = await withdraw(
+    const { trx, signers } = await withdraw(
       this.connection,
       rewardAmount,
       tokenAmount,
@@ -174,20 +180,37 @@ export class FranciumSDK {
 
   public async getTokenPriceInfo() {
     const tokenPriceFunc = this.getTokenPrice || getTokenPrice;
-    const tokenPrice = await tokenPriceFunc();
+    let tokenPrice = {
+      USDT: 1,
+      USDC: 1
+    } as any;
+    try {
+      tokenPrice = await tokenPriceFunc();
+      this.tokenPrice = tokenPrice;
+    } catch (err) {
+
+    }
     this.tokenPrice = tokenPrice;
     return {
       tokenPrice
     };
   }
 
+  public async getOnchainPriceList() {
+    await this.getFarmLPPriceInfo();
+    return this.tokenPriceOnChain;
+  }
+
   public async getFarmLPPriceInfo() {
-    // if (!this.tokenPrice) {
-    await this.getTokenPriceInfo();
-    // }
-    const orcaLPPriceInfo = await getOrcaLPPrice(this.connection,this.tokenPrice);
-    const raydiumLPPriceInfo = await getRaydiumLPPrice(this.connection, this.tokenPrice);
-    return {...orcaLPPriceInfo, ...raydiumLPPriceInfo};
+    const priceList = {
+      USDT: 1,
+      USDC: 1
+    };
+    const orcaLPPriceInfo = await getOrcaLPPrice(this.connection, priceList);
+    const raydiumLPPriceInfo = await getRaydiumLPPrice(this.connection, priceList);
+
+    this.tokenPriceOnChain = priceList;
+    return { ...orcaLPPriceInfo, ...raydiumLPPriceInfo };
   }
 
   public async getLendingPoolInfo() {
@@ -293,7 +316,7 @@ export class FranciumSDK {
     return pools;
   }
 
-  public async getLendingPoolTVL () {
+  public async getLendingPoolTVL() {
     const { tokenPrice } = await this.getTokenPriceInfo();
     const lendingPoolInfos = await this.getLendingPoolInfo();
     const info = lendingPoolInfos.map(info => {

@@ -18,12 +18,16 @@ export async function getTokenPrice() {
     wUST: 1,
   };
 
-  forEach(priceMap.data, (value, key) => {
-    const price = value.usd;
-    const targetItem = tokenList.find(i => i.id === key);
-    res[targetItem.token] = price;
-  });
+  try {
+    forEach(priceMap.data, (value, key) => {
+      const price = value.usd;
+      const targetItem = tokenList.find(i => i.id === key);
+      res[targetItem.token] = price;
+    });
+    res.whETH = res.ETH;
+  } catch (err) {
 
-  res.whETH = res.ETH;
+  }
+
   return res;
 }

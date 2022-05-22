@@ -1,6 +1,6 @@
 import { BN } from "@project-serum/anchor";
 // import axios from "axios";
-import { forEach, map } from "lodash";
+import { find, forEach, map } from "lodash";
 import { ORCA_FARM_CONFIG } from "../../constants/farm/orca/info";
 import { getTokenDecimals, splitMultipleAccountsInfo } from "../../utils/tools";
 import { getAmountByDecimals } from '../../utils/math';
@@ -61,13 +61,32 @@ import BigNumber from "bignumber.js";
 //   return orcaLpInfo;
 // }
 
+export function updatePrice(tokenName: string, priceList: {
+  [symbol: string]: number
+}, LPInfo: {
+  [pool: string]: BaseLPInfo
+}, config?: {
+  LPName?: string;
+  pcPrice?: number;
+  pcDecimals?: number;
+}) {
+  const calcPrice = config?.pcPrice || 1;
+  const calcDecimals = config?.pcDecimals || 6;
+  const lpName = config?.LPName || `${tokenName}-USDC`;
+  const info = LPInfo[lpName];
+  let price = 0;
+  if (info) {
+    const tokenAmount = getAmountByDecimals(info.coinAmount, getTokenDecimals(tokenName));
+    const pcAmount = getAmountByDecimals(info.pcAmount, calcDecimals);
+    price = pcAmount / tokenAmount * calcPrice;
+  }
+  priceList[tokenName] = price;
+  return price;
+}
+
 export async function getOrcaLPPrice(connection: Connection, priceList: {
   [symbol: string]: number
 }) {
-  const orcaLpInfo: {
-    [pool: string]: FormatLPInfo
-  } = {};
-
   const keysList = [];
   const LPInfo: {
     [pool: string]: BaseLPInfo
@@ -118,6 +137,25 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
     }
   });
 
+  // get SOL, mSOL, ETH price
+  if (!priceList.SOL) {
+    updatePrice('SOL', priceList, LPInfo);
+  }
+  if (!priceList.mSOL) {
+    updatePrice('mSOL', priceList, LPInfo);
+  }
+  if (!priceList.whETH) {
+    updatePrice('whETH', priceList, LPInfo);
+  }
+  
+  forEach(LPInfo, (value, key) => {
+    if (value.pcToken === 'USDC') {
+      updatePrice(value.coinToken, priceList, LPInfo, {
+        LPName: key
+      });
+    }
+  });
+
   forEach(ORCA_FARM_CONFIG,  (value, key) => {
     const poolKey = (value as any)?.alias || key;
     const targetPoolInfo = LPInfo[poolKey];
@@ -133,10 +171,13 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
     const pcPerLP = pcAmount / lpAmount;
     const coinPerLP = coinAmount / lpAmount;
 
-    const price = pcPerLP * pcPrice + coinPerLP * coinPrice;
+    let price = pcPerLP * pcPrice + coinPerLP * coinPrice;
     const priceAmm = 2 * pcPerLP * pcPrice;
     const coinRelativePrice = pcPerLP / coinPerLP * pcPrice;
 
+    if (!price) {
+      price = priceAmm;
+    }
 
     info[poolKey] = {
       price,
@@ -147,8 +188,5 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
       ...targetPoolInfo
     };
   });
-
-  console.log(info);
-
   return info;
 }
