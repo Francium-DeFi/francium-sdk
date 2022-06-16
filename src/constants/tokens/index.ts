@@ -487,5 +487,35 @@ export const TOKENS = {
     name: 'stepn',
     mintAddress: new PublicKey("7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx"),
     decimals: 9
+  },
+  prANA: {
+    symbol: 'prANA',
+    name: 'nirvana-ana',
+    mintAddress: new PublicKey("PRAxfbouRoJ9yZqhyejEAH6RvjJ86Y82vfiZTBSM3xG"),
+    decimals: 6
+  },
+  RATIO: {
+    symbol: 'RATIO',
+    name: 'ratio-finance',
+    mintAddress: new PublicKey("ratioMVg27rSZbSvBopUvsdrGUzeALUfFma61mpxc8J"),
+    decimals: 6
+  },
+  TTT: {
+    symbol: 'TTT',
+    name: 'tabtrader',
+    mintAddress: new PublicKey("FNFKRV3V8DtA3gVJN6UshMiLGYA8izxFwkNWmJbFjmRj"),
+    decimals: 6
+  },
+  RUN: {
+    symbol: 'RUN',
+    name: 'run',
+    mintAddress: new PublicKey("6F9XriABHfWhit6zmMUYAQBSy6XK5VF1cHXuW5LDpRtC"),
+    decimals: 9
+  },
+  SLCL: {
+    symbol: 'SLCL',
+    name: 'solcial',
+    mintAddress: new PublicKey("SLCLww7nc1PD2gQPQdGayHviVVcpMthnqUz2iWKhNQV"),
+    decimals: 9
   }
 };

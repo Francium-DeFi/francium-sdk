@@ -46,6 +46,11 @@ export const activePools = [
   'whETH-stSOL[Raydium Fusion Pool]',
   'ZBC-USDC[Raydium Fusion Pool]',
   'ATS-USDC[Raydium Fusion Pool]',
+  'prANA-USDC[Raydium Fusion Pool]',
+  'SLCL-USDC[Raydium Fusion Pool]',
+  'TTT-USDC[Raydium Fusion Pool]',
+  'RUN-USDC[Raydium Fusion Pool]',
+  'RATIO-USDC[Raydium Fusion Pool]',
 
   'RAY-USDC[Raydium Fusion Pool]',
   'RAY-USDT[Raydium Fusion Pool]',

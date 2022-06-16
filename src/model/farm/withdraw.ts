@@ -239,7 +239,7 @@ export default async function buildWithdrawTransactions(
       if (isNativeMint(targetFarmInfo.tknMint0)) {
         trx.add(
           closeAccount({
-            source: userTknAccount0,
+            source: new PublicKey(userTknAccount0),
             destination: userPublicKey,
             owner: userPublicKey
           })
@@ -247,7 +247,7 @@ export default async function buildWithdrawTransactions(
       } else if (isNativeMint(targetFarmInfo.tknMint1)) {
         trx.add(
           closeAccount({
-            source: userTknAccount1,
+            source: new PublicKey(userTknAccount1),
             destination: userPublicKey,
             owner: userPublicKey
           })
@@ -280,7 +280,7 @@ export default async function buildWithdrawTransactions(
       if (isNativeMint(targetFarmInfo.tknMint0)) {
         trx.add(
           closeAccount({
-            source: userTknAccount0,
+            source: new PublicKey(userTknAccount0),
             destination: userPublicKey,
             owner: userPublicKey
           })
@@ -288,7 +288,7 @@ export default async function buildWithdrawTransactions(
       } else if (isNativeMint(targetFarmInfo.tknMint1)) {
         trx.add(
           closeAccount({
-            source: userTknAccount1,
+            source: new PublicKey(userTknAccount1),
             destination: userPublicKey,
             owner: userPublicKey
           })

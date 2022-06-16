@@ -94,8 +94,24 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
   const info: {
     [pool: string]: FormatLPInfo
   } = {};
+
+  const ORCA_EXTRA_CONFIG = {
+    'stSOL-wLDO': {
+      alias: null,
+      ammInfo: {
+        swapTknVault0: new PublicKey('GDprNAcXeR5GVGnCtkS5UqyPGMm2Sy5Lk15qqN36faMT'),
+        swapTknVault1: new PublicKey('VCgdcsExfmxUDQwusLP2xqZ3ap7VuYyQMMHDPSva2hx'),
+        lpMint: new PublicKey('74B9aMS7SA832xKngt5VLKmWAP3pa3qkUzWncTmQSsGF')
+      }
+    }
+  };
+
+  const TOTAL_CONFIG = {
+    ...ORCA_FARM_CONFIG,
+    ...ORCA_EXTRA_CONFIG
+  };
   
-  const formattedConfig = map(ORCA_FARM_CONFIG, (value, key) => {
+  const formattedConfig = map(TOTAL_CONFIG, (value, key) => {
     const [token1, token0] = key.split('-');
     const poolKey = value?.alias || key;
     keysList.push(value?.ammInfo?.swapTknVault0, value?.ammInfo?.swapTknVault1, value?.ammInfo?.lpMint);
@@ -105,7 +121,7 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
       coinToken: token1,
       coinAmount: new BN(0),
       lpTotalSupply: new BN(0),
-      lpDecimals:  6
+      lpDecimals: 6
     };
     return {
       key: value?.alias || key,
@@ -147,6 +163,14 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
   if (!priceList.whETH) {
     updatePrice('whETH', priceList, LPInfo);
   }
+  if (!priceList.wLDO) {
+    console.log(LPInfo);
+    updatePrice('wLDO', priceList, LPInfo, {
+      LPName: 'stSOL-wLDO',
+      pcPrice: priceList.mSOL,
+      pcDecimals: 9
+    });
+  }
   
   forEach(LPInfo, (value, key) => {
     if (value.pcToken === 'USDC') {
@@ -156,7 +180,7 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
     }
   });
 
-  forEach(ORCA_FARM_CONFIG,  (value, key) => {
+  forEach(TOTAL_CONFIG,  (value, key) => {
     const poolKey = (value as any)?.alias || key;
     const targetPoolInfo = LPInfo[poolKey];
     const pcPrice = priceList[targetPoolInfo.pcToken];
