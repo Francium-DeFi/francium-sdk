@@ -164,7 +164,6 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
     updatePrice('whETH', priceList, LPInfo);
   }
   if (!priceList.wLDO) {
-    console.log(LPInfo);
     updatePrice('wLDO', priceList, LPInfo, {
       LPName: 'stSOL-wLDO',
       pcPrice: priceList.mSOL,
