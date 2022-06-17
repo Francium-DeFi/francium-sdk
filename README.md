@@ -12,6 +12,28 @@ import FranciumSDK from 'francium-sdk';
 const fr = new FranciumSDK({
   connection: new Connection('https://free.rpcpool.com')
 });
+
+// Will fetch the LP price info on chain and return equity value.
+fr.getUserFormattedFarmPosition(new PublicKey('23fxxxxxxxxxxxxxxxxxxx'))
+  .then(result => {
+    console.log(result);
+    // [{
+    //   id: 'ORCA-USDC[Orca Aquafarm]',
+    //   lpAmount: BN,
+    //   lpShares: BN,
+    //   lpDecimals: 6,
+    //   userInfoPublicKey: PublicKey,
+    //   borrowed: [{
+    //     symbol: 'USDC',
+    //     amount: BN
+    //   }],
+    //   totalPositionValue: 10,
+    //   debtValue: 6,
+    //   equityValue: 4
+    // }]
+  });
+
+// Only return the amount.
 fr.getUserFarmPosition(new PublicKey('23fxxxxxxxxxxxxxxxxxxx'))
   .then(result => {
     console.log(result);
@@ -47,7 +69,9 @@ async function farm() {
       depositPcAmount: new BN(1000000),
       depositCoinAmount: new BN(0),
       borrowPcAmount: new BN(1000000),
-      borrowCoinAmount: new BN(0)
+      borrowCoinAmount: new BN(0),
+      // Needed when adjust
+      currentUserInfoAccount?: PublicKey
     }
   );
 
@@ -97,6 +121,11 @@ async function getInfo() {
   const lendingPool = await fr.getLendingPoolTVL();
 }
 
+```
+
+### Get Farm LP Info
+```javascript
+fr.getFarmLPPriceInfo();
 ```
 
 ## Lend
