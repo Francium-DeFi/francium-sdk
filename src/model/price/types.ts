@@ -10,6 +10,7 @@ export interface BaseLPInfo {
 }
 
 export interface FormatLPInfo extends BaseLPInfo {
+  type: string;
   price: number;
   priceAmm?: number;
   pcPerLP: number;

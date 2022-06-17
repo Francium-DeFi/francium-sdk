@@ -203,6 +203,7 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
     }
 
     info[poolKey] = {
+      type: 'orca',
       price,
       priceAmm,
       coinRelativePrice,

@@ -192,6 +192,7 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
       }
 
       info[key] = {
+        type: 'raydium',
         price,
         priceAmm,
         coinRelativePrice,

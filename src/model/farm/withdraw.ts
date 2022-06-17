@@ -160,9 +160,9 @@ export default async function buildWithdrawTransactions(
   
     // -------- FORMAT THE TOKENADDRESS, because getParsedTokenAccounts method NATIVE_MINT is SOL Balance
     if (isNativeMint(targetFarmInfo.tknMint0)) {
-      userTknAccount0 = parsedTokenAccounts[NATIVE_MINT.toBase58()].tokenAccountAddress;
+      userTknAccount0 = parsedTokenAccounts[NATIVE_MINT.toBase58()]?.tokenAccountAddress;
     } else if (isNativeMint(targetFarmInfo.tknMint1)) {
-      userTknAccount1 = parsedTokenAccounts[NATIVE_MINT.toBase58()].tokenAccountAddress;
+      userTknAccount1 = parsedTokenAccounts[NATIVE_MINT.toBase58()]?.tokenAccountAddress;
     } else {
       // not include SOL 
     }
