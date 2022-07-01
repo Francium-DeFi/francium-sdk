@@ -75,6 +75,7 @@ export function formatFarmUserPositionByPrice(
     lpShares: userShares,
     priceKey: poolInfo.priceKey,
     lpDecimals: poolInfo.lpDecimals,
+    userInfo,
     userInfoPublicKey,
     pcMint: getTokenMintAddress(poolInfo.token0),
     coinMint: getTokenMintAddress(poolInfo.token1),

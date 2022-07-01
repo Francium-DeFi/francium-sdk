@@ -8,13 +8,16 @@ import {
 import BigNumber from 'bignumber.js';
 import { formatFarmUserPosition, formatFarmUserPositionByPrice } from '../utils/formatters/farm';
 import { aprToApy, getAmountByDecimals } from '../utils/math';
-import { find } from 'lodash';
+import { find, ceil } from 'lodash';
 import * as BN from 'bn.js';
 import buildFarmTransactions from '../model/farm/farm';
 import buildWithdrawTransactions from '../model/farm/withdraw';
 import { send2TransactionsListOneByOneWithErrorCatch, sendWalletTransaction } from '../utils/sign';
+import { SWAP_FEE, rebalanceByEquity } from '../utils/rebalance';
+import { getTokenDecimals } from '../utils/tools';
 import { deposit } from '../model/lend/deposit';
 import { withdraw } from '../model/lend/withdraw';
+import { buildRepayTransactions } from '../model/farm/repay';
 
 export class FranciumSDK {
   public connection: Connection;
@@ -90,6 +93,26 @@ export class FranciumSDK {
       trx,
       signers
     };
+  }
+
+  public async getRepayTransactions(
+    pair: string,
+    lyfType: string,
+    userPublicKey: PublicKey,
+    configs: {
+      amount0: BN;
+      amount1: BN;
+      currentUserInfoAccount: PublicKey;
+    }
+  ) {
+    return buildRepayTransactions(
+      this.connection,
+      pair,
+      lyfType,
+      userPublicKey,
+      this.farmHub,
+      configs
+    );
   }
 
   public async getFarmTransactions(
@@ -383,5 +406,233 @@ export class FranciumSDK {
       };
     });
     return info;
+  }
+
+  public async getRebalanceInfo(userPublicKey: PublicKey, positionPublicKey: string) {
+    const LPPriceList = await this.getFarmLPPriceInfo();
+
+    const getUserFormattedFarmPosition = async () => {
+      const farmInfo = await this.getFarmPoolInfo();
+      const infos = await this.farmHub.getUserPositionsAll(userPublicKey);
+      const raydiumInfos = infos.raydium;
+      const orcaInfos = infos.orca;
+
+      const strategyAccountPools = this.farmPools.map(i => {
+        const targetFarmInfo = this.farmHub.getConfig(i.pair, i.lyfType || 'raydium');
+        return {
+          strategyAccount: targetFarmInfo.strategyAccount,
+          pool: i
+        };
+      });
+
+      const formattedUserInfos = [...raydiumInfos, ...orcaInfos].map(i => {
+        const poolStrategyInfoAccount: PublicKey = i.data.strategyStateAccount;
+        const targetPool = find(strategyAccountPools, target => {
+          return target.strategyAccount.toBase58() === poolStrategyInfoAccount.toBase58();
+        });
+        const targetPoolInfo = find(farmInfo, target => {
+          return target.strategyAccount.toBase58() === poolStrategyInfoAccount.toBase58();
+        });
+        return {
+          ...(targetPool?.pool || {}),
+          userinfo: i.data,
+          userInfoPublicKey: i.publicKey,
+          strategyInfo: targetPoolInfo
+        };
+      });
+
+      const userPositions = formattedUserInfos.filter(
+        i => i.strategyInfo
+      ).map((info) => {
+        if (info) {
+          return formatFarmUserPositionByPrice(
+            info.strategyInfo, info.userinfo, info.userInfoPublicKey, {
+              priceList: this.tokenPriceOnChain,
+              LPPriceList
+            }
+          );
+        }
+        return null;
+      });
+
+      return userPositions;
+    };
+
+    const positions = await getUserFormattedFarmPosition();
+
+    const positionInfo = positions.find(item => item.userInfoPublicKey.toBase58() === positionPublicKey)
+      || positions[0];
+
+    const {
+      lpAmount,
+      equityValue: userEquity,
+      borrowed,
+      priceKey,
+      userInfo,
+    } = positionInfo;
+    const lpInfo = LPPriceList[priceKey];
+    const {
+      coinToken: token1,
+      pcToken: token0,
+    } = lpInfo;
+    const token1Price = lpInfo.coinRelativePrice;
+    const userBorrowed0Amount = getAmountByDecimals(borrowed[0].amount, getTokenDecimals(token0));
+    const userBorrowed0Value = userBorrowed0Amount;
+    const userBorrowed1Amount = getAmountByDecimals(borrowed[1].amount, getTokenDecimals(token1));
+    const userBorrowed1Value = userBorrowed1Amount * token1Price;
+    const pcAmount = getAmountByDecimals(
+      new BigNumber(lpInfo.pcPerLP).multipliedBy(
+        new BigNumber(lpAmount.toNumber())
+      ),
+      lpInfo.lpDecimals);
+
+    console.log('RebalanceSDK params :>> ', {
+      userEquity,
+      token1Price,
+      pcAmount,
+      positionInfo,
+      lpInfo,
+    });
+    const {longPosition, shortPosition} = rebalanceByEquity(
+      userEquity,
+      token1Price,
+      pcAmount,
+    );
+
+    const borrowValue0 = longPosition.stableDebt - userBorrowed0Value;
+    const borrowValue1 = shortPosition.cryptoDebt * token1Price - userBorrowed1Value;
+    // let borrowRatio = borrowValue0 / (borrowValue0 + borrowValue1);
+    let token0ToAdd = 0;
+
+    const rebalanceOptions = {
+      option1: {} as {
+        depositPcAmount: number
+        depositCoinAmount: number
+        borrowPcAmount: number,
+        borrowCoinAmount: number,
+        stopLoss: number,
+      },
+      option2: {} as {
+        withdrawPercent: number
+        // depositPcAmount: number
+        // depositCoinAmount: number
+        borrowPcAmountAfterWithdraw?: number
+        borrowCoinAmountAfterWithdraw?: number
+        stopLoss: number
+      }
+    };
+
+    if (
+      borrowValue0 >= 0 &&
+      borrowValue1 >=0
+    ) {
+      rebalanceOptions.option1 = {
+        depositPcAmount: token0ToAdd,
+        depositCoinAmount: 0,
+        borrowPcAmount: borrowValue0,
+        borrowCoinAmount: borrowValue1 / token1Price,
+        stopLoss: userInfo.stopLoss,
+      };
+    } else {
+      addMore();
+      updateWithdrawConfig();
+    }
+
+    function ceilToken0Amount(num) {
+      return ceil(num, getTokenDecimals(token0));
+    }
+
+    function addMore() {
+      const B = Math.max(2 * userBorrowed0Value, 2/3 * userBorrowed1Value);
+      const S = pcAmount;
+      const S1min = (B + SWAP_FEE * S) / (1 + SWAP_FEE * 3/2);
+      const S1max = 2 / 3 * S;
+      if (S1min <= S1max) {
+        const S1 = S1min;
+        if (S1 - userEquity > 0) {
+          token0ToAdd = ceilToken0Amount(S1 - userEquity);
+        }
+      }
+
+      const S2min = S1max;
+      const S2min2 = (B - SWAP_FEE * S) / (1 - SWAP_FEE * 3/2);
+      const S2 = Math.max(S2min, S2min2);
+
+      if (S2 - userEquity > 0) {
+        token0ToAdd = ceilToken0Amount(S2 - userEquity);
+      }
+
+      const {longPosition, shortPosition} = rebalanceByEquity(
+        userEquity + token0ToAdd,
+        token1Price,
+        pcAmount + token0ToAdd,
+      );
+      const borrowValue0 = longPosition.stableDebt - userBorrowed0Value;
+      const borrowValue1 = shortPosition.cryptoDebt * token1Price - userBorrowed1Value;
+      // borrowRatio = borrowValue0 / (borrowValue0 + borrowValue1);
+      rebalanceOptions.option1 = {
+        depositPcAmount: token0ToAdd,
+        depositCoinAmount: 0,
+        borrowPcAmount: borrowValue0,
+        borrowCoinAmount: borrowValue1 / token1Price,
+        stopLoss: userInfo.stopLoss,
+      };
+    }
+
+    function updateWithdrawConfig() {
+      const A = userEquity - Math.abs(pcAmount - 3 / 2 * userEquity) * SWAP_FEE;
+      const aa = A / 2 / userBorrowed0Value;
+      const bb = A * 3/2 / userBorrowed1Value;
+      const remainPer = Math.min(aa, bb, 1);
+      const {longPosition, shortPosition} = rebalanceByEquity(
+        userEquity,
+        token1Price,
+        pcAmount,
+      );
+      const borrowValue0AfterWithdraw = longPosition.stableDebt - userBorrowed0Value * remainPer;
+      const borrowValue1AfterWithdraw = shortPosition.cryptoDebt * token1Price - userBorrowed1Value * remainPer;
+      // const borrowRatio = borrowValue0 / (borrowValue0 + borrowValue1);
+      rebalanceOptions.option2 = {
+        withdrawPercent: (1 - remainPer) * 100,
+        borrowPcAmountAfterWithdraw: borrowValue0AfterWithdraw,
+        borrowCoinAmountAfterWithdraw: borrowValue1AfterWithdraw / token1Price,
+        stopLoss: userInfo.stopLoss,
+      };
+    }
+
+    return {
+      poolInfo: {
+        token0,
+        token1,
+        lyfType: lpInfo.type,
+      },
+      rebalanceOptions,
+    };
+  }
+
+  public async getRebalanceTransactions(userPublicKey: PublicKey, positionPublicKey: string) {
+    const { poolInfo, rebalanceOptions } = await this.getRebalanceInfo(userPublicKey, positionPublicKey);
+    // console.log('getRebalanceTransactions :>> ', rebalanceOptions);
+    const {
+      token0,
+      token1,
+      lyfType,
+    } = poolInfo;
+    const token0Scale = 10 ** getTokenDecimals(token0);
+    const token1Scale = 10 ** getTokenDecimals(token1);
+    const trxs = await this.getFarmTransactions(
+      `${token1}-${token0}`,
+      lyfType,
+      userPublicKey,
+      {
+        depositPcAmount: new BN(rebalanceOptions.option1.depositPcAmount * token0Scale),
+        depositCoinAmount: new BN(rebalanceOptions.option1.depositCoinAmount * token1Scale),
+        borrowPcAmount: new BN(rebalanceOptions.option1.borrowPcAmount * token0Scale),
+        borrowCoinAmount: new BN(rebalanceOptions.option1.borrowCoinAmount * token1Scale),
+        stopLoss: rebalanceOptions.option1.stopLoss,
+        currentUserInfoAccount: new PublicKey(positionPublicKey),
+      }
+    );
+    return trxs;
   }
 }

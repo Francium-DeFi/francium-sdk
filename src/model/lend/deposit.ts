@@ -88,8 +88,8 @@ export async function deposit(
   }
 
   const keys = [
-    { pubkey: userTokenAccount, isSigner: false, isWritable: true},
-    { pubkey: userCollateralTokenAccount, isSigner: false, isWritable: true},
+    { pubkey: new PublicKey(userTokenAccount), isSigner: false, isWritable: true},
+    { pubkey: new PublicKey(userCollateralTokenAccount), isSigner: false, isWritable: true},
     { pubkey: targetLendInfo.lendingPoolInfoAccount, isSigner: false, isWritable: true},
     { pubkey: targetLendInfo.lendingPoolTknAccount, isSigner: false, isWritable: true},
     { pubkey: targetLendInfo.lendingPoolShareMint, isSigner: false, isWritable: true},

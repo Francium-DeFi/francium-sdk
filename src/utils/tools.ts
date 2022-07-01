@@ -1,5 +1,6 @@
+import { BN } from "@project-serum/anchor";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { AccountInfo, Connection, PublicKey } from "@solana/web3.js";
+import { AccountInfo, Connection, PublicKey, SystemProgram, TransactionInstruction } from "@solana/web3.js";
 import { TOKENS } from "../constants/tokens";
 
 export function getTokenDecimals (token: string) {
@@ -42,4 +43,25 @@ export function isNativeMint (publicKey: PublicKey) {
     return true;
   }
   return false;
+}
+
+export function transferToWSOL(amount: BN, WSOLAccount: PublicKey, userPublicKey: PublicKey) {
+  const ins1 = SystemProgram.transfer(
+    {
+      fromPubkey: userPublicKey,
+      /** Account that will receive transferred lamports */
+      toPubkey: WSOLAccount,
+      /** Amount of lamports to transfer */
+      lamports: Number(amount.toString())
+    }
+  );
+  // update WSOL amount
+  const ins2 = new TransactionInstruction({
+    keys: [
+      { pubkey: WSOLAccount, isSigner: false, isWritable: true }
+    ],
+    programId: TOKEN_PROGRAM_ID,
+    data: Buffer.from([17]),
+  });
+  return [ins1, ins2];
 }

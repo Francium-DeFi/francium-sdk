@@ -5,6 +5,7 @@ import { lendingPools } from './constants/lend/pools';
 import { lendRewardInfo } from './constants/lend/rewards';
 import { getTokenDecimals, splitMultipleAccountsInfo } from './utils/tools';
 import { getAmountByDecimals, getAprInfo } from './utils/math';
+import * as rebalanceKit from './utils/rebalance';
 import priceConfig from './constants/price';
 import { TOKENS } from './constants/tokens';
 import { farmPools } from './constants/farm';
@@ -27,5 +28,6 @@ export const utils = {
   getTokenDecimals,
   getAmountByDecimals,
   splitMultipleAccountsInfo,
-  getAprInfo
+  getAprInfo,
+  rebalanceKit,
 };

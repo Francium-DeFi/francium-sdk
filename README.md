@@ -2,6 +2,8 @@
 
 Javascript sdk of Francium lending pools and farming pools. [Learn more about Francium.](https://docs.francium.io/)
 
+[NPM package](https://www.npmjs.com/package/francium-sdk)
+
 ## Farm
 
 ### Get User Farm Positions
@@ -194,6 +196,36 @@ fr.getLendingPoolInfo()
     //   }
     // ]
   });
+```
+
+### PDN Rebalance
+```js
+import { Connection, PublicKey } from '@solana/web3.js';
+import FranciumSDK from 'francium-sdk';
+const fr = new FranciumSDK({
+  connection: new Connection('https://free.rpcpool.com')
+});
+
+// getRebalanceTransactions and then send trxs(additional collateral may be required)
+async function rebalance() {
+  const trxs = await fr.getRebalanceTransactions(
+    new PublicKey('23xxxxxxx'),
+    targetPosition.userInfoPublicKey.toBase58(), // the userInfoPublicKey string of the target positio, which could be accessible from fr.getUserFarmPosition
+  );
+
+  // sign and send trxs
+  await fr.sendMultipleTransactions(trxs, wallet);
+}
+
+// get rebalance Info
+async function getRebalanceInfo() {
+  const rebalanceInfo = await fr.getRebalanceInfo(
+    new PublicKey('23xxxxxxx'),
+    targetPosition.userInfoPublicKey.toBase58(), // the userInfoPublicKey string of the target positio, which could be accessible from fr.getUserFarmPosition
+  );
+  console.log('rebalanceInfo: ', rebalanceInfo);
+}
+
 ```
 
 
