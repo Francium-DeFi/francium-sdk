@@ -130,6 +130,37 @@ async function getInfo() {
 fr.getFarmLPPriceInfo();
 ```
 
+### PDN Rebalance
+```js
+import { Connection, PublicKey } from '@solana/web3.js';
+import FranciumSDK from 'francium-sdk';
+const fr = new FranciumSDK({
+  connection: new Connection('https://free.rpcpool.com')
+});
+
+// getRebalanceTransactions and then send trxs(additional collateral may be required)
+async function rebalance() {
+  const trxs = await fr.getRebalanceTransactions(
+    new PublicKey('23xxxxxxx'),
+    targetPosition.userInfoPublicKey.toBase58(), // the userInfoPublicKey string of the target positio, which could be accessible from fr.getUserFarmPosition
+  );
+
+  // sign and send trxs
+  await fr.sendMultipleTransactions(trxs, wallet);
+}
+
+// get rebalance Info
+async function getRebalanceInfo() {
+  const rebalanceInfo = await fr.getRebalanceInfo(
+    new PublicKey('23xxxxxxx'),
+    targetPosition.userInfoPublicKey.toBase58(), // the userInfoPublicKey string of the target positio, which could be accessible from fr.getUserFarmPosition
+  );
+  console.log('rebalanceInfo: ', rebalanceInfo);
+}
+
+```
+
+
 ## Lend
 
 ### Get Lending Transaction
@@ -150,7 +181,7 @@ async function withdraw() {
   // You can get this value by getUserLendingPosition method
   const rewardAmount = 1002232;
   const tokenAmount = 0;
-  const { trx, signers }  = await fr.getLendingDepositTransaction('USDC', rewardAmount, tokenAmount, new PublicKey('23fxxxxxxxxxxxxxxxxxxx'));
+  const { trx, signers }  = await fr.getLendWithdrawTransaction('USDC', rewardAmount, tokenAmount, new PublicKey('23fxxxxxxxxxxxxxxxxxxx'));
   const { txid, response } = await fr.sendSingleTransaction(trx, wallet, signers);
   console.log(txid, response);
 }
@@ -196,36 +227,6 @@ fr.getLendingPoolInfo()
     //   }
     // ]
   });
-```
-
-### PDN Rebalance
-```js
-import { Connection, PublicKey } from '@solana/web3.js';
-import FranciumSDK from 'francium-sdk';
-const fr = new FranciumSDK({
-  connection: new Connection('https://free.rpcpool.com')
-});
-
-// getRebalanceTransactions and then send trxs(additional collateral may be required)
-async function rebalance() {
-  const trxs = await fr.getRebalanceTransactions(
-    new PublicKey('23xxxxxxx'),
-    targetPosition.userInfoPublicKey.toBase58(), // the userInfoPublicKey string of the target positio, which could be accessible from fr.getUserFarmPosition
-  );
-
-  // sign and send trxs
-  await fr.sendMultipleTransactions(trxs, wallet);
-}
-
-// get rebalance Info
-async function getRebalanceInfo() {
-  const rebalanceInfo = await fr.getRebalanceInfo(
-    new PublicKey('23xxxxxxx'),
-    targetPosition.userInfoPublicKey.toBase58(), // the userInfoPublicKey string of the target positio, which could be accessible from fr.getUserFarmPosition
-  );
-  console.log('rebalanceInfo: ', rebalanceInfo);
-}
-
 ```
 
 

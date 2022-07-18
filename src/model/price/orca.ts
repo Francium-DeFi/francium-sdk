@@ -98,6 +98,7 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
   const ORCA_EXTRA_CONFIG = {
     'stSOL-wLDO': {
       alias: null,
+      orcaPoolId: '',
       ammInfo: {
         swapTknVault0: new PublicKey('GDprNAcXeR5GVGnCtkS5UqyPGMm2Sy5Lk15qqN36faMT'),
         swapTknVault1: new PublicKey('VCgdcsExfmxUDQwusLP2xqZ3ap7VuYyQMMHDPSva2hx'),
@@ -195,8 +196,14 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
     const coinPerLP = coinAmount / lpAmount;
 
     let price = pcPerLP * pcPrice + coinPerLP * coinPrice;
-    const priceAmm = 2 * pcPerLP * pcPrice;
-    const coinRelativePrice = pcPerLP / coinPerLP * pcPrice;
+    let priceAmm = 2 * pcPerLP * pcPrice;
+    let coinRelativePrice = pcPerLP / coinPerLP * pcPrice;
+
+    // if stable, use real token price
+    if (value.orcaPoolId.includes('[stable]')) {
+      coinRelativePrice = coinPrice;
+      priceAmm = price;
+    }
 
     if (!price) {
       price = priceAmm;
