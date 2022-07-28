@@ -138,11 +138,12 @@ const fr = new FranciumSDK({
   connection: new Connection('https://free.rpcpool.com')
 });
 
-// getRebalanceTransactions and then send trxs(additional collateral may be required)
 async function rebalance() {
-  const trxs = await fr.getRebalanceTransactions(
+  const trxs = await fr.sendRebalanceTransactions(
     new PublicKey('23xxxxxxx'),
     targetPosition.userInfoPublicKey.toBase58(), // the userInfoPublicKey string of the target positio, which could be accessible from fr.getUserFarmPosition
+    wallet,
+    walletAddress,
   );
 
   // sign and send trxs

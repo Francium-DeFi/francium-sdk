@@ -48,8 +48,8 @@ export function formatFarmUserPositionByPrice(
 ) {
   const totalLP = poolInfo?.totalLp;
   const totalShares = poolInfo?.totalShares;
-  const userShares = userInfo?.lpShares;
-  const userLP: BN = totalShares.eq(new BN(0)) ? 0 : userShares.mul(totalLP).div(totalShares);
+  const userShares: BN = userInfo?.lpShares;
+  const userLP: BN = totalShares.eq(new BN(0)) ? new BN(0) : userShares.mul(totalLP).div(totalShares);
   const poolBorrowRate0 = poolInfo?.cumulatedBorrowRate0;
   const userBorrowRate0 = userInfo?.cumulatedBorrowRate0;
   const poolBorrowRate1 = poolInfo?.cumulatedBorrowRate1;

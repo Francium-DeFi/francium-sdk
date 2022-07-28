@@ -297,6 +297,8 @@ export default async function buildWithdrawTransactions(
     }
   
     return {
+      closedAccount: isNativeMint(targetFarmInfo.tknMint0) ? userTknAccount0 :
+        isNativeMint(targetFarmInfo.tknMint1) ? userTknAccount1 : '',
       trx,
       trxPre
     };
@@ -338,16 +340,20 @@ export default async function buildWithdrawTransactions(
     const trx1 = await unstakeLP(connection, pair, lyfType, userPublicKey, lpShares, configs.withdrawType, {
       currentUserInfoAccount: configs.currentUserInfoAccount
     });
-    const { trx: trx2, trxPre } = await swapAndWithdraw(connection, pair, lyfType, userPublicKey, configs.withdrawType, {
+    const { closedAccount, trx: trx2, trxPre } = await swapAndWithdraw(connection, pair, lyfType, userPublicKey, configs.withdrawType, {
       currentUserInfoAccount: configs.currentUserInfoAccount
     });
     const trx3 = await autoRepay(connection, pair, lyfType, userPublicKey);
   
     if (trxPre.instructions.length) {
-      return [trxPre, trx1, trx2, trx3];
+      return {
+        closedAccount,
+        trxs: [trxPre, trx1, trx2, trx3]
+      };
     }
-    return [trx1, trx2, trx3];
+    return {
+      closedAccount,
+      trxs: [trx1, trx2, trx3]
+    };
   }
 }
-
-

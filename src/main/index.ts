@@ -1,4 +1,4 @@
-import { Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js';
+import { Connection, Keypair, PublicKey, Transaction, ParsedInstruction } from '@solana/web3.js';
 import { lendingPoolList } from '../constants/lend/pools';
 import { farmPools } from '../constants/farm';
 import {
@@ -18,6 +18,7 @@ import { getTokenDecimals } from '../utils/tools';
 import { deposit } from '../model/lend/deposit';
 import { withdraw } from '../model/lend/withdraw';
 import { buildRepayTransactions } from '../model/farm/repay';
+import { TOKENS_LIST } from '../index';
 
 export class FranciumSDK {
   public connection: Connection;
@@ -159,7 +160,7 @@ export class FranciumSDK {
       currentUserInfoAccount: PublicKey;
     }
   ) {
-    return buildWithdrawTransactions(
+    const { trxs } = await buildWithdrawTransactions(
       this.connection,
       pair,
       lyfType,
@@ -171,6 +172,7 @@ export class FranciumSDK {
         currentUserInfoAccount: configs.currentUserInfoAccount
       }
     );
+    return trxs;
   }
 
   public async sendSingleTransaction(
@@ -190,7 +192,7 @@ export class FranciumSDK {
     trxs: Transaction[],
     wallet: any,
     onTrxSended?: (index: number, txid: string) => void,
-    onTrxConfirmed?: (index: number, txid: string, stateInfo?: { state: string, msg: string, total?: number }) => void,
+    onTrxConfirmed?: (index: number, txid: string, stateInfo?: { state: string, msg: string, total?: number, signature?: string }) => void,
   ) {
     return send2TransactionsListOneByOneWithErrorCatch(
       trxs,
@@ -464,6 +466,7 @@ export class FranciumSDK {
       || positions[0];
 
     const {
+      lpShares,
       lpAmount,
       equityValue: userEquity,
       borrowed,
@@ -513,7 +516,8 @@ export class FranciumSDK {
         stopLoss: number,
       },
       option2: {} as {
-        withdrawPercent: number
+        // withdrawPercent: number
+        lpSharesToWithdraw: BigNumber,
         // depositPcAmount: number
         // depositCoinAmount: number
         borrowPcAmountAfterWithdraw?: number
@@ -592,8 +596,14 @@ export class FranciumSDK {
       const borrowValue0AfterWithdraw = longPosition.stableDebt - userBorrowed0Value * remainPer;
       const borrowValue1AfterWithdraw = shortPosition.cryptoDebt * token1Price - userBorrowed1Value * remainPer;
       // const borrowRatio = borrowValue0 / (borrowValue0 + borrowValue1);
+      const precise = 6;
+      const ceiledWithdrawPer = (ceil(1 - remainPer, 6) + 0.01) || 0;
+      const lpSharesToWithdraw = new BigNumber(lpShares.toString()).multipliedBy(
+        new BigNumber(ceiledWithdrawPer * (10 ** precise))
+      ).div(new BigNumber(10 ** precise));
+      console.log('lpSharesToWithdraw :>> ', lpShares.toString(), 1 - remainPer, lpSharesToWithdraw.toString());
       rebalanceOptions.option2 = {
-        withdrawPercent: (1 - remainPer) * 100,
+        lpSharesToWithdraw,
         borrowPcAmountAfterWithdraw: borrowValue0AfterWithdraw,
         borrowCoinAmountAfterWithdraw: borrowValue1AfterWithdraw / token1Price,
         stopLoss: userInfo.stopLoss,
@@ -620,8 +630,9 @@ export class FranciumSDK {
     } = poolInfo;
     const token0Scale = 10 ** getTokenDecimals(token0);
     const token1Scale = 10 ** getTokenDecimals(token1);
+    const pair = `${token1}-${token0}`;
     const trxs = await this.getFarmTransactions(
-      `${token1}-${token0}`,
+      pair,
       lyfType,
       userPublicKey,
       {
@@ -634,5 +645,170 @@ export class FranciumSDK {
       }
     );
     return trxs;
+  }
+
+  public async sendRebalanceTransactions(
+    userPublicKey: PublicKey,
+    positionPublicKey: string,
+    wallet: any,
+    walletAddress: string, 
+    onTrxSended?: (index: number, txid: string) => void,
+    onTrxConfirmed?: (index: number, txid: string, stateInfo?: { state: string, msg: string, total?: number, signature?: string }) => void,
+  ) {
+    const { poolInfo, rebalanceOptions } = await this.getRebalanceInfo(userPublicKey, positionPublicKey);
+    console.log('rebalanceOptions :>> ', rebalanceOptions);
+    const {
+      token0,
+      token1,
+      lyfType,
+    } = poolInfo;
+    const token0Scale = 10 ** getTokenDecimals(token0);
+    const token1Scale = 10 ** getTokenDecimals(token1);
+    const pair = `${token1}-${token0}`;
+
+    const sendRebalanceTransactionsOption1 = async () => {
+      if (
+        !rebalanceOptions.option1.depositPcAmount
+        && !rebalanceOptions.option1.depositCoinAmount
+      ) {
+        const trxs = await this.getFarmTransactions(
+          pair,
+          lyfType,
+          userPublicKey,
+          {
+            depositPcAmount: new BN(rebalanceOptions.option1.depositPcAmount * token0Scale),
+            depositCoinAmount: new BN(rebalanceOptions.option1.depositCoinAmount * token1Scale),
+            borrowPcAmount: new BN(rebalanceOptions.option1.borrowPcAmount * token0Scale),
+            borrowCoinAmount: new BN(rebalanceOptions.option1.borrowCoinAmount * token1Scale),
+            stopLoss: rebalanceOptions.option1.stopLoss,
+            currentUserInfoAccount: new PublicKey(positionPublicKey),
+          }
+        );
+
+        return await this.sendMultipleTransactions(
+          trxs,
+          wallet,
+          onTrxSended,
+          onTrxConfirmed,
+        );
+      }
+    };
+
+    const sendRebalanceTransactionsOption2 = async () => {
+      // withdraw and then deposit in
+      const { closedAccount, trxs: withdrawTrxs } = await buildWithdrawTransactions(
+        this.connection,
+        pair,
+        lyfType,
+        userPublicKey,
+        this.farmHub,
+        {
+          lpShares: rebalanceOptions.option2.lpSharesToWithdraw,
+          withdrawType: 2, // minimize trading
+          currentUserInfoAccount: new PublicKey(positionPublicKey),
+        }
+      );
+
+      await this.sendMultipleTransactions(
+        withdrawTrxs,
+        wallet,
+        undefined,
+        async (index: number, txid: string, stateInfo) => {
+          const total = stateInfo?.total;
+          const lastIndex = total - 2;
+          if (index === lastIndex && txid && stateInfo.state === 'success') {
+            const txInfo = await this.connection.getParsedConfirmedTransaction(stateInfo.signature, 'confirmed');
+            console.log(`withdraw txInfo ${index}:>> `, txInfo);
+            const token0MintAddr = TOKENS_LIST[token0].mintAddress.toBase58();
+            const token1MintAddr = TOKENS_LIST[token1].mintAddress.toBase58();
+            const token0Before = txInfo?.meta?.preTokenBalances?.find(
+              (item) => (item as any).owner === walletAddress && item.mint === token0MintAddr
+            )?.uiTokenAmount;
+            const token1Before = txInfo?.meta?.preTokenBalances?.find(
+              (item) => (item as any).owner === walletAddress && item.mint === token1MintAddr
+            )?.uiTokenAmount;
+            const token0After = txInfo?.meta?.postTokenBalances?.find(
+              (item) => (item as any).owner === walletAddress && item.mint === token0MintAddr
+            )?.uiTokenAmount;
+            const token1After = txInfo?.meta?.postTokenBalances?.find(
+              (item) => (item as any).owner === walletAddress && item.mint === token1MintAddr
+            )?.uiTokenAmount;
+
+            let token0Change = (token0Before && token0After) ? new BigNumber(token0After.amount).minus(new BigNumber(token0Before.amount))
+              .div(new BigNumber(10 ** token0After.decimals)).toNumber() : 0;
+            let token1Change = (token1Before && token1After) ? new BigNumber(token1After.amount).minus(new BigNumber(token1Before.amount))
+              .div(new BigNumber(10 ** token1After.decimals)).toNumber() : 0;
+
+            // WSOL => SOL
+            console.log('closedAccount :>> ', closedAccount);
+            let WSOLChange = 0;
+            if (closedAccount) {
+              const waitParsed = () => {
+                return new Promise(resolve => {
+                  const timer = setInterval(() => {
+                    const innerInstructionsAllParsed = txInfo.meta.innerInstructions.every(innerInstruction => {
+                      return innerInstruction.instructions.every((item: ParsedInstruction) => !item.program || !!item.parsed);
+                    });
+                    if (innerInstructionsAllParsed) {
+                      clearInterval(timer);
+                      resolve(1);
+                    }
+                  }, 50);
+                });
+              };
+              await waitParsed();
+              txInfo.meta.innerInstructions.forEach(innerInstruction => {
+                innerInstruction.instructions.forEach((item: ParsedInstruction) => {
+                  if (item.parsed?.info?.destination === closedAccount) {
+                    WSOLChange = new BigNumber(item?.parsed?.info?.amount).div(new BigNumber(10 ** getTokenDecimals('SOL'))).toNumber();
+                  }
+                });
+              });
+              if (token0 === 'SOL') {
+                token0Change += WSOLChange;
+              }
+              if (token1 === 'SOL') {
+                token1Change += WSOLChange;
+              }
+            }
+            console.log('balance change:>> ', {
+              token0After, token0Before, token1After, token1Before,
+              token0Change, token1Change, WSOLChange,
+            });
+            // if (token0Change || token1Change) {
+            //   setReceivedAssets([token0Change, token1Change]);
+            // }
+            const trxs = await this.getFarmTransactions(
+              pair,
+              lyfType,
+              userPublicKey,
+              {
+                depositPcAmount: new BN(token0Change * token0Scale),
+                depositCoinAmount: new BN(token1Change * token1Scale),
+                borrowPcAmount: new BN(rebalanceOptions.option2.borrowPcAmountAfterWithdraw * token0Scale),
+                borrowCoinAmount: new BN(rebalanceOptions.option2.borrowCoinAmountAfterWithdraw * token1Scale),
+                stopLoss: rebalanceOptions.option2.stopLoss,
+                currentUserInfoAccount: new PublicKey(positionPublicKey),
+              }
+            );
+            return await this.sendMultipleTransactions(
+              trxs,
+              wallet,
+              onTrxSended,
+              onTrxConfirmed,
+            );
+          }
+        }
+      );
+    };
+
+    if (
+      !rebalanceOptions.option1.depositPcAmount
+      && !rebalanceOptions.option1.depositCoinAmount
+    ) {
+      return sendRebalanceTransactionsOption1();
+    } else {
+      return sendRebalanceTransactionsOption2();
+    }
   }
 }

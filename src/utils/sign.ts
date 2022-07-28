@@ -1,4 +1,5 @@
 import { Connection, Keypair, Transaction } from "@solana/web3.js";
+import * as base58 from 'bs58';
 
 export async function send2TransactionsListOneByOneWithErrorCatch(
   trxs: Transaction[], connection: Connection, wallet: any,
@@ -35,6 +36,7 @@ export async function send2TransactionsListOneByOneWithErrorCatch(
     const stateInfo = {
       state: 'success',
       msg: '',
+      signature: base58.encode(signedTrx.signature),
       total: signed.length
     };
     try {
@@ -87,7 +89,7 @@ export async function sendWalletTransaction(
     preflightCommitment: 'confirmed'
   });
   console.log('start confirm', txid);
-  const r = await connection.confirmTransaction(txid, 'finalized');
+  const r = await connection.confirmTransaction(txid, 'confirmed');
   console.log('trx confirmed', r, txid);
   return { txid, response: r };
 }
