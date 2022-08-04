@@ -199,6 +199,8 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
     let priceAmm = 2 * pcPerLP * pcPrice;
     let coinRelativePrice = pcPerLP / coinPerLP * pcPrice;
 
+    const tvl = getAmountByDecimals(targetPoolInfo.lpTotalSupply, targetPoolInfo.lpDecimals) * priceAmm;
+
     // if stable, use real token price
     if (value.orcaPoolId.includes('[stable]')) {
       coinRelativePrice = coinPrice;
@@ -216,6 +218,7 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
       coinRelativePrice,
       pcPerLP,
       coinPerLP,
+      tvl,
       ...targetPoolInfo
     };
   });

@@ -16,4 +16,5 @@ export interface FormatLPInfo extends BaseLPInfo {
   pcPerLP: number;
   coinPerLP: number;
   coinRelativePrice: number;
+  tvl: number;
 }

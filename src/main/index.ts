@@ -287,7 +287,11 @@ export class FranciumSDK {
       i => i.strategyInfo
     ).map((info) => {
       if (info) {
-        return formatFarmUserPosition(info.strategyInfo, info.userinfo, info.userInfoPublicKey);
+        const type = info.lyfType || 'raydium';
+        return {
+          type,
+          ...formatFarmUserPosition(info.strategyInfo, info.userinfo, info.userInfoPublicKey)
+        };
       }
       return null;
     });
@@ -331,12 +335,16 @@ export class FranciumSDK {
       i => i.strategyInfo
     ).map((info) => {
       if (info) {
-        return formatFarmUserPositionByPrice(
-          info.strategyInfo, info.userinfo, info.userInfoPublicKey, {
-            priceList: this.tokenPriceOnChain,
-            LPPriceList
-          }
-        );
+        const type = info.lyfType || 'raydium';
+        return {
+          type,
+          ...formatFarmUserPositionByPrice(
+            info.strategyInfo, info.userinfo, info.userInfoPublicKey, {
+              priceList: this.tokenPriceOnChain,
+              LPPriceList
+            }
+          )
+        };
       }
       return null;
     });
@@ -651,10 +659,10 @@ export class FranciumSDK {
     userPublicKey: PublicKey,
     positionPublicKey: string,
     wallet: any,
-    walletAddress: string, 
     onTrxSended?: (index: number, txid: string) => void,
     onTrxConfirmed?: (index: number, txid: string, stateInfo?: { state: string, msg: string, total?: number, signature?: string }) => void,
   ) {
+    const walletAddress = userPublicKey.toBase58();
     const { poolInfo, rebalanceOptions } = await this.getRebalanceInfo(userPublicKey, positionPublicKey);
     console.log('rebalanceOptions :>> ', rebalanceOptions);
     const {
@@ -746,7 +754,7 @@ export class FranciumSDK {
               const waitParsed = () => {
                 return new Promise(resolve => {
                   const timer = setInterval(() => {
-                    const innerInstructionsAllParsed = txInfo.meta.innerInstructions.every(innerInstruction => {
+                    const innerInstructionsAllParsed = txInfo?.meta?.innerInstructions?.every(innerInstruction => {
                       return innerInstruction.instructions.every((item: ParsedInstruction) => !item.program || !!item.parsed);
                     });
                     if (innerInstructionsAllParsed) {
@@ -757,8 +765,8 @@ export class FranciumSDK {
                 });
               };
               await waitParsed();
-              txInfo.meta.innerInstructions.forEach(innerInstruction => {
-                innerInstruction.instructions.forEach((item: ParsedInstruction) => {
+              txInfo?.meta?.innerInstructions?.forEach(innerInstruction => {
+                innerInstruction.instructions?.forEach((item: ParsedInstruction) => {
                   if (item.parsed?.info?.destination === closedAccount) {
                     WSOLChange = new BigNumber(item?.parsed?.info?.amount).div(new BigNumber(10 ** getTokenDecimals('SOL'))).toNumber();
                   }

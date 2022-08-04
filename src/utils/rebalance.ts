@@ -25,7 +25,7 @@ export function rebalanceByEquity(
   
     const swapAmount = Math.abs(prevTotalStableAmount - userEquity * 3 / 2);
     // console.log(`swap ${swapAmount} USDC`);
-    loss = swapAmount * SWAP_FEE; 
+    loss = swapAmount * SWAP_FEE;
   }
 
   // long Info
