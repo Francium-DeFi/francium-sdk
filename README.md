@@ -139,15 +139,11 @@ const fr = new FranciumSDK({
 });
 
 async function rebalance() {
-  const trxs = await fr.sendRebalanceTransactions(
+  await fr.sendRebalanceTransactions(
     new PublicKey('23xxxxxxx'),
     targetPosition.userInfoPublicKey.toBase58(), // the userInfoPublicKey string of the target positio, which could be accessible from fr.getUserFarmPosition
     wallet,
-    walletAddress,
   );
-
-  // sign and send trxs
-  await fr.sendMultipleTransactions(trxs, wallet);
 }
 
 // get rebalance Info
