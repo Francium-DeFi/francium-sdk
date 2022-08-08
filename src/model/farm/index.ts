@@ -114,7 +114,7 @@ export class FranciumFarm {
         program.programId,
         {
           filters: [
-            { dataSize: program.account.userInfo.size + 1 },
+            { dataSize: 285 },
             {
               memcmp: {
                 offset: 8 + 1 + 8 + 32,
