@@ -58,6 +58,7 @@ export class FranciumSDK {
     userPublicKey: PublicKey,
     configs: {
       noRewards?: boolean;
+      mintStSol?: boolean;
     }
   ) {
     const { trx, signers } = await deposit(
@@ -402,17 +403,22 @@ export class FranciumSDK {
     const { tokenPrice } = await this.getTokenPriceInfo();
     const lendingPoolInfos = await this.getLendingPoolInfo();
     const info = lendingPoolInfos.map(info => {
-      const availableAmount = info.avaliableAmount;
-      const totalAmount = info.totalAmount;
+      const availableAmountBN = info.avaliableAmount;
+      const totalAmountBN = info.totalAmount;
       const price = tokenPrice[info.pool];
-      const liquidityLocked = getAmountByDecimals(totalAmount, info.scale) * price;
-      const available = getAmountByDecimals(availableAmount, info.scale) * price;
+      const totalAmount = getAmountByDecimals(totalAmountBN, info.scale);
+      const availableAmount = getAmountByDecimals(availableAmountBN, info.scale);
+      const liquidityLocked = totalAmount * price;
+      const available = availableAmount * price;
       return {
         id: info.pool,
         apy: info.apy,
         borrowApr: info.borrowInterest,
         liquidityLocked,
-        available
+        available,
+        price,
+        totalAmount,
+        availableAmount
       };
     });
     return info;

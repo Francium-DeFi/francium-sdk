@@ -85,7 +85,6 @@ export class FranciumFarm {
   }
 
   public getSwapPoolId(pair: string, type = 'raydium') {
-    console.log(pair, type);
     const config = this.getConfig(pair, type);
     return config.raydiumInfo?.ammId || config.ammInfo?.swapPoolId;
   }
@@ -109,31 +108,27 @@ export class FranciumFarm {
       publicKey: PublicKey;
       data: any;
     }[] = [];
-    try {
-      const infos = await this.connection.getProgramAccounts(
-        program.programId,
-        {
-          filters: [
-            { dataSize: 285 },
-            {
-              memcmp: {
-                offset: 8 + 1 + 8 + 32,
-                bytes: userPublicKey.toBase58()
-              }
+    const infos = await this.connection.getProgramAccounts(
+      program.programId,
+      {
+        filters: [
+          { dataSize: 285 },
+          {
+            memcmp: {
+              offset: 8 + 1 + 8 + 32,
+              bytes: userPublicKey.toBase58()
             }
-          ]
-        }
-      );
-      infos.forEach((item, index) => {
-        const userInfo = program.coder.accounts.decode('UserInfo', item.account.data);
-        decodeResult.push({
-          publicKey: item.pubkey,
-          data: userInfo
-        });
+          }
+        ]
+      }
+    );
+    infos.forEach((item, index) => {
+      const userInfo = program.coder.accounts.decode('UserInfo', item.account.data);
+      decodeResult.push({
+        publicKey: item.pubkey,
+        data: userInfo
       });
-    } catch (err) {
-
-    }
+    });
     return decodeResult;
   }
 

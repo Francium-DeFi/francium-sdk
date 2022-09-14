@@ -8,6 +8,8 @@ import { lendingPools, LendInfoItem } from '../../constants/lend/pools';
 import { lendRewardInfo, LendRewardInfo } from '../../constants/lend/rewards';
 import { findUserLendRewardAddress, loadLendRewardUserInfo } from "./utils";
 import { ACCOUNT_LAYOUT } from "../../constants/price/layout";
+import mintStSol, { addReferral, getStSolExchangeRate } from "./mintStSol";
+import { BN } from "bn.js";
 
 const SYSTEM_PROGRAM_ID = SystemProgram.programId;
 
@@ -17,7 +19,8 @@ export async function deposit(
   pool: string,
   userPublicKey: PublicKey,
   configs?: {
-    noRewards?: boolean
+    noRewards?: boolean,
+    mintStSol?: boolean;
   }) {
   const targetLendInfo: LendInfoItem = lendingPools[pool];
   if (!targetLendInfo) {
@@ -59,7 +62,7 @@ export async function deposit(
 
   // WSOL
   if (isNativeMint(targetLendInfo.tokenMint)) {
-    const rentExemptLamports =  await connection.getMinimumBalanceForRentExemption(ACCOUNT_LAYOUT.span);
+    const rentExemptLamports = await connection.getMinimumBalanceForRentExemption(ACCOUNT_LAYOUT.span);
     newAccount = Keypair.generate();
     trx.add(
       SystemProgram.createAccount({
@@ -87,17 +90,29 @@ export async function deposit(
     userCollateralTokenAccount = pk.toBase58();
   }
 
+  let exchangeRate = 1;
+  if (configs?.mintStSol) {
+    if (!userTokenAccount) {
+      const pk = await createAssociatedTokenAccount(targetLendInfo.tokenMint, userPublicKey, trx);
+      userTokenAccount = pk.toBase58();
+    }
+    const mintIx = mintStSol(userPublicKey, new PublicKey(userTokenAccount), new BN(amount));
+    const addIx = addReferral(userPublicKey);
+    trx.add(mintIx, addIx);
+    exchangeRate = await getStSolExchangeRate(connection);
+  }
+
   const keys = [
-    { pubkey: new PublicKey(userTokenAccount), isSigner: false, isWritable: true},
-    { pubkey: new PublicKey(userCollateralTokenAccount), isSigner: false, isWritable: true},
-    { pubkey: targetLendInfo.lendingPoolInfoAccount, isSigner: false, isWritable: true},
-    { pubkey: targetLendInfo.lendingPoolTknAccount, isSigner: false, isWritable: true},
-    { pubkey: targetLendInfo.lendingPoolShareMint, isSigner: false, isWritable: true},
-    { pubkey: targetLendInfo.marketInfoAccount, isSigner: false, isWritable: true},
-    { pubkey: targetLendInfo.lendingMarketAuthority, isSigner: false, isWritable: true},
-    { pubkey: userPublicKey, isSigner: true, isWritable: true},
-    { pubkey: SYSVAR_CLOCK_PUBKEY, isSigner: false, isWritable: false},
-    { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false}
+    { pubkey: new PublicKey(userTokenAccount), isSigner: false, isWritable: true },
+    { pubkey: new PublicKey(userCollateralTokenAccount), isSigner: false, isWritable: true },
+    { pubkey: targetLendInfo.lendingPoolInfoAccount, isSigner: false, isWritable: true },
+    { pubkey: targetLendInfo.lendingPoolTknAccount, isSigner: false, isWritable: true },
+    { pubkey: targetLendInfo.lendingPoolShareMint, isSigner: false, isWritable: true },
+    { pubkey: targetLendInfo.marketInfoAccount, isSigner: false, isWritable: false },
+    { pubkey: targetLendInfo.lendingMarketAuthority, isSigner: false, isWritable: false },
+    { pubkey: userPublicKey, isSigner: true, isWritable: false },
+    { pubkey: SYSVAR_CLOCK_PUBKEY, isSigner: false, isWritable: false },
+    { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false }
   ];
 
   const commandDataLayout = BufferLayout.struct([
@@ -107,10 +122,12 @@ export async function deposit(
 
   let data = Buffer.alloc(1024);
 
+  console.log(Math.trunc(amount * exchangeRate));
+
   const encodeLength = commandDataLayout.encode(
     {
       instruction: 4, // InitSavingMarket instruction
-      tkn_amount: amount
+      tkn_amount: configs?.mintStSol ? new BN(Math.trunc(amount * exchangeRate)) : amount
     },
     data
   );
@@ -134,7 +151,7 @@ export async function deposit(
   }
 
   if (hasRewards) {
-    await lendWithReward(connection, 0, pool, userPublicKey, trx);
+    await lendWithReward(connection, 0, pool, userPublicKey, trx, configs?.mintStSol);
   }
 
   const signers = newAccount ? [newAccount] : null;
@@ -151,7 +168,8 @@ export async function lendWithReward(
   amount: number,
   pool: string,
   userPublicKey: PublicKey,
-  trx?: Transaction
+  trx?: Transaction,
+  mintStSol?: boolean
 ) {
   const targetLendInfo: LendRewardInfo = lendRewardInfo[pool];
   if (!targetLendInfo) {
@@ -176,15 +194,18 @@ export async function lendWithReward(
 
   // accountB for other reward, not now
   let userRewardsAccountB = userRewardsAccount;
-  // if accountb not equal a
-  if (targetLendInfo.farmingPoolRewardsTknMintB.toBase58() !== targetLendInfo.farmingPoolRewardsTknMint.toBase58()) {
-    userRewardsAccountB = userParsedAccount[targetLendInfo.farmingPoolRewardsTknMintB.toBase58()]?.tokenAccountAddress;
-    if (!userRewardsAccountB) {
-      const pk = await createAssociatedTokenAccount(targetLendInfo.farmingPoolRewardsTknMintB, userPublicKey, trx);
-      userRewardsAccountB = pk.toBase58();
+  if (mintStSol) {
+    // stsol do not need create rewardsB account
+  } else {
+    // if accountb not equal a
+    if (targetLendInfo.farmingPoolRewardsTknMintB.toBase58() !== targetLendInfo.farmingPoolRewardsTknMint.toBase58()) {
+      userRewardsAccountB = userParsedAccount[targetLendInfo.farmingPoolRewardsTknMintB.toBase58()]?.tokenAccountAddress;
+      if (!userRewardsAccountB) {
+        const pk = await createAssociatedTokenAccount(targetLendInfo.farmingPoolRewardsTknMintB, userPublicKey, trx);
+        userRewardsAccountB = pk.toBase58();
+      }
     }
   }
-
 
   const userFarmInfoPublicKey = await findUserLendRewardAddress(
     userPublicKey,
@@ -199,14 +220,14 @@ export async function lendWithReward(
     // console.log('loadUserInfo Error', err);
     // if not exist, create
     const infokeys = [
-      {pubkey: userPublicKey, isWritable: true, isSigner: true},
-      {pubkey: userFarmInfoPublicKey, isWritable: true, isSigner: false},
-      {pubkey: targetLendInfo.farmingPoolAccount, isWritable: true, isSigner: false},
-      {pubkey: new PublicKey(userStakeTokenAccount), isWritable: true, isSigner: false},
-      {pubkey: new PublicKey(userRewardsAccount), isWritable: true, isSigner: false},
-      {pubkey: new PublicKey(userRewardsAccountB), isWritable: true, isSigner: false},
-      {pubkey: SYSTEM_PROGRAM_ID, isWritable: false, isSigner: false},
-      {pubkey: SYSVAR_RENT_PUBKEY, isWritable: false, isSigner: false}
+      { pubkey: userPublicKey, isWritable: true, isSigner: true },
+      { pubkey: userFarmInfoPublicKey, isWritable: true, isSigner: false },
+      { pubkey: targetLendInfo.farmingPoolAccount, isWritable: true, isSigner: false },
+      { pubkey: new PublicKey(userStakeTokenAccount), isWritable: true, isSigner: false },
+      { pubkey: new PublicKey(userRewardsAccount), isWritable: true, isSigner: false },
+      { pubkey: new PublicKey(userRewardsAccountB), isWritable: true, isSigner: false },
+      { pubkey: SYSTEM_PROGRAM_ID, isWritable: false, isSigner: false },
+      { pubkey: SYSVAR_RENT_PUBKEY, isWritable: false, isSigner: false }
     ];
     const infoCommandDataLayout = BufferLayout.struct([
       BufferLayout.u8('instruction')
@@ -227,18 +248,18 @@ export async function lendWithReward(
   }
 
   const keys = [
-    {pubkey: userPublicKey, isWritable: true, isSigner: true},
-    {pubkey: userFarmInfoPublicKey , isWritable: true, isSigner: false},
-    {pubkey: new PublicKey(userStakeTokenAccount), isWritable: true, isSigner: false},
-    {pubkey: new PublicKey(userRewardsAccount), isWritable: true, isSigner: false},
-    {pubkey: new PublicKey(userRewardsAccountB), isWritable: true, isSigner: false},
-    {pubkey: targetLendInfo.farmingPoolAccount, isWritable: true, isSigner: false},
-    {pubkey: targetLendInfo.farmingPoolAuthority, isWritable: true, isSigner: false},
-    {pubkey: targetLendInfo.farmingPoolStakeTknAccount, isWritable: true, isSigner: false},
-    {pubkey: targetLendInfo.farmingPoolRewardsTknAccount, isWritable: true, isSigner: false},
-    {pubkey: targetLendInfo.farmingPoolRewardsTknAccountB, isWritable: true, isSigner: false},
-    {pubkey: TOKEN_PROGRAM_ID, isWritable: false, isSigner: false},
-    {pubkey: SYSVAR_CLOCK_PUBKEY, isWritable: false, isSigner: false}
+    { pubkey: userPublicKey, isWritable: true, isSigner: true },
+    { pubkey: userFarmInfoPublicKey, isWritable: true, isSigner: false },
+    { pubkey: new PublicKey(userStakeTokenAccount), isWritable: true, isSigner: false },
+    { pubkey: new PublicKey(userRewardsAccount), isWritable: true, isSigner: false },
+    { pubkey: new PublicKey(userRewardsAccountB), isWritable: true, isSigner: false },
+    { pubkey: targetLendInfo.farmingPoolAccount, isWritable: true, isSigner: false },
+    { pubkey: targetLendInfo.farmingPoolAuthority, isWritable: true, isSigner: false },
+    { pubkey: targetLendInfo.farmingPoolStakeTknAccount, isWritable: true, isSigner: false },
+    { pubkey: targetLendInfo.farmingPoolRewardsTknAccount, isWritable: true, isSigner: false },
+    { pubkey: targetLendInfo.farmingPoolRewardsTknAccountB, isWritable: true, isSigner: false },
+    { pubkey: TOKEN_PROGRAM_ID, isWritable: false, isSigner: false },
+    { pubkey: SYSVAR_CLOCK_PUBKEY, isWritable: false, isSigner: false }
   ];
 
   const commandDataLayout = BufferLayout.struct([

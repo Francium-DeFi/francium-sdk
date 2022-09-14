@@ -435,11 +435,11 @@ export const lendingPools: {
     lendingPoolFeeAccount: new PublicKey('ERyCAJh59hn8187Kn6wiKpeXdnGw4hptrbn55vh9YJQ1'),
   },
   'GMT': {
-    programId : lendProgramId,
+    programId: lendProgramId,
     tokenMint: TOKENS.GMT.mintAddress,
     marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
     lendingMarketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
-    marketOwner : new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+    marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
     lendingPoolInfoAccount: new PublicKey('9b5QWW2SqjmhRxtYTHXj6LFkmUkahrLAMQer3rEurd1k'),
     lendingPoolTknAccount: new PublicKey('7ZosDG7JWwXFnzhQ2aQ1ghCSQ9mrQzvH3ZhduhRPHgJB'),
     lendingPoolShareMint: new PublicKey('9R6toP3xTFBWoqwBY8bfjUj6Tyd5hyR192jY4NeMmkNg'),
@@ -447,6 +447,20 @@ export const lendingPools: {
     lendingPoolCreditMint: new PublicKey('B1yWMWp7nvSV2upJxFUxpUkDiZAVD2MabnRgaBtR14Dm'),
     lendingPoolCreditAccount: new PublicKey('6NvFHm9p6oSK8DJ9jurTMkC8KBo2hCk8UQm19Nub7R6X'),
     lendingPoolFeeAccount: new PublicKey('ejLn4fFkVS29aYksC87TQYwcu8wy1tvc2AySpfHGabQ'),
+  },
+  ZBC: {
+    programId: lendProgramId,
+    tokenMint: TOKENS.ZBC.mintAddress,
+    marketInfoAccount: new PublicKey("4XNif294wbrxj6tJ8K5Rg7SuaEACnu9s2L27i28MQB6E"),
+    lendingMarketAuthority: new PublicKey("sCDiYj7X7JmXg5fVq2nqED2q1Wqjo7PnqMgH3casMem"),
+    marketOwner: new PublicKey("7MBLg6oV5phip11YBbJPuq7u38kdzSi9PM3BifKSpLaR"),
+    lendingPoolInfoAccount: new PublicKey('6uPerEUyomCC5qn4z9xF3fbVa7SCytcKoCVannPDez5R'),
+    lendingPoolTknAccount: new PublicKey('7quTFi1N9EZfz7jUx7ui9wx9rk1rb3F1Enjbh8Me2tSs'),
+    lendingPoolShareMint: new PublicKey('HUry6RSbDasMfU7LXZ5QR42YajkbMuLBQkyV742xgFKx'),
+    lendingPoolShareAccount: new PublicKey('BHuVdzrDTssFdWTqt15fsdJzJuHESQrMhSnc3jsJ8X2Y'),
+    lendingPoolCreditMint: new PublicKey('ADWAgFjannL985LDKQsQ9B833BFDMj4q8qQappe2F3X9'),
+    lendingPoolCreditAccount: new PublicKey('5xqkszmojpTFy3wGQTXFB7XoLyWXxw7ymmHN9iNYVdUK'),
+    lendingPoolFeeAccount: new PublicKey('qt8KMibr5UcB1WZGVdgyFNGvmzEtp3faUqfcKDytLzq'),
   }
 };
 
@@ -554,5 +568,9 @@ export const lendingPoolList = [
   {
     pool: 'GMT',
     scale: TOKENS.GMT.decimals
+  },
+  {
+    pool: 'ZBC',
+    scale: TOKENS.ZBC.decimals
   }
 ];

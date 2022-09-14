@@ -105,9 +105,9 @@ export async function withdraw(
     { pubkey: targetLendInfo.lendingPoolInfoAccount, isSigner: false, isWritable: true},
     { pubkey: targetLendInfo.lendingPoolShareMint, isSigner: false, isWritable: true},
     { pubkey: targetLendInfo.lendingPoolTknAccount, isSigner: false, isWritable: true},
-    { pubkey: targetLendInfo.marketInfoAccount, isSigner: false, isWritable: true},
-    { pubkey: targetLendInfo.lendingMarketAuthority, isSigner: false, isWritable: true},
-    { pubkey: userPublicKey, isSigner: true, isWritable: true},
+    { pubkey: targetLendInfo.marketInfoAccount, isSigner: false, isWritable: false},
+    { pubkey: targetLendInfo.lendingMarketAuthority, isSigner: false, isWritable: false},
+    { pubkey: userPublicKey, isSigner: true, isWritable: false},
     { pubkey: SYSVAR_CLOCK_PUBKEY, isSigner: false, isWritable: false},
     { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false}
   ];

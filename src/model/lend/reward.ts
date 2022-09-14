@@ -4,12 +4,12 @@ import { LendingPoolLayout, lendingPools, lendingPoolList } from '../../constant
 import { lendRewardInfo, lendRewardProgramId, RewardPoolLayout, RewardUserLayout } from '../../constants/lend/rewards';
 import { toBigIntLE } from 'bigint-buffer';
 
-export const SLOTS_PER_DAY = 160 * 24 * 60 * 60 / 64;
+export const SLOTS_PER_DAY = 24 * 60 * 60;
 
 const poolsWithReward = lendingPoolList.filter(i => {
   const info = lendRewardInfo[i.pool];
   return !!info;
-})
+});
 
 export async function getRewardPoolInfo(connection: Connection) {
   const accounts = poolsWithReward.map(i => {
@@ -47,7 +47,7 @@ export async function getUserRewardPosition(connection: Connection, userPublicKe
       result[targetPool.pool] = {
         scale: targetPool.scale,
         amount: 0
-      }
+      };
     } else {
       const buf = Buffer.from(i.data);
       const decodeData = RewardUserLayout.decode(buf);
@@ -55,7 +55,7 @@ export async function getUserRewardPosition(connection: Connection, userPublicKe
       result[targetPool.pool] = {
         scale: targetPool.scale,
         amount: decodeData?.staked_amount || 0
-      }
+      };
     }
   });
   return result;
