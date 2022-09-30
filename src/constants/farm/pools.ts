@@ -1,3 +1,5 @@
+import { TOKENS } from "../tokens";
+
 export const strategyList = [
   {
     id: 'F001',
@@ -2529,5 +2531,36 @@ export default [
     borrowList: ['USDC'],
     isNew: true,
     isInnovation: true
+  },
+  {
+    id: '111',
+    strategyName: 'stSOL-SOL',
+    pair: 'stSOL-SOL',
+    alias: null,
+    author: 'Francium',
+    from: 'Orca Double-Dip',
+    yieldFarmingAPR: 0,
+    strategyAPR: 0,
+    tradingFeeAPR: 0,
+    borrowAPR: 0,
+    maxLeverage: 6,
+    minLeverage: 1,
+    marketCap: 1333333,
+    lpDecimal: 6,
+    token0: 'SOL',
+    token1: 'stSOL',
+    status: 'active',
+    version: 3,
+    lyfType: 'orca',
+    borrowList: ['SOL', 'stSOL'],
+    orca: {
+      tokenBDecimal: 9,
+      poolKey: 'stSOL/SOL[stable][aquafarm]',
+      isDoubleDip: true,
+      rewardToken: 'wLDO',
+      rewardDecimal: 8,
+    },
+    isNew: true,
+    stable: true
   }
 ];

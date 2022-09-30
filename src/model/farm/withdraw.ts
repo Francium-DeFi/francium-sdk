@@ -6,7 +6,7 @@ import { closeAccount } from "@project-serum/serum/lib/token-instructions";
 import { isNativeMint } from '../../utils/tools';
 import { FranciumFarm } from '.';
 import BigNumber from "bignumber.js";
-
+import additionalComputeBudgetInstruction from '../../utils/trx/setUnit';
 
 export default async function buildWithdrawTransactions(
   connection: Connection,
@@ -45,6 +45,7 @@ export default async function buildWithdrawTransactions(
     }
   ) {
     const trx = new Transaction();
+    trx.add(additionalComputeBudgetInstruction);
     const targetFarmInfo = farm.getConfig(pair, lyfType);
     if (!targetFarmInfo) {
       throw new Error(`no farm info for ${pair}`);
@@ -139,6 +140,7 @@ export default async function buildWithdrawTransactions(
     // create accounts if need
     const trxPre = new Transaction();
     const trx = new Transaction();
+    trx.add(additionalComputeBudgetInstruction);
   
     const targetFarmInfo = farm.getConfig(pair, lyfType);
     if (!targetFarmInfo) {

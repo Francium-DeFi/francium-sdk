@@ -1,5 +1,5 @@
 export default {
-  "version": "0.0.0",
+  "version": "0.1.0",
   "name": "lyf_raydium",
   "instructions": [
     {
@@ -7,7 +7,7 @@ export default {
       "accounts": [
         {
           "name": "admin",
-          "isMut": false,
+          "isMut": true,
           "isSigner": true
         },
         {
@@ -131,112 +131,11 @@ export default {
       ]
     },
     {
-      "name": "setPlatformRewardsTkn",
-      "accounts": [
-        {
-          "name": "admin",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "strategyState",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyFranciumRewardsTkn",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "updatePlatformRewards",
-      "accounts": [
-        {
-          "name": "admin",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "strategyState",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyFranciumRewardsTkn",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "adminFranciumRewardsTkn",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgramId",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "rewardsPerSlot",
-          "type": "u64"
-        },
-        {
-          "name": "rewardsStartSlot",
-          "type": "u64"
-        },
-        {
-          "name": "rewardsEndSlot",
-          "type": "u64"
-        }
-      ]
-    },
-    {
-      "name": "initializeUser",
-      "accounts": [
-        {
-          "name": "userMainAccount",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "userInfoAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyState",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
       "name": "initializeUserWithNonce",
       "accounts": [
         {
           "name": "userMainAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": true
         },
         {
@@ -410,6 +309,69 @@ export default {
           "name": "param",
           "type": {
             "defined": "TransferForInvestParam"
+          }
+        }
+      ]
+    },
+    {
+      "name": "transferLp",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfoAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userFrcRewardsTknAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "strategyFrcRewardsTknAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "clock",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "param",
+          "type": {
+            "defined": "TransferLpParam"
           }
         }
       ]
@@ -813,6 +775,9 @@ export default {
     },
     {
       "name": "addLiquidity",
+      "docs": [
+        "add liquidity"
+      ],
       "accounts": [
         {
           "name": "userMainAccount",
@@ -911,6 +876,11 @@ export default {
         },
         {
           "name": "clock",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serumEventQueue",
           "isMut": false,
           "isSigner": false
         }
@@ -1339,6 +1309,132 @@ export default {
         }
       ],
       "args": []
+    },
+    {
+      "name": "removeLiquidityLimit",
+      "accounts": [
+        {
+          "name": "userMainAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "raydiumAmmProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammOpenOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTargetOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lpMintAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammWithdrawQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammPoolTempLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumProgramId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serumMarketId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumTknVault1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumTknVault0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "serumVaultSinger",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "limit",
+          "type": "u64"
+        }
+      ]
     },
     {
       "name": "swapForWithdrawLimit",
@@ -2018,12 +2114,12 @@ export default {
         },
         {
           "name": "userRewardsTknAccount",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
           "name": "strategyRewardsTknAccount",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         }
       ],
@@ -2033,6 +2129,97 @@ export default {
           "type": "u8"
         }
       ]
+    },
+    {
+      "name": "liquidateRepayAndGetLp",
+      "accounts": [
+        {
+          "name": "liquidator",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "userInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "liquidatorLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "liquidatorTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "liquidatorTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammOpenOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lpMintAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgramId",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
     },
     {
       "name": "swapRewardsToTarget",
@@ -2273,6 +2460,9 @@ export default {
     },
     {
       "name": "addRewardsToLiquidity",
+      "docs": [
+        "add rewards to liquidity"
+      ],
       "accounts": [
         {
           "name": "userMainAccount",
@@ -2358,6 +2548,11 @@ export default {
           "name": "serumMarketId",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "serumEventQueue",
+          "isMut": false,
+          "isSigner": false
         }
       ],
       "args": []
@@ -2382,6 +2577,32 @@ export default {
         },
         {
           "name": "rewardsAmmIdB",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "adminUpdateStakeInfo",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "stakePoolId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stakePoolTkn",
           "isMut": false,
           "isSigner": false
         }
@@ -2450,27 +2671,6 @@ export default {
           "type": "u8"
         }
       ]
-    },
-    {
-      "name": "adminCloseEmptyAccount",
-      "accounts": [
-        {
-          "name": "admin",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "userInfoAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyState",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": []
     },
     {
       "name": "adminRepayBadDebts",
@@ -2568,32 +2768,6 @@ export default {
         {
           "name": "tokenProgramId",
           "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "adminSetFeeAccount",
-      "accounts": [
-        {
-          "name": "admin",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "strategyState",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyLpAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyFeeAccount",
-          "isMut": true,
           "isSigner": false
         }
       ],
@@ -2923,6 +3097,10 @@ export default {
           {
             "name": "isEmpty",
             "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
@@ -3000,6 +3178,18 @@ export default {
           },
           {
             "name": "amount1",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TransferLpParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lpAmount",
             "type": "u64"
           }
         ]
@@ -3111,127 +3301,127 @@ export default {
   ],
   "errors": [
     {
-      "code": 300,
+      "code": 6000,
       "name": "MathOverflow",
       "msg": "Math Overflow"
     },
     {
-      "code": 301,
+      "code": 6001,
       "name": "InvalidInstruction",
       "msg": "Invalid Instruction"
     },
     {
-      "code": 302,
+      "code": 6002,
       "name": "InvalidProgramAddress",
       "msg": "Invalid program derivated address or nonce"
     },
     {
-      "code": 303,
+      "code": 6003,
       "name": "InvalidProtocolVersion",
       "msg": "Invalid Protocol Version"
     },
     {
-      "code": 304,
+      "code": 6004,
       "name": "InvalidData",
       "msg": "Invalid data"
     },
     {
-      "code": 305,
+      "code": 6005,
       "name": "AlreadyInUse",
       "msg": "Already in use"
     },
     {
-      "code": 306,
+      "code": 6006,
       "name": "InvalidTokenMint",
       "msg": "Invalid token mint"
     },
     {
-      "code": 307,
+      "code": 6007,
       "name": "InsufficientBalance",
       "msg": "Insufficient balance"
     },
     {
-      "code": 308,
+      "code": 6008,
       "name": "UnexpectedError",
       "msg": "UnexpectedError"
     },
     {
-      "code": 309,
+      "code": 6009,
       "name": "InvalidStrategyAccount",
       "msg": "Invalid Strategy Account"
     },
     {
-      "code": 310,
+      "code": 6010,
       "name": "InvalidStrategyAuthority",
       "msg": "Invalid Strategy Authority"
     },
     {
-      "code": 311,
+      "code": 6011,
       "name": "InvalidUserInfoAccount",
       "msg": "Invalid UserInfo Account"
     },
     {
-      "code": 312,
+      "code": 6012,
       "name": "InvalidTokenAccount",
       "msg": "Invalid Token Account"
     },
     {
-      "code": 313,
+      "code": 6013,
       "name": "InvalidTokenAccountOwner",
       "msg": "Invalid Token Account Owner"
     },
     {
-      "code": 314,
+      "code": 6014,
       "name": "InvalidStrategyState",
       "msg": "Invalid Strategy state"
     },
     {
-      "code": 315,
+      "code": 6015,
       "name": "InvalidLendingPool",
       "msg": "Invalid lending pool"
     },
     {
-      "code": 316,
+      "code": 6016,
       "name": "UnsupportedFeature",
       "msg": "Unsupported Feature"
     },
     {
-      "code": 317,
+      "code": 6017,
       "name": "NeedAdminPermission",
       "msg": "Need Admin Permission"
     },
     {
-      "code": 318,
+      "code": 6018,
       "name": "AlreadyInLiquidationOrWithdraw",
       "msg": "Already in liquidation or withdraw"
     },
     {
-      "code": 319,
+      "code": 6019,
       "name": "InvalidLiquidator",
       "msg": "Invalid Liquidator"
     },
     {
-      "code": 320,
+      "code": 6020,
       "name": "InvalidBorrowAmount",
       "msg": "Invalid Borrow Amount"
     },
     {
-      "code": 321,
+      "code": 6021,
       "name": "AmountTooLarge",
       "msg": "Amount Too Large"
     },
     {
-      "code": 322,
+      "code": 6022,
       "name": "CurrentSlotTooOld",
       "msg": "Current Slot Too Old"
     },
     {
-      "code": 323,
+      "code": 6023,
       "name": "AccountNotEmpty",
       "msg": "Account Not Empty"
     },
     {
-      "code": 324,
+      "code": 6024,
       "name": "LeverageTooHigh",
       "msg": "Leverage Too High"
     }

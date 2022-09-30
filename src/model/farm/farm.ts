@@ -8,6 +8,7 @@ import { NATIVE_MINT, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import * as BN from 'bn.js';
 import { isNativeMint } from '../../utils/tools';
 import { FranciumFarm } from '.';
+import additionalComputeBudgetInstruction from '../../utils/trx/setUnit';
 
 const SYSTEM_PROGRAM_ID = SystemProgram.programId;
 
@@ -122,6 +123,7 @@ export default async function buildFarmTransactions(
     // create accounts if need
     const trxPre = new Transaction();
     const trx = new Transaction();
+    trx.add(additionalComputeBudgetInstruction);
     const targetFarmInfo = farm.getConfig(pair, lyfType);
   
     if (!targetFarmInfo) {
@@ -366,6 +368,7 @@ export default async function buildFarmTransactions(
     // minAmountOut: number
   ) {
     const trx = new Transaction();
+    trx.add(additionalComputeBudgetInstruction);
     const targetFarmInfo = farm.getConfig(pair, lyfType);
     if (!targetFarmInfo) {
       throw new Error(`no farm info for ${pair}`);
@@ -402,6 +405,7 @@ export default async function buildFarmTransactions(
     lyfType: string
   ) {
     const trx = new Transaction();
+    trx.add(additionalComputeBudgetInstruction);
     const targetFarmInfo = farm.getConfig(pair, lyfType);
     if (!targetFarmInfo) {
       throw new Error(`no farm info for ${pair}`);

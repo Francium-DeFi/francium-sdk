@@ -424,7 +424,7 @@ export class FranciumSDK {
     return info;
   }
 
-  public async getRebalanceInfo(userPublicKey: PublicKey, positionPublicKey: string) {
+  public async getRebalanceInfo(userPublicKey: PublicKey, positionPublicKey: string, leverage = 3) {
     const LPPriceList = await this.getFarmLPPriceInfo();
 
     const getUserFormattedFarmPosition = async () => {
@@ -511,6 +511,7 @@ export class FranciumSDK {
       lpInfo,
     });
     const {longPosition, shortPosition} = rebalanceByEquity(
+      leverage,
       userEquity,
       token1Price,
       pcAmount,
@@ -581,6 +582,7 @@ export class FranciumSDK {
       }
 
       const {longPosition, shortPosition} = rebalanceByEquity(
+        leverage,
         userEquity + token0ToAdd,
         token1Price,
         pcAmount + token0ToAdd,
@@ -603,6 +605,7 @@ export class FranciumSDK {
       const bb = A * 3/2 / userBorrowed1Value;
       const remainPer = Math.min(aa, bb, 1);
       const {longPosition, shortPosition} = rebalanceByEquity(
+        leverage,
         userEquity,
         token1Price,
         pcAmount,

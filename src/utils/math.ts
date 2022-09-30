@@ -1,7 +1,7 @@
 import { BN } from "@project-serum/anchor";
 import BigNumber from "bignumber.js";
 
-export function getAmountByDecimals(amount: BN | BigNumber, decimals: number) {
+export function getAmountByDecimals(amount: BN | BigNumber = new BN(0), decimals: number) {
   return new BigNumber(amount.toString()).dividedBy(new BigNumber(10 ** decimals)).toNumber();
 }
 
