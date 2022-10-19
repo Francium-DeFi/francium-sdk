@@ -1,4 +1,4 @@
-import { Connection, Keypair, PublicKey, Transaction, ParsedInstruction } from '@solana/web3.js';
+import { Connection, Keypair, PublicKey, Transaction, ParsedInstruction, TransactionMessage, VersionedTransaction } from '@solana/web3.js';
 import { lendingPoolList } from '../constants/lend/pools';
 import { farmPools } from '../constants/farm';
 import {
@@ -12,7 +12,7 @@ import { find, ceil } from 'lodash';
 import * as BN from 'bn.js';
 import buildFarmTransactions from '../model/farm/farm';
 import buildWithdrawTransactions from '../model/farm/withdraw';
-import { send2TransactionsListOneByOneWithErrorCatch, sendWalletTransaction } from '../utils/sign';
+import { send2TransactionsListOneByOneWithErrorCatch, sendVersionedTransaction, sendWalletTransaction } from '../utils/sign';
 import { SWAP_FEE, rebalanceByEquity } from '../utils/rebalance';
 import { getTokenDecimals } from '../utils/tools';
 import { deposit } from '../model/lend/deposit';
@@ -147,6 +147,52 @@ export class FranciumSDK {
     );
   }
 
+  public async getOneFarmTransaction(
+    pair: string,
+    lyfType: string,
+    userPublicKey: PublicKey,
+    configs: {
+      depositPcAmount: BN,
+      depositCoinAmount: BN,
+      borrowPcAmount: BN,
+      borrowCoinAmount: BN,
+      stopLoss?: number,
+      currentUserInfoAccount?: PublicKey
+    }
+  ) {
+    const targetFarmInfo = this.farmHub.getConfig(pair, lyfType);
+    const lookupTableAccount = await this.connection.getAddressLookupTable(targetFarmInfo?.lookupTableAddress)
+      .then((res) => res.value);
+    const blockhash = await this.connection.getLatestBlockhash()
+      .then((res) => res.blockhash);
+    const trx = await buildFarmTransactions(
+      this.connection,
+      pair,
+      lyfType,
+      userPublicKey,
+      this.farmHub,
+      {
+        amount0: configs.depositPcAmount,
+        amount1: configs.depositCoinAmount,
+        borrow0: configs.borrowPcAmount,
+        borrow1: configs.borrowCoinAmount,
+        stopLoss: configs.stopLoss || 80,
+        currentUserInfoAccount: configs.currentUserInfoAccount,
+        useLookupTable: true
+      }
+    );
+
+    const messageV0 = new TransactionMessage({
+      payerKey: userPublicKey,
+      recentBlockhash: blockhash,
+      instructions: trx[0].instructions, // note this is an array of instructions
+    }).compileToV0Message([lookupTableAccount]);
+
+    const transactionV0 = new VersionedTransaction(messageV0);
+
+    return transactionV0;
+  }
+
   public getFarmSwapPoolId(pair: string, platform: string) {
     return this.farmHub.getSwapPoolId(pair, platform);
   }
@@ -176,6 +222,45 @@ export class FranciumSDK {
     return trxs;
   }
 
+  public async getOneFarmClosedTransaction(
+    pair: string,
+    lyfType: string,
+    userPublicKey: PublicKey,
+    configs: {
+      lpShares: BN;
+      withdrawType: number;
+      currentUserInfoAccount: PublicKey;
+    }
+  ) {
+    const targetFarmInfo = this.farmHub.getConfig(pair, lyfType);
+    const lookupTableAccount = await this.connection.getAddressLookupTable(targetFarmInfo?.lookupTableAddress)
+      .then((res) => res.value);
+    const blockhash = await this.connection.getLatestBlockhash()
+      .then((res) => res.blockhash);
+    const { trxs } = await buildWithdrawTransactions(
+      this.connection,
+      pair,
+      lyfType,
+      userPublicKey,
+      this.farmHub,
+      {
+        lpShares: new BigNumber(configs.lpShares.toString()),
+        withdrawType: configs.withdrawType,
+        currentUserInfoAccount: configs.currentUserInfoAccount,
+        useLookupTable: true
+      }
+    );
+    const messageV0 = new TransactionMessage({
+      payerKey: userPublicKey,
+      recentBlockhash: blockhash,
+      instructions: trxs[0].instructions, // note this is an array of instructions
+    }).compileToV0Message([lookupTableAccount]);
+
+    const transactionV0 = new VersionedTransaction(messageV0);
+
+    return transactionV0;
+  }
+
   public async sendSingleTransaction(
     trx: Transaction,
     wallet: any,
@@ -186,6 +271,17 @@ export class FranciumSDK {
       this.connection,
       wallet,
       signers
+    );
+  }
+
+  public async sendVersionedTransaction(
+    trx: VersionedTransaction,
+    wallet: any,
+  ) {
+    return sendVersionedTransaction(
+      trx,
+      this.connection,
+      wallet,
     );
   }
 
@@ -510,7 +606,7 @@ export class FranciumSDK {
       positionInfo,
       lpInfo,
     });
-    const {longPosition, shortPosition} = rebalanceByEquity(
+    const { longPosition, shortPosition } = rebalanceByEquity(
       leverage,
       userEquity,
       token1Price,
@@ -543,7 +639,7 @@ export class FranciumSDK {
 
     if (
       borrowValue0 >= 0 &&
-      borrowValue1 >=0
+      borrowValue1 >= 0
     ) {
       rebalanceOptions.option1 = {
         depositPcAmount: token0ToAdd,
@@ -562,9 +658,9 @@ export class FranciumSDK {
     }
 
     function addMore() {
-      const B = Math.max(2 * userBorrowed0Value, 2/3 * userBorrowed1Value);
+      const B = Math.max(2 * userBorrowed0Value, 2 / 3 * userBorrowed1Value);
       const S = pcAmount;
-      const S1min = (B + SWAP_FEE * S) / (1 + SWAP_FEE * 3/2);
+      const S1min = (B + SWAP_FEE * S) / (1 + SWAP_FEE * 3 / 2);
       const S1max = 2 / 3 * S;
       if (S1min <= S1max) {
         const S1 = S1min;
@@ -574,14 +670,14 @@ export class FranciumSDK {
       }
 
       const S2min = S1max;
-      const S2min2 = (B - SWAP_FEE * S) / (1 - SWAP_FEE * 3/2);
+      const S2min2 = (B - SWAP_FEE * S) / (1 - SWAP_FEE * 3 / 2);
       const S2 = Math.max(S2min, S2min2);
 
       if (S2 - userEquity > 0) {
         token0ToAdd = ceilToken0Amount(S2 - userEquity);
       }
 
-      const {longPosition, shortPosition} = rebalanceByEquity(
+      const { longPosition, shortPosition } = rebalanceByEquity(
         leverage,
         userEquity + token0ToAdd,
         token1Price,
@@ -602,9 +698,9 @@ export class FranciumSDK {
     function updateWithdrawConfig() {
       const A = userEquity - Math.abs(pcAmount - 3 / 2 * userEquity) * SWAP_FEE;
       const aa = A / 2 / userBorrowed0Value;
-      const bb = A * 3/2 / userBorrowed1Value;
+      const bb = A * 3 / 2 / userBorrowed1Value;
       const remainPer = Math.min(aa, bb, 1);
-      const {longPosition, shortPosition} = rebalanceByEquity(
+      const { longPosition, shortPosition } = rebalanceByEquity(
         leverage,
         userEquity,
         token1Price,

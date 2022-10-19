@@ -8,7 +8,6 @@ import { PublicKey, SYSVAR_CLOCK_PUBKEY, Connection } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokenDecimals } from '../../utils/tools';
 import { isString } from 'lodash';
-import buildFarmTransactions from './farm';
 
 const commitment: web3.Commitment = 'confirmed';
 
@@ -332,7 +331,8 @@ export class FranciumFarm {
           // TODO: need replace ↓ when have rewards
           userRewardsTknAccount: config.strategyTknAccount0,
           strategyRewardsTknAccount: config.strategyTknAccount0,
-          clock: SYSVAR_CLOCK_PUBKEY
+          clock: SYSVAR_CLOCK_PUBKEY,
+          serumEventQueue: config.raydiumInfo.serumEventQueue
         }
       }
     ];

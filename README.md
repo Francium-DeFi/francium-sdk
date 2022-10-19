@@ -80,8 +80,60 @@ async function farm() {
   // sign and send trxs
   await fr.sendMultipleTransactions(trxs, wallet);
 }
-
 ```
+
+### Get Farm Versioned Transactions
+#### (ONLY for Raydium Pools now)
+```javascript
+async function oneTxfarm() {
+  // supply 1 USDC, borrow 1 USDC
+  const versionedTrx = await fr.getOneFarmTransaction(
+    'RAY-USDC',
+    'raydium',
+    new PublicKey('23xxxxxxx'),
+    {
+      depositPcAmount: new BN(1000000),
+      depositCoinAmount: new BN(0),
+      borrowPcAmount: new BN(1000000),
+      borrowCoinAmount: new BN(0),
+      // Needed when adjust
+      currentUserInfoAccount?: PublicKey
+    }
+  );
+
+  // If there is Keypair
+  versionedTrx.sign([payer]);
+  fr.connection.sendTransaction(versionedTrx);
+
+  // if the wallet supports Versioned Transaction
+  await fr.sendVersionedTransaction(versionedTrx, wallet);
+}
+```
+### getRepayTransactions
+```
+import { Connection, PublicKey } from '@solana/web3.js';
+import FranciumSDK from 'francium-sdk';
+const fr = new FranciumSDK({
+  connection: new Connection('https://free.rpcpool.com')
+});
+
+async function getRepayTransactions() {
+  const trxs = await fr.getRepayTransactions(
+    'SHDW-USDC',
+    'orca',
+    new PublicKey('23xxxxxxx'),
+    configs: {
+      amount0: BN;
+      amount1: BN;
+      // userPosition.userInfoPublicKey
+      currentUserInfoAccount: PublicKey;
+    }
+  );
+
+  // sign and send trxs
+  await fr.sendMultipleTransactions(trxs, wallet);
+```
+
 ### Get Close Position Transactions
 ```javascript
 import { Connection, PublicKey } from '@solana/web3.js';
@@ -115,7 +167,37 @@ async function close() {
 }
 
 ```
+### Get Farm Close Versioned Transactions
+#### (ONLY for Raydium Pools now)
+```javascript
+async function oneTxClose() {
+  // supply 1 USDC, borrow 1 USDC
+  const versionedTrx = await fr.getOneFarmClosedTransaction(
+    'RAY-USDC',
+    'raydium',
+    new PublicKey('23xxxxxxx'),
+    {
+      // 0: swap to PC token
+      // 1: swap to Coin Token
+      // 2: minimize trading 
+      withdrawType: 2,
 
+      // userPosition.lpShares
+      lpShares: BN,
+
+      // userPosition.userInfoPublicKey
+      currentUserInfoAccount: PublicKey 
+    }
+  );
+
+  // If there is Keypair
+  versionedTrx.sign([payer]);
+  fr.connection.sendTransaction(versionedTrx);
+
+  // if the wallet supports Versioned Transaction
+  await fr.sendVersionedTransaction(versionedTrx, wallet);
+}
+```
 ### Get Pool Info
 ```javascript
 async function getInfo() {

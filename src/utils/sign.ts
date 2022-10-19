@@ -1,4 +1,4 @@
-import { Connection, Keypair, Transaction } from "@solana/web3.js";
+import { Connection, Keypair, Transaction, VersionedTransaction } from "@solana/web3.js";
 import * as base58 from 'bs58';
 
 export async function send2TransactionsListOneByOneWithErrorCatch(
@@ -81,10 +81,25 @@ export async function sendWalletTransaction(
   if (signers && signers.length) {
     trx.partialSign(...signers);
   }
+  
   console.log('start signed', trx);
   const signed = await wallet.signTransaction(trx);
   console.log('start send');
   const txid = await connection.sendRawTransaction(signed.serialize(), {
+    skipPreflight: true,
+    preflightCommitment: 'confirmed'
+  });
+  console.log('start confirm', txid);
+  const r = await connection.confirmTransaction(txid, 'confirmed');
+  console.log('trx confirmed', r, txid);
+  return { txid, response: r };
+}
+
+export async function sendVersionedTransaction(
+  trx: VersionedTransaction, connection: Connection, wallet: any
+) {
+  const signed = await wallet.signTransaction(trx);
+  const txid = await connection.sendTransaction(signed, {
     skipPreflight: true,
     preflightCommitment: 'confirmed'
   });

@@ -18,8 +18,23 @@ export default async function buildWithdrawTransactions(
     lpShares: BigNumber,
     withdrawType: number,
     currentUserInfoAccount: PublicKey;
+    useLookupTable?: boolean;
   }
 ) {
+
+  if (configs?.useLookupTable) {
+    return withdrawLPOneTx(
+      connection,
+      pair,
+      lyfType,
+      userPublicKey,
+      configs.lpShares,
+      {
+        withdrawType: configs.withdrawType,
+        currentUserInfoAccount: configs.currentUserInfoAccount
+      }
+    );
+  }
 
   return withdrawLP(
     connection,
@@ -356,6 +371,42 @@ export default async function buildWithdrawTransactions(
     return {
       closedAccount,
       trxs: [trx1, trx2, trx3]
+    };
+  }
+
+  async function withdrawLPOneTx(
+    connection: Connection,
+    pair: string,
+    lyfType: string,
+    userPublicKey: PublicKey,
+    lpShares: BigNumber,
+    configs: {
+      withdrawType: number,
+      currentUserInfoAccount: PublicKey
+    }
+  ) {
+    const trx1 = await unstakeLP(connection, pair, lyfType, userPublicKey, lpShares, configs.withdrawType, {
+      currentUserInfoAccount: configs.currentUserInfoAccount
+    });
+    const { closedAccount, trx: trx2, trxPre } = await swapAndWithdraw(connection, pair, lyfType, userPublicKey, configs.withdrawType, {
+      currentUserInfoAccount: configs.currentUserInfoAccount
+    });
+    const trx3 = await autoRepay(connection, pair, lyfType, userPublicKey);
+
+    const [add1, ...trx1Ins] = trx1.instructions;
+    const [add2, ...trx2Ins] = trx2.instructions;
+    const [...trx3Ins] = trx3.instructions;
+
+    const trx = new Transaction();
+  
+    if (trxPre.instructions.length) {
+      trx.add(...trxPre.instructions, ...trx1Ins, ...trx2Ins, ...trx3Ins);
+    } else {
+      trx.add(...trx1Ins, ...trx2Ins, ...trx3Ins);
+    }
+    return {
+      closedAccount,
+      trxs: [trx]
     };
   }
 }

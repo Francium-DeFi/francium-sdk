@@ -164,6 +164,7 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
   if (!priceList.whETH) {
     updatePrice('whETH', priceList, LPInfo);
   }
+
   if (!priceList.wLDO) {
     updatePrice('wLDO', priceList, LPInfo, {
       LPName: 'stSOL-wLDO',
@@ -173,7 +174,7 @@ export async function getOrcaLPPrice(connection: Connection, priceList: {
   }
   
   forEach(LPInfo, (value, key) => {
-    if (value.pcToken === 'USDC') {
+    if (value.pcToken === 'USDC' || value.pcToken === 'USDT') {
       updatePrice(value.coinToken, priceList, LPInfo, {
         LPName: key
       });

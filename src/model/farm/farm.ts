@@ -20,6 +20,38 @@ export interface AmountConfig {
   stopLoss: number;
   currentUserInfoAccount?: PublicKey;
   noNonce?: boolean;
+  rangeStopType?: number;
+  priceRange0?: BN;
+  priceRange1?: BN;
+}
+
+export async function getRangeInstruction(
+  pair: string,
+  lyfType: string,
+  userPublicKey: PublicKey,
+  userInfoPublicKey: PublicKey,
+  lyfHub: FranciumFarm,
+  props: {
+    priceRange0: BN;
+    priceRange1: BN;
+    rangeStopType: number;
+  }) {
+  const program = lyfHub.getProgram(lyfType);
+  const targetFarmInfo = lyfHub.getConfig(pair, lyfType);
+  const { priceRange0, priceRange1, rangeStopType } = props;
+  const ins = program.instruction.setPositionRangeStop(
+    rangeStopType || 2,
+    priceRange0,
+    priceRange1,
+    {
+      accounts: {
+        userMainAccount: userPublicKey,
+        userInfoAccount: userInfoPublicKey,
+        strategyState: targetFarmInfo.strategyAccount,
+      },
+    }
+  );
+  return ins;
 }
 
 export default async function buildFarmTransactions(
@@ -35,8 +67,21 @@ export default async function buildFarmTransactions(
     borrow1: BN;
     stopLoss: number;
     currentUserInfoAccount?: PublicKey;
+    useLookupTable?: boolean;
+    rangeStopType?: number;
+    priceRange0?: BN;
+    priceRange1?: BN;
   }
 ) {
+  if (configs?.useLookupTable) {
+    return stakeWithLeverageOneTx(
+      connection,
+      pair,
+      lyfType,
+      userPublicKey,
+      configs
+    );
+  }
 
   return stakeWithLeverage(
     connection,
@@ -58,12 +103,15 @@ export default async function buildFarmTransactions(
       borrow1: BN;
       stopLoss: number;
       currentUserInfoAccount?: PublicKey;
+      rangeStopType?: number;
+      priceRange0?: BN;
+      priceRange1?: BN;
     }) {
-  
+
     const {
       amount0, amount1, borrow0, borrow1, stopLoss, currentUserInfoAccount
     } = configs;
-  
+
     const { trxPre, trx: trx1, currentUserInfoAccount: preUserInfoAccount } = await investAndBorrow(
       connection,
       pair,
@@ -78,12 +126,12 @@ export default async function buildFarmTransactions(
         currentUserInfoAccount
       }
     );
-  
+
     const trx2 = await swapAndAddLiquidity(connection, pair, lyfType || 'raydium', userPublicKey, {
       currentUserInfoAccount: preUserInfoAccount
     });
     const trx3 = await stakeLP(connection, pair, lyfType || 'raydium');
-  
+
     // if (trxPre.instructions.length) {
     //   return await send2TransactionsListOneByOneWithErrorCatch(
     //     [trxPre, trx1, trx2, trx3], connection, wallet,
@@ -103,6 +151,62 @@ export default async function buildFarmTransactions(
     }
   }
 
+  async function stakeWithLeverageOneTx(
+    connection: Connection,
+    pair: string,
+    lyfType: string,
+    userPublicKey: PublicKey,
+    configs: {
+      amount0: BN;
+      amount1: BN;
+      borrow0: BN;
+      borrow1: BN;
+      stopLoss: number;
+      currentUserInfoAccount?: PublicKey;
+      rangeStopType?: number;
+      priceRange0?: BN;
+      priceRange1?: BN;
+    }) {
+
+    const {
+      amount0, amount1, borrow0, borrow1, stopLoss, currentUserInfoAccount,
+    } = configs;
+
+    const { trxPre, trx: trx1, currentUserInfoAccount: preUserInfoAccount } = await investAndBorrow(
+      connection,
+      pair,
+      lyfType || 'raydium',
+      userPublicKey,
+      {
+        tokenAmount0: amount0,
+        tokenAmount1: amount1,
+        borrow0,
+        borrow1,
+        stopLoss,
+        currentUserInfoAccount
+      }
+    );
+
+    const trx2 = await swapAndAddLiquidity(connection, pair, lyfType || 'raydium', userPublicKey, {
+      currentUserInfoAccount: preUserInfoAccount
+    });
+    const trx3 = await stakeLP(connection, pair, lyfType || 'raydium');
+
+    const [add1, ...trx1Ins] = trx1.instructions;
+    const [add2, ...trx2Ins] = trx2.instructions;
+    const [add3, ...trx3Ins] = trx3.instructions;
+
+    const trx = new Transaction();
+
+    if (trxPre.instructions.length) {
+      trx.add(...trxPre.instructions, ...trx1Ins, ...trx2Ins, ...trx3Ins);
+    } else {
+      trx.add(...trx1Ins, ...trx2Ins, ...trx3Ins);
+    }
+
+    return [trx];
+  }
+
   async function investAndBorrow(
     connection: Connection,
     pair: string,
@@ -117,15 +221,16 @@ export default async function buildFarmTransactions(
       tokenAmount0,
       tokenAmount1,
       currentUserInfoAccount,
-      noNonce
+      noNonce,
+      rangeStopType, priceRange0, priceRange1
     } = configs;
-  
+
     // create accounts if need
     const trxPre = new Transaction();
     const trx = new Transaction();
     trx.add(additionalComputeBudgetInstruction);
     const targetFarmInfo = farm.getConfig(pair, lyfType);
-  
+
     if (!targetFarmInfo) {
       throw new Error(`no farm info for ${pair}`);
     }
@@ -133,7 +238,7 @@ export default async function buildFarmTransactions(
     const parsedTokenAccounts = await getParsedTokenAccounts(connection, userPublicKey);
     let userTknAccount0 = parsedTokenAccounts[targetFarmInfo.tknMint0]?.tokenAccountAddress;
     let userTknAccount1 = parsedTokenAccounts[targetFarmInfo.tknMint1]?.tokenAccountAddress;
-  
+
     // -------- FORMAT THE TOKENADDRESS, because getParsedTokenAccounts method NATIVE_MINT is SOL Balance
     if (isNativeMint(targetFarmInfo.tknMint0)) {
       userTknAccount0 = parsedTokenAccounts[NATIVE_MINT.toBase58()]?.tokenAccountAddress;
@@ -143,19 +248,19 @@ export default async function buildFarmTransactions(
       // not include SOL 
     }
     // -------- FORMAT THE TOKENADDRESS END
-  
+
     if (!userTknAccount0) {
       userTknAccount0 = (await createAssociatedTokenAccount(targetFarmInfo.tknMint0, userPublicKey, trxPre)).toBase58();
     }
     if (!userTknAccount1) {
       userTknAccount1 = (await createAssociatedTokenAccount(targetFarmInfo.tknMint1, userPublicKey, trxPre)).toBase58();
     }
-  
+
     const program = farm.getProgram(lyfType);
     const strategyAccount = targetFarmInfo.strategyAccount;
-  
+
     let userInfoAccount = currentUserInfoAccount;
-  
+
     async function initUserInfoByNonce(nonce: number) {
       const nonceLeBytes = Buffer.from([0, 0, 0, 0]);
       nonceLeBytes.writeUInt32LE(nonce);
@@ -171,7 +276,7 @@ export default async function buildFarmTransactions(
         ],
         program.programId
       );
-  
+
       const initInstruction = await program.instruction.initializeUserWithNonce(
         nonce,
         bump,
@@ -185,10 +290,10 @@ export default async function buildFarmTransactions(
           }
         }
       );
-  
+
       return initInstruction;
     }
-  
+
     async function initUserInfoWithoutNonce() {
       userInfoAccount = await program.account.userInfo.associated(userPublicKey, strategyAccount);
       const initInstruction = await program.instruction.initializeUser(
@@ -204,7 +309,7 @@ export default async function buildFarmTransactions(
       );
       return initInstruction;
     }
-  
+
     // new Farm Position
     if (!currentUserInfoAccount) {
       if (noNonce) {
@@ -215,7 +320,7 @@ export default async function buildFarmTransactions(
         trxPre.add(initInstruction);
       }
     }
-  
+
     // let newAccount: Keypair;
     // WSOL
     // if (isNativeMint(targetFarmInfo.tknMint0) || isNativeMint(targetFarmInfo.tknMint1)) {
@@ -245,7 +350,7 @@ export default async function buildFarmTransactions(
     //     userTknAccount1 = newAccount.publicKey.toBase58();
     //   }
     // }
-  
+
     function transferToWSOL(amount: BN, WSOLAccount: PublicKey, userPublicKey: PublicKey) {
       const ins1 = SystemProgram.transfer(
         {
@@ -266,6 +371,23 @@ export default async function buildFarmTransactions(
       });
       return [ins1, ins2];
     }
+
+    // range stop loss
+    if (rangeStopType && priceRange0 && priceRange1) {
+      const rangeIns = await getRangeInstruction(
+        pair,
+        lyfType,
+        userPublicKey,
+        userInfoAccount,
+        farm,
+        {
+          priceRange0,
+          priceRange1,
+          rangeStopType
+        }
+      );
+      trx.add(rangeIns);
+    }
     // if need transfer sol, transfer sol to wsol
     if (isNativeMint(targetFarmInfo.tknMint0)) {
       if (tokenAmount0.gtn(0)) {
@@ -280,7 +402,7 @@ export default async function buildFarmTransactions(
     } else {
       // not include SOL 
     }
-  
+
     const transferInstruction = await program.instruction.transfer({
       stopLoss,
       amount0: new BN(tokenAmount0),
@@ -299,9 +421,9 @@ export default async function buildFarmTransactions(
         clock: SYSVAR_CLOCK_PUBKEY
       }
     });
-  
+
     const borrowAccounts = farm.getBorrowParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
-  
+
     const borrowInsList = [];
     if (borrow0.gtn(0)) {
       const borrowInstruction0 = await program.instruction.borrow(
@@ -313,7 +435,7 @@ export default async function buildFarmTransactions(
       );
       borrowInsList.push(borrowInstruction0);
     }
-  
+
     if (borrow1.gtn(0)) {
       const borrowInstruction1 = await program.instruction.borrow(
         {
@@ -324,13 +446,13 @@ export default async function buildFarmTransactions(
       );
       borrowInsList.push(borrowInstruction1);
     }
-  
+
     trx.add(transferInstruction);
-  
+
     if (borrowInsList.length) {
       trx.add(...borrowInsList);
     }
-  
+
     // WSOL
     // if (isNativeMint(targetFarmInfo.tknMint0) || isNativeMint(targetFarmInfo.tknMint1)) {
     //   trx.add(
@@ -348,14 +470,14 @@ export default async function buildFarmTransactions(
     //     trx.add(...borrowInsList);
     //   }
     // }
-  
+
     return {
       trxPre,
       trx,
       currentUserInfoAccount: userInfoAccount
     };
   }
-  
+
   async function swapAndAddLiquidity(
     connection: Connection,
     pair: string,
@@ -373,32 +495,32 @@ export default async function buildFarmTransactions(
     if (!targetFarmInfo) {
       throw new Error(`no farm info for ${pair}`);
     }
-  
+
     // stable swap
     if (lyfType === 'orca' && targetFarmInfo.protocolSubVersion === 2) {
       const program = farm.getProgram(lyfType);
       const userInfoAccount = configs.currentUserInfoAccount;
-  
+
       const liquidityParams = farm.getLiquidityParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
       const addLiquidityInstruction = await program.instruction.addLiquidity(...liquidityParams);
       const singleSideInstruction = await program.instruction.addLiquiditySigleSide(...liquidityParams);
-  
+
       trx.add(addLiquidityInstruction, singleSideInstruction);
     } else {
       const program = farm.getProgram(lyfType);
       const userInfoAccount = configs.currentUserInfoAccount;
-  
+
       const swapParams = farm.getSwapParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
       const swapInstruction = await program.instruction.swap(...swapParams);
-  
+
       const liquidityParams = farm.getLiquidityParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
       const addLiquidityInstruction = await program.instruction.addLiquidity(...liquidityParams);
-  
+
       trx.add(swapInstruction, addLiquidityInstruction);
     }
     return trx;
   }
-  
+
   async function stakeLP(
     connection: Connection,
     pair: string,
@@ -410,13 +532,13 @@ export default async function buildFarmTransactions(
     if (!targetFarmInfo) {
       throw new Error(`no farm info for ${pair}`);
     }
-  
+
     // const userPublicKey = wallet.publicKey;
     const program = farm.getProgram(lyfType);
     const stakeLpParams = farm.getStakeLpParams(targetFarmInfo, lyfType);
     const stakeLPInstruction = await program.instruction.stakeLp(...stakeLpParams);
     trx.add(stakeLPInstruction);
-  
+
     // is Double Dip Pool
     if (targetFarmInfo?.ammInfo?.doubleDipPool) {
       const doubleDipParams = farm.getOrcaDoubleDipStakeParams(targetFarmInfo);

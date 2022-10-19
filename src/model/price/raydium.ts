@@ -148,7 +148,7 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
   }
 
   forEach(raydiumLPInfo, (value, key) => {
-    if (value.pcToken === 'USDC') {
+    if (value.pcToken === 'USDC' || value.pcToken === 'USDT') {
       if (!priceList[value.coinToken]) {
         updatePrice(value.coinToken, priceList, raydiumLPInfo, {
           LPName: key
@@ -163,8 +163,8 @@ export async function getRaydiumLPPrice(connection: Connection, priceList: {
         pcDecimals: 9
       });
     }
-
   });
+
 
   forEach(list, (value, poolKey) => {
     const key = (value as any)?.alias || poolKey;
