@@ -83,7 +83,6 @@ async function farm() {
 ```
 
 ### Get Farm Versioned Transactions
-#### (ONLY for Raydium Pools now)
 ```javascript
 async function oneTxfarm() {
   // supply 1 USDC, borrow 1 USDC
@@ -168,7 +167,6 @@ async function close() {
 
 ```
 ### Get Farm Close Versioned Transactions
-#### (ONLY for Raydium Pools now)
 ```javascript
 async function oneTxClose() {
   // supply 1 USDC, borrow 1 USDC
