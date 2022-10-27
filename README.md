@@ -262,8 +262,25 @@ async function withdraw() {
   const { txid, response } = await fr.sendSingleTransaction(trx, wallet, signers);
   console.log(txid, response);
 }
-
 ```
+
+### Get Lending Transaction V0
+```javascript
+async function depositV0() {
+  const {trx, signers} = await sdk.getLendingDepositTransactionV0(
+  'USDC', new BN('1000000'), new PublicKey('23xxxxxxx'));
+  const { txid, response } = await sdk.sendVersionedTransaction(trx, wallet, signers);
+}
+
+async function withdrawV0() {
+  const rewardAmount = 1002232;
+  const tokenAmount = 0;
+  const {trx, signers} = await sdk.getLendingWithdrawTransactionV0(
+  'USDC', rewardAmount, tokenAmount,  new PublicKey('23xxxxxxx'));
+  const { txid, response } = await sdk.sendVersionedTransaction(trx, wallet, signers);
+}
+```
+
 ### Get User Lending Pool
 
 user lending position, the `totalAmount` is the token amount.

@@ -20,6 +20,7 @@ export const ORCA_USER_FARM_INFO_ACCOUNT_LAYOUT = struct([
 
 export const ORCA_FARM_CONFIG = {
   'SOL-USDC': {
+    lookupTableAddress:  new PublicKey("AeKWjg4MMmFpJzSggPwzsMM85uuKSmzXFQ1pxKiTsA8E"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -97,6 +98,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'ORCA-USDC': {
+    lookupTableAddress:  new PublicKey("8cpaxzBcxvEQxyDUvCR9W32GEfP8kLC2LEVdwHoHmPiH"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -177,6 +179,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'ORCA-SOL': {
+    lookupTableAddress:  new PublicKey("Bz5jXizzELXpLR5Db6V5DxZK4SrBV6ptkHXLiFs9G8Fe"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -255,6 +258,7 @@ export const ORCA_FARM_CONFIG = {
     }
   },
   'ATLAS-USDC': {
+    lookupTableAddress:  new PublicKey("JBrzS1fpukSE1ombM17voVHs83Ny4TFGnNtZAn9JrDTz"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: 'ATLAS-USDC[Double-Dip]',
@@ -346,6 +350,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'POLIS-USDC': {
+    lookupTableAddress:  new PublicKey("RG3YjYuwjRT9bymjfQqmtCYFHUPokLt6CGTM4ZVfFJv"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: 'POLIS-USDC[Double-Dip]',
@@ -516,6 +521,7 @@ export const ORCA_FARM_CONFIG = {
   // },
 
   'mSOL-USDC': {
+    lookupTableAddress:  new PublicKey("6pG5wSSpA2LMUV2oqemefcTH9nBzZFCoFNN9TzLPMCmi"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -618,6 +624,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'ORCA-mSOL': {
+    lookupTableAddress:  new PublicKey("8FyJVHjrZpfYuK5JohkjFBHRrgAPwATYSBupgWvbDnQ5"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -720,6 +727,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'mSOL-USDT': {
+    lookupTableAddress:  new PublicKey("GYmFQF2c6vNBCNxgFvDMD93dg6LTiuV9yXQ4mPPLWrnC"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -822,6 +830,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'BTC-mSOL': {
+    lookupTableAddress:  new PublicKey("8LUkNYrjoor7kxmZdHbT4r9i5FTbyUQio9m1Abq2Rc8h"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -924,6 +933,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'ETH-SOL': {
+    lookupTableAddress:  new PublicKey("BbmCLLzBDuAzoauZPEXK3TAm6JoVXeqzRvvFuPLbaQZA"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1006,6 +1016,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'NINJA-SOL': {
+    lookupTableAddress:  new PublicKey("HgLH1UuY6sMXuUEZqrG9AfwhBA4iSAdLhwQx9ox65iD2"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1099,6 +1110,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'whETH-USDC': {
+    lookupTableAddress:  new PublicKey("8bPUPTnQk3ueV68X95Rpw5dW6q6FB3VWVARaQJxfVMn4"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1186,6 +1198,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'whETH-SOL': {
+    lookupTableAddress:  new PublicKey("Gc6uiTZcJM9PoNisy8M5RgYnq477AJ45nhz38sACSqhB"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1271,6 +1284,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'mSOL-whETH': {
+    lookupTableAddress:  new PublicKey("8hr9M6FReKxisrfNMWTuemXiyPPzfP7cLfnkzGFuy3Wz"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1372,6 +1386,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'SBR-USDC': {
+    lookupTableAddress:  new PublicKey("FugzPo5YCosTxEhmaUEC4LLzKgi7HMMj5Q5fjXBGx3Gt"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1459,6 +1474,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'whETH-USDC-Strategy0': {
+    lookupTableAddress:  new PublicKey("8wab1NJExSQSkJ2pt8VYGYBSdtrXUfT3QcHPVAWs9KiF"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1544,6 +1560,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'LIQ-USDC': {
+    lookupTableAddress:  new PublicKey("DEK3itMqnojFRxvZC31pEYVwrfnUvoDnvdK7dzcgNYRR"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1635,6 +1652,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'COPE-USDC': {
+    lookupTableAddress:  new PublicKey("8yoxkaDpGeLuM2wYqY4ZXiaEZ7JWkJCiNsfCwyjtKXRZ"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: 'COPE-USDC[Double-Dip]',
@@ -1726,6 +1744,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'PORT-USDC': {
+    lookupTableAddress:  new PublicKey("8twwvrUDrzCFpJ9Yc6wnak1sXHfkouUPiBYeYEkNWEik"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1817,6 +1836,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'SAMO-USDC': {
+    lookupTableAddress:  new PublicKey("3PKAoZjJUABgDESVwSYsLqG8grNjqSnAqEeBncyR7fVi"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -1910,6 +1930,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'ABR-USDC': {
+    lookupTableAddress:  new PublicKey("6RtbKeb5Tz29quuECUMLKjhHL5dga3NvSNyjW5TUkKWW"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2005,6 +2026,7 @@ export const ORCA_FARM_CONFIG = {
 
 
   'SRM-SOL': {
+    lookupTableAddress:  new PublicKey("5QYvxRPcNaj9q2dg4EELTqHEXYtiDGRZpjWzKeUPN5yP"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2090,6 +2112,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'FTT-USDC': {
+    lookupTableAddress:  new PublicKey("G1RiszQCntiJJMFvWZNporbX1xeo9caUNeMNxQAqAmGt"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2176,6 +2199,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'COPE-SOL': {
+    lookupTableAddress:  new PublicKey("3jagovnqT5S4Dp4KJ3pTHMSSd7AtwQe4dxEaJ5Y9jFp9"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2261,6 +2285,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'mSOL-SOL': {
+    lookupTableAddress:  new PublicKey("Fr9TcjRUGxK7jPGAFPcGcurJvNLYe9ShukAtptJHpJEP"),
     protocolVersion: 2,
     protocolSubVersion: 2,
     alias: null,
@@ -2362,6 +2387,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'SLND-USDC': {
+    lookupTableAddress:  new PublicKey("862LcjraFyb15VnJAU3Vybb33ai1EtnzveXwoHPZtGma"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2450,6 +2476,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'SOL-USDT': {
+    lookupTableAddress:  new PublicKey("5tFbnZ98Uebyoei4rX4Vt3jFoX72UTrMxF3S749fSz5U"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: 'SOL-USDT[Aquafarm]',
@@ -2531,6 +2558,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'ETH-USDC': {
+    lookupTableAddress:  new PublicKey("C2yiUPJFbpYW9ekqgbzMTyt6UJ2y5Pgs6tTHjEUPbn9n"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2614,6 +2642,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'stSOL-USDC': {
+    lookupTableAddress:  new PublicKey("CPrxfoAVbaRK3ty1UJJKdjtuWUfUvAZoLskB8oTtYBBX"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2717,6 +2746,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'SHDW-USDC': {
+    lookupTableAddress:  new PublicKey("HW5SB2SG7SMGu3v5YPS39PnCF6FzDMViZUYBfxGwDXqk"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2812,6 +2842,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'SHDW-SOL': {
+    lookupTableAddress:  new PublicKey("CkfzDHTb2sJgwt2wdbN2WxmdqBmM6mByK5byTLjCXRc6"),
     protocolVersion: 2,
     protocolSubVersion: 1,
     alias: null,
@@ -2906,6 +2937,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'BASIS-USDC': {
+    lookupTableAddress:  new PublicKey("9a67BJZpWX25dSEuXGRDRpYFW9mZzvh2pAegRvBXg8UN"),
     needsLiquidate: true,
     needsCompound: true,
 
@@ -3005,6 +3037,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'wUST-USDC': {
+    lookupTableAddress:  new PublicKey("FGoDUCe6JpmbryfJL4uMRbaypH3MDqptF8F1ha19rFZ8"),
     needsLiquidate: true,
     needsCompound: true,
 
@@ -3109,6 +3142,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'stSOL-USDT': {
+    lookupTableAddress:  new PublicKey("DuCHS8gQCo9kBsa5d5Y1xXByAspbuGAh5qE3DcgkzLJi"),
     alias: 'stSOL-USDT[Double-Dip]',
     orcaPoolId: 'stSOL/USDT[aquafarm]',
 
@@ -3213,6 +3247,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'SLC-USDC': {
+    lookupTableAddress:  new PublicKey("3Ek9EP72FWmt2QaY6ProWW6vsK8pSvGJUYnKALxouTTz"),
     needsLiquidate: true,
     needsCompound: true,
     alias: null,
@@ -3312,6 +3347,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'MEAN-USDC': {
+    lookupTableAddress:  new PublicKey("47zeLdnXvZUkDacwZhYzG4b3VW8q3bAKxFUbfaDKkv8U"),
     needsLiquidate: true,
     needsCompound: true,
 
@@ -3411,6 +3447,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'ORCA-USDT': {
+    lookupTableAddress:  new PublicKey("HSjMSMGAZ5Qqa8JNLA3czmUjMQ9Qt46q73rSvJBC2hbo"),
     needsLiquidate: true,
     needsCompound: true,
 
@@ -3502,6 +3539,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'ORCA-whETH': {
+    lookupTableAddress:  new PublicKey("Gxc9dgATdmBMNbW4MudrWSuefkEPymMFPDFePxxYejrV"),
     needsLiquidate: true,
     needsCompound: true,
 
@@ -3593,6 +3631,7 @@ export const ORCA_FARM_CONFIG = {
   },
 
   'GST-USDC': {
+    lookupTableAddress:  new PublicKey("8nRZfeM8bBZBtrxZAwVvYpJFJLf6jLXyRGGq6JRUhfVm"),
     needsLiquidate: true,
     needsCompound: false,
 
@@ -3682,6 +3721,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'GMT-USDC': {
+    lookupTableAddress:  new PublicKey("GTtXGfSCe7vr1XXViUTB7dQArcWf5gnoA2yrrdFn7JPV"),
     needsLiquidate: true,
     needsCompound: false,
 
@@ -3771,6 +3811,7 @@ export const ORCA_FARM_CONFIG = {
     },
   },
   'stSOL-SOL': {
+    lookupTableAddress:  new PublicKey("4RD91rsZUTNypfPxxf16c6CLmefFXgmqZz4Dp1QKEgRt"),
     needsLiquidate: true,
     needsCompound: true,
     alias: null,

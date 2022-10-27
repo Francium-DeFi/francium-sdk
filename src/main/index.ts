@@ -1,5 +1,5 @@
 import { Connection, Keypair, PublicKey, Transaction, ParsedInstruction, TransactionMessage, VersionedTransaction } from '@solana/web3.js';
-import { lendingPoolList } from '../constants/lend/pools';
+import { LendInfoItem, lendingPoolList, lendingPools } from '../constants/lend/pools';
 import { farmPools } from '../constants/farm';
 import {
   getLendingPoolInfo, getTokenPrice, FranciumFarm, getOrcaLPPrice,
@@ -12,7 +12,7 @@ import { find, ceil } from 'lodash';
 import * as BN from 'bn.js';
 import buildFarmTransactions from '../model/farm/farm';
 import buildWithdrawTransactions from '../model/farm/withdraw';
-import { send2TransactionsListOneByOneWithErrorCatch, sendVersionedTransaction, sendWalletTransaction } from '../utils/sign';
+import { buildVersionedTransaction, send2TransactionsListOneByOneWithErrorCatch, sendVersionedTransaction, sendWalletTransaction } from '../utils/sign';
 import { SWAP_FEE, rebalanceByEquity } from '../utils/rebalance';
 import { getTokenDecimals } from '../utils/tools';
 import { deposit } from '../model/lend/deposit';
@@ -74,6 +74,33 @@ export class FranciumSDK {
     };
   }
 
+  public async getLendingDepositTransactionV0(
+    pool: string,
+    amount: BN,
+    userPublicKey: PublicKey,
+    configs: {
+      noRewards?: boolean;
+      mintStSol?: boolean;
+    }
+  ) {
+    const { trx, signers } = await deposit(
+      this.connection,
+      new BigNumber(amount.toString()).toNumber(),
+      pool,
+      userPublicKey,
+      configs
+    );
+    const targetLendInfo: LendInfoItem = lendingPools[pool];
+    const versioned = await buildVersionedTransaction(
+      [trx], this.connection, targetLendInfo.lookupTableAddress, userPublicKey
+    );
+
+    return {
+      trx: versioned,
+      signers
+    };
+  }
+
   public async getLendWithdrawTransaction(
     pool: string,
     rewardAmount: number,
@@ -93,6 +120,33 @@ export class FranciumSDK {
     );
     return {
       trx,
+      signers
+    };
+  }
+
+  public async getLendWithdrawTransactionV0(
+    pool: string,
+    rewardAmount: number,
+    tokenAmount: number,
+    userPublicKey: PublicKey,
+    configs: {
+      noRewards?: boolean;
+    }
+  ) {
+    const { trx, signers } = await withdraw(
+      this.connection,
+      rewardAmount,
+      tokenAmount,
+      pool,
+      userPublicKey,
+      configs
+    );
+    const targetLendInfo: LendInfoItem = lendingPools[pool];
+    const versioned = await buildVersionedTransaction(
+      [trx], this.connection, targetLendInfo.lookupTableAddress, userPublicKey
+    );
+    return {
+      trx: versioned,
       signers
     };
   }
@@ -277,11 +331,13 @@ export class FranciumSDK {
   public async sendVersionedTransaction(
     trx: VersionedTransaction,
     wallet: any,
+    signers?: Keypair[]
   ) {
     return sendVersionedTransaction(
       trx,
       this.connection,
       wallet,
+      signers
     );
   }
 

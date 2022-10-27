@@ -1,4 +1,4 @@
-import { Connection, Keypair, Transaction, VersionedTransaction } from "@solana/web3.js";
+import { Connection, Keypair, PublicKey, Transaction, TransactionMessage, VersionedTransaction } from "@solana/web3.js";
 import * as base58 from 'bs58';
 
 export async function send2TransactionsListOneByOneWithErrorCatch(
@@ -20,7 +20,7 @@ export async function send2TransactionsListOneByOneWithErrorCatch(
   const signed = await wallet.signAllTransactions(trxs);
   console.info('----- Sign end -----');
 
-  const stateInfos: {state: string, msg: string, total: number}[] = [];
+  const stateInfos: { state: string, msg: string, total: number }[] = [];
 
   for (let index = 0; index < signed.length; index++) {
     const signedTrx = signed[index];
@@ -81,7 +81,7 @@ export async function sendWalletTransaction(
   if (signers && signers.length) {
     trx.partialSign(...signers);
   }
-  
+
   console.log('start signed', trx);
   const signed = await wallet.signTransaction(trx);
   console.log('start send');
@@ -96,8 +96,12 @@ export async function sendWalletTransaction(
 }
 
 export async function sendVersionedTransaction(
-  trx: VersionedTransaction, connection: Connection, wallet: any
+  trx: VersionedTransaction, connection: Connection, wallet: any,
+  signers?: Keypair[]
 ) {
+  if (signers) {
+    trx.sign(signers);
+  }
   const signed = await wallet.signTransaction(trx);
   const txid = await connection.sendTransaction(signed, {
     skipPreflight: true,
@@ -107,4 +111,25 @@ export async function sendVersionedTransaction(
   const r = await connection.confirmTransaction(txid, 'confirmed');
   console.log('trx confirmed', r, txid);
   return { txid, response: r };
+}
+
+export async function buildVersionedTransaction(
+  trxs: Transaction[], connection: Connection, lookupTableAddress: PublicKey, userPublicKey: PublicKey) {
+  const trx = new Transaction();
+  trxs.forEach(tx => {
+    trx.add(...tx.instructions);
+  });
+  const lookupTableAccount = await connection.getAddressLookupTable(lookupTableAddress)
+    .then((res) => res.value);
+  const blockhash = await connection.getLatestBlockhash()
+    .then((res) => res.blockhash);
+
+  const messageV0 = new TransactionMessage({
+    payerKey: userPublicKey,
+    recentBlockhash: blockhash,
+    instructions: trx.instructions,
+  }).compileToV0Message([lookupTableAccount]);
+
+  const transactionV0 = new VersionedTransaction(messageV0);
+  return transactionV0;
 }
