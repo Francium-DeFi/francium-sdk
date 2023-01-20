@@ -314,7 +314,7 @@ export default {
       ]
     },
     {
-      "name": "transferLp",
+      "name": "borrowWithOracleInfo",
       "accounts": [
         {
           "name": "userMainAccount",
@@ -323,11 +323,6 @@ export default {
         },
         {
           "name": "userInfoAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userLpAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -342,18 +337,68 @@ export default {
           "isSigner": false
         },
         {
-          "name": "strategyLpAccount",
+          "name": "strategyTknAccount0",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "userFrcRewardsTknAccount",
+          "name": "strategyTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingMarketAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingMarketAuthorityInfo",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "strategyFrcRewardsTknAccount",
+          "name": "lendingPoolProgramId",
           "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolInfoAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolCreditAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyCreditAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolInfoAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lendingPoolCreditAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "strategyCreditAccount1",
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -365,13 +410,78 @@ export default {
           "name": "clock",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "ammId",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammOpenOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTknAccount1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lpMintAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleInfo0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleInfo1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pythOraclePriceAccount0",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "pythOraclePriceAccount1",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "switchboardOraclePriceAccount0",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "switchboardOraclePriceAccount1",
+          "isMut": false,
+          "isSigner": false
         }
       ],
       "args": [
         {
           "name": "param",
           "type": {
-            "defined": "TransferLpParam"
+            "defined": "BorrowParam"
           }
         }
       ]
@@ -962,119 +1072,6 @@ export default {
         }
       ],
       "args": []
-    },
-    {
-      "name": "unstakeLp",
-      "accounts": [
-        {
-          "name": "userMainAccount",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "userInfo",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyState",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyAuthority",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyLpAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyRewardTknAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyRewardTknAccountB",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyFarmInfo",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "raydiumStakingProgramId",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "poolId",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolAuthority",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "poolLpAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolRewardTknAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolRewardTknAccountB",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgramId",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "lendingPoolInfoAccount0",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "lendingPoolInfoAccount1",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userRewardsTknAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "strategyRewardsTknAccount",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "param",
-          "type": {
-            "defined": "UnstakeLpParam"
-          }
-        }
-      ]
     },
     {
       "name": "unstakeLpWithType",
@@ -2772,9 +2769,136 @@ export default {
         }
       ],
       "args": []
+    },
+    {
+      "name": "initializeOracleInfoAccount",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracleInfo0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleInfo1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "setPythOracle",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracleInfo0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleInfo1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oraclePriceAccount0",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oraclePriceAccount1",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "setSwitchboardOracle",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "strategyState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracleInfo0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleInfo1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oraclePriceAccount0",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oraclePriceAccount1",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
+    {
+      "name": "OracleInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "pyth",
+            "type": {
+              "defined": "OracleData"
+            }
+          },
+          {
+            "name": "switchboardV2",
+            "type": {
+              "defined": "OracleData"
+            }
+          }
+        ]
+      }
+    },
     {
       "name": "StrategyState",
       "type": {
@@ -3108,6 +3232,170 @@ export default {
   ],
   "types": [
     {
+      "name": "LendingBorrowParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "instruction",
+            "type": "u8"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LendingRepayParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "instruction",
+            "type": "u8"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RaydiumSwapParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "instruction",
+            "type": "u8"
+          },
+          {
+            "name": "amountIn",
+            "type": "u64"
+          },
+          {
+            "name": "minAmountOut",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RaydiumAddLiqParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "instruction",
+            "type": "u8"
+          },
+          {
+            "name": "maxCoinAmount",
+            "type": "u64"
+          },
+          {
+            "name": "maxPcAmount",
+            "type": "u64"
+          },
+          {
+            "name": "fixedFromCoin",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RaydiumRemoveLiqParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "instruction",
+            "type": "u8"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RaydiumDepositLpV4Param",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "instruction",
+            "type": "u8"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RaydiumWithdrawLpV4Param",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "instruction",
+            "type": "u8"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "OracleRawData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "latestPrice",
+            "type": "f64"
+          },
+          {
+            "name": "priceAccount",
+            "type": "publicKey"
+          },
+          {
+            "name": "reserved",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "OracleData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "oracleType",
+            "type": {
+              "defined": "OracleType"
+            }
+          },
+          {
+            "name": "rawData",
+            "type": {
+              "defined": "OracleRawData"
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "ProtocolVerison",
       "type": {
         "kind": "struct",
@@ -3178,18 +3466,6 @@ export default {
           },
           {
             "name": "amount1",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "TransferLpParam",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "lpAmount",
             "type": "u64"
           }
         ]
@@ -3294,6 +3570,23 @@ export default {
         "variants": [
           {
             "name": "InvalidVersion"
+          }
+        ]
+      }
+    },
+    {
+      "name": "OracleType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Default"
+          },
+          {
+            "name": "Pyth"
+          },
+          {
+            "name": "SwitchboardV2"
           }
         ]
       }
@@ -3424,6 +3717,16 @@ export default {
       "code": 6024,
       "name": "LeverageTooHigh",
       "msg": "Leverage Too High"
+    },
+    {
+      "code": 6025,
+      "name": "InvalidSwitchboardAccount",
+      "msg": "InvalidSwitchboardAccount"
+    },
+    {
+      "code": 6026,
+      "name": "StaleFeed",
+      "msg": "StaleFeed"
     }
   ]
 };

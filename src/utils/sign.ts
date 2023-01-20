@@ -1,5 +1,7 @@
 import { Connection, Keypair, PublicKey, Transaction, TransactionMessage, VersionedTransaction } from "@solana/web3.js";
 import * as base58 from 'bs58';
+import { SnowflakeSafeWalletName } from '@snowflake-so/wallet-adapter-snowflake';
+import { StrikeWalletName } from '@solana/wallet-adapter-strike';
 
 export async function send2TransactionsListOneByOneWithErrorCatch(
   trxs: Transaction[], connection: Connection, wallet: any,
@@ -18,6 +20,7 @@ export async function send2TransactionsListOneByOneWithErrorCatch(
 
   console.log('------ start sign ------', trxs);
   const signed = await wallet.signAllTransactions(trxs);
+  // const signed = await wallet.signAllTransactions(trxs);
   console.info('----- Sign end -----');
 
   const stateInfos: { state: string, msg: string, total: number }[] = [];
@@ -78,12 +81,20 @@ export async function sendWalletTransaction(
   const { blockhash } = await connection.getRecentBlockhash();
   trx.recentBlockhash = blockhash;
   trx.feePayer = wallet.publicKey;
-  if (signers && signers.length) {
+  if (wallet.name !== StrikeWalletName && signers && signers.length) {
     trx.partialSign(...signers);
   }
 
   console.log('start signed', trx);
+  if (wallet.name === SnowflakeSafeWalletName) {
+    wallet.setProposalName('Sign transaction | Proposal');
+    // console.log('signers :>> ', signers, signers[0].publicKey.toBase58());
+    wallet.setSigners(signers);
+  }
   const signed = await wallet.signTransaction(trx);
+  if (wallet.name === StrikeWalletName) {
+    signed.partialSign(...signers);
+  }
   console.log('start send');
   const txid = await connection.sendRawTransaction(signed.serialize(), {
     skipPreflight: true,

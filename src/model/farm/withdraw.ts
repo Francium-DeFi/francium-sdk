@@ -232,7 +232,7 @@ export default async function buildWithdrawTransactions(
         {
           withdrawType
         },
-        ...swapAndWithdrawParams
+        swapAndWithdrawParams[0]
       );
   
       const ix3 = await program.instruction.stableWithdraw({
@@ -280,7 +280,7 @@ export default async function buildWithdrawTransactions(
         {
           withdrawType
         },
-        ...swapAndWithdrawParams
+        swapAndWithdrawParams[0]
       );
   
       const closeEmptyInstruction = await program.instruction.closeEmptyAccount({

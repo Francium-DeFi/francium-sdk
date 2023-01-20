@@ -19,10 +19,14 @@ import { deposit } from '../model/lend/deposit';
 import { withdraw } from '../model/lend/withdraw';
 import { buildRepayTransactions } from '../model/farm/repay';
 import { TOKENS_LIST } from '../index';
+import FranciumAutoVaults from '../model/auto';
+import depositAuto from '../model/auto/deposit';
+import withdrawAuto from '../model/auto/withdraw';
 
 export class FranciumSDK {
   public connection: Connection;
   public farmHub: FranciumFarm;
+  public autoHub: FranciumAutoVaults;
   private farmPools: any[];
   private getTokenPrice: () => Promise<{
     [token: string]: number
@@ -45,11 +49,49 @@ export class FranciumSDK {
     this.farmHub = new FranciumFarm({ connection: this.connection });
     this.farmPools = farmPools.filter(i => i.version > 2);
     this.getTokenPrice = config.getTokenPrice;
+    this.autoHub = new FranciumAutoVaults({ connection: this.connection });
   }
 
   public updateConnection(connection: Connection) {
     this.connection = connection;
     this.farmHub.connection = connection;
+    this.autoHub.connection = connection;
+  }
+
+  public async getAutoDepositTransactions(
+    pair: string,
+    type: string,
+    userPublicKey: PublicKey,
+    configs: {
+      amount0: BN;
+    }
+  ) {
+    return depositAuto(
+      this.connection,
+      pair, type, userPublicKey, this.autoHub,
+      configs
+    );
+  }
+
+  public async getAutoWithdrawTransactions(
+    pair: string,
+    type: string,
+    userPublicKey: PublicKey,
+    configs: {
+      shareAmount: BN;
+      userPositionPublicKey: PublicKey
+    }
+  ) {
+    return withdrawAuto(
+      this.connection,
+      pair, type, userPublicKey, this.autoHub,
+      configs
+    );
+  }
+
+  public async getAutoPoolsInfo(userPublicKey?: PublicKey) {
+    const infos = await this.autoHub.getUserFarmPosition(userPublicKey);
+    return infos;
   }
 
   public async getLendingDepositTransaction(
@@ -212,6 +254,9 @@ export class FranciumSDK {
       borrowCoinAmount: BN,
       stopLoss?: number,
       currentUserInfoAccount?: PublicKey
+      onGetAccounts?: (accounts: {
+        userInfoAccount: PublicKey;
+      }) => void;
     }
   ) {
     const targetFarmInfo = this.farmHub.getConfig(pair, lyfType);
@@ -232,7 +277,8 @@ export class FranciumSDK {
         borrow1: configs.borrowCoinAmount,
         stopLoss: configs.stopLoss || 80,
         currentUserInfoAccount: configs.currentUserInfoAccount,
-        useLookupTable: true
+        useLookupTable: true,
+        onGetAccounts: configs.onGetAccounts
       }
     );
 

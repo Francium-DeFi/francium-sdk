@@ -71,6 +71,9 @@ export default async function buildFarmTransactions(
     rangeStopType?: number;
     priceRange0?: BN;
     priceRange1?: BN;
+    onGetAccounts?: (accounts: {
+      userInfoAccount: PublicKey;
+    }) => void
   }
 ) {
   if (configs?.useLookupTable) {
@@ -166,10 +169,13 @@ export default async function buildFarmTransactions(
       rangeStopType?: number;
       priceRange0?: BN;
       priceRange1?: BN;
+      onGetAccounts?: (accounts: {
+        userInfoAccount: PublicKey;
+      }) => void
     }) {
 
     const {
-      amount0, amount1, borrow0, borrow1, stopLoss, currentUserInfoAccount,
+      amount0, amount1, borrow0, borrow1, stopLoss, currentUserInfoAccount, onGetAccounts
     } = configs;
 
     const { trxPre, trx: trx1, currentUserInfoAccount: preUserInfoAccount } = await investAndBorrow(
@@ -184,8 +190,15 @@ export default async function buildFarmTransactions(
         borrow1,
         stopLoss,
         currentUserInfoAccount
-      }
+      },
+      true
     );
+
+    if (onGetAccounts) {
+      onGetAccounts({
+        userInfoAccount: preUserInfoAccount
+      });
+    }
 
     const trx2 = await swapAndAddLiquidity(connection, pair, lyfType || 'raydium', userPublicKey, {
       currentUserInfoAccount: preUserInfoAccount
@@ -212,7 +225,8 @@ export default async function buildFarmTransactions(
     pair: string,
     lyfType: string,
     userPublicKey: PublicKey,
-    configs: AmountConfig
+    configs: AmountConfig,
+    useOracle?: boolean
   ) {
     const {
       stopLoss,
@@ -295,7 +309,7 @@ export default async function buildFarmTransactions(
     }
 
     async function initUserInfoWithoutNonce() {
-      userInfoAccount = await program.account.userInfo.associated(userPublicKey, strategyAccount);
+      userInfoAccount = await program.account.userInfo.associated(userPublicKey, strategyAccount) as PublicKey;
       const initInstruction = await program.instruction.initializeUser(
         {
           accounts: {
@@ -422,29 +436,44 @@ export default async function buildFarmTransactions(
       }
     });
 
-    const borrowAccounts = farm.getBorrowParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
-
     const borrowInsList = [];
-    if (borrow0.gtn(0)) {
-      const borrowInstruction0 = await program.instruction.borrow(
+    if (useOracle) {
+      // use `borrowWithOracleInfo`
+      console.log('useOracle');
+      const borrowAccounts = farm.getBorrowParamsWithOrcale(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
+      console.log(borrowAccounts);
+      const borrowInstruction = await program.instruction.borrowWithOracleInfo(
         {
           borrow0: new BN(borrow0),
-          borrow1: new BN(0)
-        },
-        ...borrowAccounts
-      );
-      borrowInsList.push(borrowInstruction0);
-    }
-
-    if (borrow1.gtn(0)) {
-      const borrowInstruction1 = await program.instruction.borrow(
-        {
-          borrow0: new BN(0),
           borrow1: new BN(borrow1)
         },
-        ...borrowAccounts
+        borrowAccounts[0]
       );
-      borrowInsList.push(borrowInstruction1);
+      borrowInsList.push(borrowInstruction);
+
+    } else {
+      const borrowAccounts = farm.getBorrowParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
+      if (borrow0.gtn(0)) {
+        const borrowInstruction0 = await program.instruction.borrow(
+          {
+            borrow0: new BN(borrow0),
+            borrow1: new BN(0)
+          },
+          borrowAccounts[0]
+        );
+        borrowInsList.push(borrowInstruction0);
+      }
+
+      if (borrow1.gtn(0)) {
+        const borrowInstruction1 = await program.instruction.borrow(
+          {
+            borrow0: new BN(0),
+            borrow1: new BN(borrow1)
+          },
+          borrowAccounts[0]
+        );
+        borrowInsList.push(borrowInstruction1);
+      }
     }
 
     trx.add(transferInstruction);
@@ -502,20 +531,18 @@ export default async function buildFarmTransactions(
       const userInfoAccount = configs.currentUserInfoAccount;
 
       const liquidityParams = farm.getLiquidityParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
-      const addLiquidityInstruction = await program.instruction.addLiquidity(...liquidityParams);
-      const singleSideInstruction = await program.instruction.addLiquiditySigleSide(...liquidityParams);
-
+      const addLiquidityInstruction = program.instruction.addLiquidity(liquidityParams[0]);
+      const singleSideInstruction = program.instruction.addLiquiditySigleSide(liquidityParams[0]);
       trx.add(addLiquidityInstruction, singleSideInstruction);
     } else {
       const program = farm.getProgram(lyfType);
       const userInfoAccount = configs.currentUserInfoAccount;
 
       const swapParams = farm.getSwapParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
-      const swapInstruction = await program.instruction.swap(...swapParams);
+      const swapInstruction = program.instruction.swap(...swapParams as any);
 
       const liquidityParams = farm.getLiquidityParams(targetFarmInfo, userPublicKey, userInfoAccount, lyfType);
-      const addLiquidityInstruction = await program.instruction.addLiquidity(...liquidityParams);
-
+      const addLiquidityInstruction = await program.instruction.addLiquidity(liquidityParams[0]);
       trx.add(swapInstruction, addLiquidityInstruction);
     }
     return trx;
@@ -536,13 +563,13 @@ export default async function buildFarmTransactions(
     // const userPublicKey = wallet.publicKey;
     const program = farm.getProgram(lyfType);
     const stakeLpParams = farm.getStakeLpParams(targetFarmInfo, lyfType);
-    const stakeLPInstruction = await program.instruction.stakeLp(...stakeLpParams);
+    const stakeLPInstruction = program.instruction.stakeLp(stakeLpParams[0]);
     trx.add(stakeLPInstruction);
 
     // is Double Dip Pool
     if (targetFarmInfo?.ammInfo?.doubleDipPool) {
       const doubleDipParams = farm.getOrcaDoubleDipStakeParams(targetFarmInfo);
-      const doubleDipInstruction = program.instruction.doubleDipStakeFarmTkn(...doubleDipParams);
+      const doubleDipInstruction = program.instruction.doubleDipStakeFarmTkn(doubleDipParams[0]);
       trx.add(doubleDipInstruction);
     }
     return trx;

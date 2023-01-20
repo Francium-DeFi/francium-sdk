@@ -1,13 +1,14 @@
-import { Provider, Program, Idl, web3, BN } from '@project-serum/anchor';
+import { AnchorProvider, Program, Idl, web3, BN } from '@project-serum/anchor';
 
 import raydiumIdl from '../../constants/farm/raydium/config';
 import orcaIdl from '../../constants/farm/orca/config';
 import { lyfRaydiumProgramId, RAYDIUM_FARM_CONFIG } from '../../constants/farm/raydium/info';
 import { lyfOrcaProgramId, ORCA_FARM_CONFIG } from '../../constants/farm/orca/info';
 import { PublicKey, SYSVAR_CLOCK_PUBKEY, Connection } from '@solana/web3.js';
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { NATIVE_MINT, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokenDecimals } from '../../utils/tools';
 import { isString } from 'lodash';
+import { findOracleAccountPDA } from './utils';
 
 const commitment: web3.Commitment = 'confirmed';
 
@@ -64,9 +65,17 @@ export class FranciumFarm {
     } else {
       // const wallet = getWallet();
       const { idl, programId } = this.configs[type];
-      const program = new Program(idl as Idl, programId, new Provider(
+      const program = new Program(idl as Idl, programId, new AnchorProvider(
         this.connection,
-        null,
+        {
+          publicKey: NATIVE_MINT,
+          signAllTransactions: (trxs) => {
+            return Promise.resolve(trxs);
+          },
+          signTransaction: (trxs) => {
+            return Promise.resolve(trxs);
+          },
+        },
         {
           skipPreflight: true,
           commitment,
@@ -165,6 +174,62 @@ export class FranciumFarm {
       return this.getOrcaBorrowParams(config, userMainAccount, userInfoAccount);
     }
     return this.getRaydiumBorrowParams(config, userMainAccount, userInfoAccount);
+  }
+
+  public getBorrowParamsWithOrcale(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey, type: string = 'raydium') {
+    if (type === 'orca') {
+      return this.getOrcaBorrowParams(config, userMainAccount, userInfoAccount);
+    }
+    return this.getRaydiumBorrowParamsWithOrcale(config, userMainAccount, userInfoAccount);
+  }
+
+  private getRaydiumBorrowParamsWithOrcale(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey) {
+    const [oracleInfoAccount0, , oracleInfoAccount1] = findOracleAccountPDA(
+      config.strategyAccount
+    );
+
+    const pythOraclePriceAccount0 = config.pythOracleInfo?.pythPriceAccount0 || oracleInfoAccount0;
+    const pythOraclePriceAccount1 = config.pythOracleInfo?.pythPriceAccount1 || oracleInfoAccount1;
+
+    const switchboardOraclePriceAccount0 = config.switchboardOracleInfo?.switchboardPriceAccount0 || oracleInfoAccount0;
+    const switchboardOraclePriceAccount1 = config.switchboardOracleInfo?.switchboardPriceAccount1 || oracleInfoAccount1;
+
+    return [{
+      accounts: {
+        userMainAccount: userMainAccount,
+        userInfoAccount: userInfoAccount,
+        strategyState: config.strategyAccount,
+        strategyAuthority: config.strategyAuthority,
+        strategyTknAccount0: config.strategyTknAccount0,
+        strategyTknAccount1: config.strategyTknAccount1,
+        lendingMarketAccount: config.lendingPoolConfig.marketInfoAccount,
+        lendingMarketAuthorityInfo: config.lendingPoolConfig.marketAuthority,
+        lendingPoolProgramId: config.lendingPoolConfig.programId,
+        lendingPoolInfoAccount0: config.lendingPoolConfig["0"].lendingPoolInfoAccount,
+        lendingPoolTknAccount0: config.lendingPoolConfig["0"].lendingPoolTknAccount,
+        lendingPoolCreditAccount0: config.lendingPoolConfig["0"].lendingPoolCreditAccount,
+        strategyCreditAccount0: config.strategyBorrowCreditAccount0,
+        lendingPoolInfoAccount1: config.lendingPoolConfig["1"].lendingPoolInfoAccount,
+        lendingPoolTknAccount1: config.lendingPoolConfig["1"].lendingPoolTknAccount,
+        lendingPoolCreditAccount1: config.lendingPoolConfig["1"].lendingPoolCreditAccount,
+        strategyCreditAccount1: config.strategyBorrowCreditAccount1,
+        tokenProgramId: TOKEN_PROGRAM_ID,
+        clock: SYSVAR_CLOCK_PUBKEY,
+        ammId: config.raydiumInfo.ammId,
+        ammOpenOrders: config.raydiumInfo.ammOpenOrders,
+        ammTknAccount0: config.raydiumInfo.ammPcAccount,
+        ammTknAccount1: config.raydiumInfo.ammCoinAccount,
+        lpMintAccount: config.lpMint,
+        tokenMint0: config.tknMint0,
+        tokenMint1: config.tknMint1,
+        oracleInfo0: oracleInfoAccount0,
+        oracleInfo1: oracleInfoAccount1,
+        pythOraclePriceAccount0: pythOraclePriceAccount0,
+        pythOraclePriceAccount1: pythOraclePriceAccount1,
+        switchboardOraclePriceAccount0: switchboardOraclePriceAccount0,
+        switchboardOraclePriceAccount1: switchboardOraclePriceAccount1,
+      }
+    }];
   }
 
   private getRaydiumBorrowParams(config: any, userMainAccount: PublicKey, userInfoAccount: PublicKey) {
@@ -558,9 +623,9 @@ export class FranciumFarm {
           serumVaultSinger: config.raydiumInfo.serumVaultSigner
         },
         remainingAccounts: [
-          {pubkey: config.raydiumInfo.serumEventQueue, isSigner:false, isWritable: true},
-          {pubkey: config.raydiumInfo.serumBids, isSigner:false, isWritable: true},
-          {pubkey: config.raydiumInfo.serumAsks, isSigner:false, isWritable: true},
+          { pubkey: config.raydiumInfo.serumEventQueue, isSigner: false, isWritable: true },
+          { pubkey: config.raydiumInfo.serumBids, isSigner: false, isWritable: true },
+          { pubkey: config.raydiumInfo.serumAsks, isSigner: false, isWritable: true },
         ]
       }
     ];
