@@ -47,7 +47,10 @@ export class FranciumSDK {
   }) {
     this.connection = config.connection;
     this.farmHub = new FranciumFarm({ connection: this.connection });
-    this.farmPools = farmPools.filter(i => i.version > 2);
+    this.farmPools = farmPools.filter(i => {
+      const targetFarmInfo = this.farmHub.getConfig(i.pair, i.lyfType || 'raydium');
+      return i.version > 2 && !!targetFarmInfo;
+    });
     this.getTokenPrice = config.getTokenPrice;
     this.autoHub = new FranciumAutoVaults({ connection: this.connection });
   }
